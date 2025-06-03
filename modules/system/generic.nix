@@ -25,7 +25,7 @@
         pulse.enable = true;
     };
 
-    system.stateVersion = "22.05";
+    system.stateVersion = "25.05";
     system.autoUpgrade.enable = false;
 
     nix = {
