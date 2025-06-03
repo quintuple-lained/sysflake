@@ -175,7 +175,7 @@
     pure_enable_single_line_prompt = "true";
     pure_show_system_time = "true";
     pure_show_subsecond_command_duration = "true";
-    pure_enable_nixdevshell = "false";
+    pure_enable_nixdevshell = "true";
     pure_reverse_prompt_symbol_in_vimode = "true";
     pure_separate_prompt_on_error = "false";
     
