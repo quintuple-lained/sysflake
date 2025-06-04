@@ -11,7 +11,6 @@
   ];
 
   programs.home-manager.enable = true;
-  home.stateVersion = "25.05";
 
   catppuccin = {
     enable = true;
@@ -67,4 +66,6 @@
         openvpn
         wireguard-tools
       ];
+    in
+    development ++ fonts ++ misc-packages;
 }

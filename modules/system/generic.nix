@@ -61,7 +61,7 @@
             "audio"
         ];
 
-        initialPassword = "ZoeZoe"
+        initialPassword = "ZoeZoe";
     };
 
     programs.nix-index-database.comma.enable = true;

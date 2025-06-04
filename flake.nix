@@ -78,7 +78,7 @@
                 useUserPackages = true;
                 users.zoe.imports = [
                   catppuccin.homeModules.catppuccin
-                  ./modules/system/${machine}/home.nix
+                  ./modules/home/${machine}/home.nix
                 ];
               };
             }
