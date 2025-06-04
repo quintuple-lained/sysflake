@@ -96,7 +96,7 @@
       templates = {
         full = {
           path = ./.;
-          description = "My system"
+          description = "My system";
         };
       } // import ./modules/templates;
 
