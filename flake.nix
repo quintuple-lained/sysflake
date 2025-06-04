@@ -23,7 +23,7 @@
   };
 
   outputs = {
-    unstable,
+    nixpkgs,
     home-manager,
     nix-index-database,
     catppuccin,
