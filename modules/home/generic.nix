@@ -55,7 +55,7 @@
       fonts = with pkgs; [
         source-code-pro
         source-sans-pro
-        noto-fonts-cjk
+        noto-fonts-cjk-sans
         noto-fonts-emoji
         font-awesome
       ];
