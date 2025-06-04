@@ -191,7 +191,7 @@
     # Desktop and window effects
     kwin = {
       titlebarButtons = {
-        left = [ "on-all-desktops" "keep-above-others" ];
+        left = [ "on-all-desktops" "keep-above-windows" ];  # Fixed: changed "keep-above-others" to "keep-above-windows"
         right = [ "minimize" "maximize" "close" ];
       };
       
