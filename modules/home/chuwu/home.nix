@@ -5,12 +5,12 @@
 {
   imports = [
     ../generic.nix
+    ../desktop
     ../kitty
     ../plasma
   ];
 
   programs.home-manager.enable = true;
-  system.stateVersion = "25.05";
   home.stateVersion = "25.05";
 
   home.username = "zoe";
