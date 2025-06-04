@@ -6,7 +6,6 @@
   imports = [
     ../generic.nix
     ../desktop
-    ../kitty
     ../plasma
   ];
 

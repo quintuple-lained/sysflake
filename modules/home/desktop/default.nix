@@ -43,7 +43,7 @@
     p7zip
     unzip
     zip
-    
+    kitty
   ];
 
   # XDG configuration for desktop applications
