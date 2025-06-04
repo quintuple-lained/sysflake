@@ -11,7 +11,7 @@
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
       colorScheme = "BreezeDark";
-      cursorTheme = "breeze_cursors";
+      cursor.theme = "breeze_cursors";
       iconTheme = "breeze-dark";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Next/contents/images/1920x1080.png";
       
