@@ -6,50 +6,52 @@
     enable = true;
     
     # Your vterm integration functions
-    functions = {
+    # i am unable to make this work, i dont use emacs that much anyways, so fuck it
+    # functions = {
       # Emacs vterm integration
-      vterm_printf = ''
-        if begin; [  -n "$TMUX" ]  ; and  string match -q -r "screen|tmux" "$TERM"; end
-            # tell tmux to pass the escape sequences through
-            printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
-        else if string match -q -- "screen*" "$TERM"
-            # GNU screen (screen, screen-256color, screen-256color-bce)
-            printf "\eP\e]%s\007\e\\" "$argv"
-        else
-            printf "\e]%s\e\\" "$argv"
-        end
-      '';
 
-      find_file = ''
-        set -q argv[1]; or set argv[1] "."
-        vterm_cmd find-file (realpath "$argv")
-      '';
+      # vterm_printf = ''
+      #   if begin; [  -n "$TMUX" ]  ; and  string match -q -r "screen|tmux" "$TERM"; end
+      #       # tell tmux to pass the escape sequences through
+      #       printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
+      #   else if string match -q -- "screen*" "$TERM"
+      #       # GNU screen (screen, screen-256color, screen-256color-bce)
+      #       printf "\eP\e]%s\007\e\\" "$argv"
+      #   else
+      #       printf "\e]%s\e\\" "$argv"
+      #   end
+      # '';
 
-      say = ''
-        vterm_cmd message "%s" "$argv"
-      '';
+      # find_file = ''
+      #   set -q argv[1]; or set argv[1] "."
+      #   vterm_cmd find-file (realpath "$argv")
+      # '';
 
-      vterm_cmd = ''
-        set -l vterm_elisp ()
-        for arg in $argv
-            set -a vterm_elisp (printf '"%s" ' (string replace -a -r '([\\\\"])' '\\\\\\\\$1' $arg))
-        end
-        vterm_printf "51;E"(string join '' $vterm_elisp)
-      '';
+      # say = ''
+      #   vterm_cmd message "%s" "$argv"
+      # '';
 
-      vterm_prompt_end = ''
-        vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
-      '';
+      # vterm_cmd = ''
+      #   set -l vterm_elisp ()
+      #   for arg in $argv
+      #       set -a vterm_elisp (printf '"%s" ' (string replace -a -r '([\\\\"])' '\\\\\\\\$1' $arg))
+      #   end
+      #   vterm_printf "51;E"(string join '' $vterm_elisp)
+      # '';
 
-      # Override clear for vterm
-      clear = ''
-        if [ "$INSIDE_EMACS" = 'vterm' ]
-          vterm_printf "51;Evterm-clear-scrollback"
-          tput clear
-        else
-          command clear
-        end
-      '';
+      # vterm_prompt_end = ''
+      #   vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
+      # '';
+
+      # # Override clear for vterm
+      # clear = ''
+      #   if [ "$INSIDE_EMACS" = 'vterm' ]
+      #     vterm_printf "51;Evterm-clear-scrollback"
+      #     tput clear
+      #   else
+      #     command clear
+      #   end
+      # '';
 
       # Your custom git functions
       gaa = {
