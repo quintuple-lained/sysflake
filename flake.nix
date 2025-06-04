@@ -12,7 +12,7 @@
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
       inputs = {
-        nixpkgs.follows = "unstable";
+        nixpkgs.follows = "nixpkgs";
       };
     };
 
@@ -36,7 +36,7 @@
       "chuwu"
     ];
 
-    pkgs = import unstable {
+    pkgs = import nixpkgs {
       inherit system overlays;
 
       config = {

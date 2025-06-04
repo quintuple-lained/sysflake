@@ -74,6 +74,5 @@
         yt-dlp
       ];
 
-      graphical = with pkgs; []
-      
+      graphical = with pkgs; [];
 }
