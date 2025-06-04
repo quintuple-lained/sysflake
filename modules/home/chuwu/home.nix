@@ -14,7 +14,6 @@
 
   home.username = "zoe";
   home.homeDirectory = "/home/zoe";
-  networkmanager.enable = true;
 
   home.packages = 
     let
