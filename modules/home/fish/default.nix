@@ -149,8 +149,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "pure-fish";
           repo = "pure";
-          rev = "v4.10.0";
-          sha256 = "sha256-/dIZaK9+3x7WjTGRiA2j9XqE1VHTrCG7D4q9zLBm5xI=";
+          rev = "efaf3e70d553c87e58f7e0239669cddc7eeec357";
+          hash = "sha256-Oxacuyx4MTE08B8H89F0vJXpgdN9JsQFdGBeCGGm97M=";
         };
       }
       
