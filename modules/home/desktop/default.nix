@@ -30,7 +30,7 @@
     libreoffice
     
     # File management
-    dolphin
+    kdePackages.dolphin
     
     # System utilities
     gparted
