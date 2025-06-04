@@ -170,7 +170,7 @@
   #  enable = true;
   #  enableFishIntegration = true;
   #  # Add any custom fzf options you have
-  };
+  # };
 
   # Pure prompt configuration using environment variables
   # (These recreate your pure_* settings from fish_variables)
