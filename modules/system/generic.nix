@@ -102,7 +102,6 @@
     git
     curl
     wget
-    firefox
     neovim
   ];
 
