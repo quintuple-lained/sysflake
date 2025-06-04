@@ -20,6 +20,11 @@
 
     flatpaks.url = "github:gmodena/nix-flatpak";
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
   outputs = {
@@ -28,6 +33,7 @@
     nix-index-database,
     catppuccin,
     flatpaks,
+    plasma-manager,
     ...
   }@inputs:
   let
@@ -78,6 +84,7 @@
                 useUserPackages = true;
                 users.zoe.imports = [
                   catppuccin.homeModules.catppuccin
+                  plasma-manager.homeManagerModules.plasma-manager
                   ./modules/home/${machine}/home.nix
                 ];
               };

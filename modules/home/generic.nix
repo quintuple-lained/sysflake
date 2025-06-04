@@ -22,7 +22,7 @@
     lorri.enable = true;
     gpg-agent = {
       enable = true;
-      pinentryPackage =pkgs.pinentry-gtk2;
+      pinentryPackage = pkgs.pinentry-gtk2;
     };
   };
 
@@ -55,6 +55,9 @@
       fonts = with pkgs; [
         source-code-pro
         source-sans-pro
+        noto-fonts-cjk
+        noto-fonts-emoji
+        font-awesome
       ];
 
       misc-packages = with pkgs; [
