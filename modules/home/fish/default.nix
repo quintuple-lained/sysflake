@@ -34,7 +34,7 @@
         for arg in $argv
             set -a vterm_elisp (printf '"%s" ' (string replace -a -r '([\\\\"])' '\\\\\\\\$1' $arg))
         end
-        vterm_printf '51;E'(string join '' $vterm_elisp)
+        vterm_printf "51;E"(string join '' $vterm_elisp)
       '';
 
       vterm_prompt_end = ''
