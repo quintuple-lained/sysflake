@@ -7,7 +7,7 @@
     
     # Your vterm integration functions
     # i am unable to make this work, i dont use emacs that much anyways, so fuck it
-    # functions = {
+    functions = {
       # Emacs vterm integration
 
       # vterm_printf = ''
