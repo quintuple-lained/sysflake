@@ -30,5 +30,5 @@
 
       graphical = with pkgs; [];
     in
-  development ++ fonts ++ misc-packages ++ graphical
+  development ++ fonts ++ misc-packages ++ graphical;
 }
