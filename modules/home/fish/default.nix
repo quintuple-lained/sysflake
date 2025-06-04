@@ -82,6 +82,12 @@
         body = "git push $argv";
       };
       
+      gis = {
+        description = "alias gis = git status";
+        wraps = "git status";
+        body = "git status $argv";
+      };
+
       # Utility functions
       mt = ''
         for item in $argv
