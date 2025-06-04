@@ -17,7 +17,7 @@
 
   networking = {
     hostName = "chuwu";
-    hostId = "7f630874"
+    hostId = "7f630874";
   };
   services.openssh.enable = true;
 
