@@ -36,6 +36,8 @@
       "chuwu"
     ];
 
+  overlays = [];
+
     pkgs = import nixpkgs {
       inherit system overlays;
 
@@ -45,7 +47,7 @@
     };
 
     in
-    with unstable.lib;
+    with nixpkgs.lib;
     {
       nixosConfigurations = genAttrs machines (
         machine:
@@ -64,7 +66,7 @@
             # system configs
             ./modules/system/generic.nix
             ./modules/system/${machine}/config.nix
-            ./modules/system/${machine}/hardware-config/nix
+            ./modules/system/${machine}/hardware-config.nix
 
             home-manager.nixosModules.default
             {
