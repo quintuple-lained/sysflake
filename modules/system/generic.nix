@@ -66,11 +66,6 @@
 
     programs.nix-index-database.comma.enable = true;
 
-    pkgs.kdePackages.sddm.sddm = {
-        enable = true;
-
-        wayland.enable = true;
-    };
 
     services.avahi = {
         enable = true;
