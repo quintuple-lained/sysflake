@@ -66,7 +66,7 @@
 
     programs.nix-index-database.comma.enable = true;
 
-    services.displayManager.sddm = {
+    pkgs.kdePackages.sddm.sddm = {
         enable = true;
 
         wayland.enable = true;
