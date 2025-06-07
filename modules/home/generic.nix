@@ -33,6 +33,7 @@
     };
     gpg.enable = true;
     nix-index.enable = true;
+    ssh.startAgent = true;
   };
 
   home.sessionVariables = {
@@ -41,7 +42,7 @@
     VISUAL = "nvim";
   };
 
-  home.packages = 
+  home.packages =
     let
       development = with pkgs; [
         nixfmt-rfc-style
