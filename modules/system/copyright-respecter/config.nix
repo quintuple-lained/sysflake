@@ -16,4 +16,18 @@
     hostId = builtins.substring 0 8 (builtins.hashString "sha256" "copyright-respecter");
     networkmanager.enable = true;
   };
+
+  boot = {
+    loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 7;
+      memtest86.enable = true;
+    };
+    supportedFilesystems = [
+      "zfs"
+      "xfs"
+    ];
+    zfs.forceImportRoot = false;
+  };
+
 }
