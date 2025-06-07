@@ -1,5 +1,19 @@
 { pkgs, config, lib, ... }:
 
 {
-  imports =
+  imports = [
+    ./hardware-config.nix
+    ../../srv/ssh/ssh-server.nix
+    #../../srv/services/vpn-server.nix
+    #../../srv/services/jellyfin.nix
+    #../../srv/services/nextcloud.nix
+    #../../srv/services/torrent.nix
+    #../../srv/services/pihole.nix
+  ];
+  
+  networking = {
+    hostName = "copyright-respecter";
+    hostId = builtins.substring 0 8 (builtins.hashString "sha256" "copyright-respecter");
+    networkmanager.enable = true;
+  };
 }
