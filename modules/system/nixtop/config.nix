@@ -15,7 +15,7 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  networking = {
+  networking = rec {
     hostName = "nixtop";
     hostId = builtins.substring 0 8 (builtins.hashString "sha256" hostName);
     networkmanager.enable = true;
