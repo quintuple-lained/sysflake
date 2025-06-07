@@ -50,6 +50,7 @@
         tree
         git
         ripgrep
+        nil
       ];
 
       fonts = with pkgs; [

@@ -55,13 +55,7 @@
     #media-session.
   };
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-    services.displayManager.sddm.settings = {
+  services.displayManager.sddm.settings = {
     # X11 settings for rotation
     X11 = {
     };
@@ -70,10 +64,21 @@
   services.xserver = {
     enable = true;
     xkb.layout = "us";
-    # X11 display rotation
-
+    videoDrivers = [ "nvidia" ];
   };
-  
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = true;
+    nvidiaSettings = true;
+    #package = config.boot.kernelPackages.nvidiaPackages.latest;
+  };
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  }
+
   hardware.steam-hardware.enable = true;
   hardware.bluetooth.enable = true;
 

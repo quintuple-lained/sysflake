@@ -12,7 +12,7 @@
     
     # messaging
     (discord.override {
-      withOpenASAR = true;
+   #   withOpenASAR = true;
       withVencord = true;
     })
     
