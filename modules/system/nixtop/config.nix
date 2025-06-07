@@ -2,10 +2,10 @@
 
 {
   boot = {
-     loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 7;
-    memtest86.enable = true;
+    loader.systemd-boot = {
+      enable = true;
+      configurationLimit = 7;
+      memtest86.enable = true;
     };
     supportedFilesystems = [
       "xfs"
@@ -24,6 +24,8 @@
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
+
+  services.desktopManager.plasma6.enable = true;
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
