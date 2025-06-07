@@ -41,6 +41,7 @@
     machines = [
       "chuwu"
       "copyright-respecter"
+      "nixtop"
     ];
 
   overlays = [];
