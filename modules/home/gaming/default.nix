@@ -3,7 +3,7 @@
   ...
 }:
 {
-  game-stuff = with pkgs; [
+  home.packages = with pkgs; [
     libgdiplus
     (steam.override {
       extraPkgs =
