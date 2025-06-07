@@ -11,9 +11,9 @@
     #../../srv/services/pihole.nix
   ];
   
-  networking = {
+  networking = rec {
     hostName = "copyright-respecter";
-    hostId = builtins.substring 0 8 (builtins.hashString "sha256" "copyright-respecter");
+    hostId = builtins.substring 0 8 (builtins.hashString "sha256" hostName);
     networkmanager.enable = true;
   };
 
