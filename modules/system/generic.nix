@@ -13,7 +13,7 @@
             "systemd.show_status=auto"
         ];
     };
-    i18n.defaultLocale = "en_US.UTF-8";
+    i18n.defaultLocale = "en_GB.UTF-8";
     
     time.timeZone = "Europe/Berlin";
 
@@ -66,11 +66,6 @@
 
     programs.nix-index-database.comma.enable = true;
 
-    services.displayManager.sddm = {
-        enable = true;
-
-        wayland.enable = true;
-    };
 
     services.avahi = {
         enable = true;
