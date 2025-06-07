@@ -40,6 +40,7 @@
     system = "x86_64-linux";
     machines = [
       "chuwu"
+      "copyright-respecter"
     ];
 
   overlays = [];
