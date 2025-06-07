@@ -8,10 +8,8 @@
     memtest86.enable = true;
     };
     supportedFilesystems = [
-      "zfs"
       "xfs"
     ];
-    zfs.forceImportRoot = false;
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
@@ -54,8 +52,6 @@
     # no need to redefine it in your config for now)
     #media-session.
   };
-   # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
