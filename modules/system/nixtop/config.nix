@@ -60,4 +60,24 @@
     layout = "us";
     variant = "";
   };
+
+    services.displayManager.sddm.settings = {
+    # X11 settings for rotation
+    X11 = {
+    };
+  };
+
+  services.xserver = {
+    enable = true;
+    xkb.layout = "us";
+    # X11 display rotation
+
+  };
+  
+  hardware.steam-hardware.enable = true;
+  hardware.bluetooth.enable = true;
+
+  hardware.cpu.intel.updateMicrocode = true;
+  powerManagement.enable = true;
+  services.thermald.enable = true;
 }
