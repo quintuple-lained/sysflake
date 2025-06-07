@@ -90,6 +90,12 @@
         body = "git status $argv";
       };
 
+      doas = {
+        description = "alias doas = sudo";
+        wraps = "sudo";
+        body = "sudo $argv";
+      };
+
       # Utility functions
       mt = ''
         for item in $argv
