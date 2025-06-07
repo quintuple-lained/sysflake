@@ -77,7 +77,7 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
-  }
+  };
 
   hardware.steam-hardware.enable = true;
   hardware.bluetooth.enable = true;
