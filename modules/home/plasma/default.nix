@@ -14,11 +14,11 @@
       cursor.theme = "breeze_cursors";
       iconTheme = "breeze-dark";
       wallpaper = "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Next/contents/images/1920x1080.png";
-      
+
       # Window management
       clickItemTo = "select";
       tooltipDelay = 700;
-      
+
       # Virtual desktops
       theme = "breeze-dark";
     };
@@ -59,7 +59,7 @@
         alignment = "center";
         hiding = "none";
         floating = false;
-        
+
         widgets = [
           # Application launcher
           {
@@ -68,7 +68,7 @@
               icon = "nix-snowflake";
             };
           }
-          
+
           # Task manager
           {
             iconTasks = {
@@ -77,6 +77,7 @@
                 "applications:firefox.desktop"
                 "applications:kitty.desktop"
                 "applications:code.desktop"
+                "applications:discord.desktop"
               ];
               appearance = {
                 showTooltips = true;
@@ -85,10 +86,10 @@
               };
             };
           }
-          
+
           # Spacer
           "org.kde.plasma.panelspacer"
-          
+
           # System tray
           {
             systemTray = {
@@ -110,7 +111,7 @@
               };
             };
           }
-          
+
           # Digital clock
           {
             digitalClock = {
@@ -139,7 +140,7 @@
       "org.kde.dolphin.desktop"."_launch" = "Meta+E";
       "org.kde.konsole.desktop"."_launch" = "Meta+Return";
       "firefox.desktop"."_launch" = "Meta+B";
-      
+
       # KWin shortcuts
       "kwin"."Window Quick Tile Bottom" = "Meta+Down";
       "kwin"."Window Quick Tile Top" = "Meta+Up";
@@ -148,21 +149,21 @@
       "kwin"."Window Maximize" = "Meta+M";
       "kwin"."Window Minimize" = "Meta+N";
       "kwin"."Window Close" = "Meta+Q";
-      
+
       # Virtual desktop switching
       "kwin"."Switch to Desktop 1" = "Meta+1";
       "kwin"."Switch to Desktop 2" = "Meta+2";
       "kwin"."Switch to Desktop 3" = "Meta+3";
       "kwin"."Switch to Desktop 4" = "Meta+4";
-      
+
       # Overview
       "kwin"."Overview" = "Meta+Tab";
       "kwin"."Window Operations Menu" = "Meta+Space";
-      
+
       # Screenshot
       "org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Meta+Shift+S";
       "org.kde.spectacle.desktop"."FullScreenScreenShot" = "Print";
-      
+
       # Audio
       "kmix"."increase_volume" = "Volume Up";
       "kmix"."decrease_volume" = "Volume Down";
@@ -191,10 +192,17 @@
     # Desktop and window effects
     kwin = {
       titlebarButtons = {
-        left = [ "on-all-desktops" "keep-above-windows" ];  # Fixed: changed "keep-above-others" to "keep-above-windows"
-        right = [ "minimize" "maximize" "close" ];
+        left = [
+          "on-all-desktops"
+          "keep-above-windows"
+        ]; # Fixed: changed "keep-above-others" to "keep-above-windows"
+        right = [
+          "minimize"
+          "maximize"
+          "close"
+        ];
       };
-      
+
       effects = {
         translucency = {
           enable = true;
@@ -212,13 +220,18 @@
           enable = true;
         };
       };
-      
+
       virtualDesktops = {
         rows = 1;
         number = 4;
-        names = [ "Main" "Dev" "Web" "Media" ];
+        names = [
+          "Main"
+          "Dev"
+          "Web"
+          "Media"
+        ];
       };
-      
+
       cornerBarrier = false;
       borderlessMaximizedWindows = false;
     };
@@ -229,25 +242,25 @@
       "dolphinrc"."General"."BrowseThroughArchives" = true;
       "dolphinrc"."General"."ShowFullPath" = true;
       "dolphinrc"."IconsMode"."PreviewSize" = 64;
-      
+
       # Kate text editor
       "katerc"."General"."Close After Last" = false;
       "katerc"."General"."Show Full Path in Title" = true;
-      
+
       # Konsole terminal
       "konsolerc"."Desktop Entry"."DefaultProfile" = "kitty.profile";
       "konsolerc"."MainWindow"."MenuBar" = "Disabled";
-      
+
       # KDE settings
       "kdeglobals"."General"."BrowserApplication" = "firefox.desktop";
       "kdeglobals"."General"."TerminalApplication" = "kitty";
       "kdeglobals"."General"."TerminalService" = "kitty.desktop";
-      
+
       # Power management
       "powermanagementprofilesrc"."AC"."SuspendSession" = false;
       "powermanagementprofilesrc"."Battery"."SuspendSession" = false;
       "powermanagementprofilesrc"."LowBattery"."SuspendSession" = false;
-      
+
       # Disable Baloo file indexing (optional - can be performance heavy)
       "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
     };
@@ -258,16 +271,17 @@
     # KDE applications
     kdePackages.kate
     kdePackages.kcalc
-    kdePackages.spectacle  # Screenshots
-    kdePackages.ark        # Archive manager
-    kdePackages.okular     # PDF viewer
-    kdePackages.gwenview   # Image viewer
+    kdePackages.spectacle # Screenshots
+    kdePackages.ark # Archive manager
+    kdePackages.okular # PDF viewer
+    kdePackages.gwenview # Image viewer
     kdePackages.kcharselect # Character selector
-    
+
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration
-    kdePackages.kdeconnect-kde  # Phone integration
-    
+    kdePackages.kdeconnect-kde # Phone integration
+    kdePackages.filelight
+
     # Icon themes (optional)
     # papirus-icon-theme
     # tela-icon-theme

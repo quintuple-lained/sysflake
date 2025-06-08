@@ -73,10 +73,9 @@
     nvidiaSettings = true;
     #package = config.boot.kernelPackages.nvidiaPackages.latest;
   };
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
 
   hardware.steam-hardware.enable = true;

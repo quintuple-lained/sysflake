@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -22,6 +22,16 @@
     { device = "/dev/disk/by-uuid/8745-28D4";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
+    };
+
+  fileSystems."/home/zoe/gamedriveB" =
+    { device = "/dev/disk/by-uuid/2d928ce4-3fa6-46a8-85c8-b5578273e1f0";
+      fsType = "ext4";
+    };
+
+  fileSystems."/home/zoe/gamedriveA" =
+    { device = "/dev/disk/by-uuid/b42c3d05-84c0-4375-ae80-af27c855b412";
+      fsType = "ext4";
     };
 
   swapDevices =

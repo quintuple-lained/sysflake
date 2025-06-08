@@ -24,6 +24,7 @@
       enable = true;
       pinentry.package = pkgs.pinentry-gtk2;
     };
+    ssh-agent.enable = true;
   };
 
   programs = {
@@ -33,7 +34,6 @@
     };
     gpg.enable = true;
     nix-index.enable = true;
-    ssh.startAgent = true;
   };
 
   home.sessionVariables = {
@@ -49,6 +49,7 @@
         direnv
         fd
         tree
+        file
         git
         ripgrep
         nil
