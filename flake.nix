@@ -16,6 +16,8 @@
       };
     };
 
+    firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
+
     catppuccin.url = "github:catppuccin/nix";
 
     flatpaks.url = "github:gmodena/nix-flatpak";
@@ -34,6 +36,7 @@
     catppuccin,
     flatpaks,
     plasma-manager,
+    firefox-addons,
     ...
   }@inputs:
   let

@@ -18,6 +18,26 @@
         "type": "github"
       }
     },
+    "firefox-addons": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "dir": "pkgs/firefox-addons",
+        "lastModified": 1749441800,
+        "narHash": "sha256-bN4tccrmczfR4PUuepHpxNNmWG3cLZTFIt4BaD8YyvA=",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "rev": "fe13e6abfe72b39ad8381595c3c404849330c3cb",
+        "type": "gitlab"
+      },
+      "original": {
+        "dir": "pkgs/firefox-addons",
+        "owner": "rycee",
+        "repo": "nur-expressions",
+        "type": "gitlab"
+      }
+    },
     "flatpaks": {
       "locked": {
         "lastModified": 1744659587,
@@ -91,6 +111,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1744536153,
+        "narHash": "sha256-awS2zRgF4uTwrOKwwiJcByDzDOdo3Q1rPZbiHQg/N38=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "18dd725c29603f582cf1900e0d25f9f1063dbf11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1748929857,
         "narHash": "sha256-lcZQ8RhsmhsK8u7LIFsJhsLh/pzR9yZ8yqpTzyGdj+Q=",
         "owner": "nixos",
@@ -131,10 +167,11 @@
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
+        "firefox-addons": "firefox-addons",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
         "nix-index-database": "nix-index-database",
-        "nixpkgs": "nixpkgs_2",
+        "nixpkgs": "nixpkgs_3",
         "plasma-manager": "plasma-manager"
       }
     }

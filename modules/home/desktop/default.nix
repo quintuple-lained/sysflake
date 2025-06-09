@@ -8,7 +8,6 @@
   
   home.packages = with pkgs; [
     # Web browsers
-    firefox
     
     # messaging
     (discord.override {
