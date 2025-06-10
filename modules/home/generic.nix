@@ -54,6 +54,7 @@
         git
         ripgrep
         nil
+        onefetch
       ];
 
       fonts = with pkgs; [
