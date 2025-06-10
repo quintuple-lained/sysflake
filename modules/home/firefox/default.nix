@@ -25,7 +25,6 @@
         ];
       };
 
-      # Manage bookmarks (new format with force option)
       bookmarks = {
         force = true;
         settings = [
@@ -61,7 +60,7 @@
       # Manage search engines
       search = {
         force = true;
-        default = "ddg"; # Changed from "DuckDuckGo" to "ddg"
+        default = "ddg";
         engines = {
           "Nix Packages" = {
             urls = [

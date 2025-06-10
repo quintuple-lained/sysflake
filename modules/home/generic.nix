@@ -6,8 +6,9 @@
 }:
 {
   imports = [
+    inputs.nixvim.homeManagerModules.nixvim
     ./fish
-    ./neovim
+    ./nixvim
   ];
 
   programs.home-manager.enable = true;
