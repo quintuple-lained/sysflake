@@ -39,52 +39,8 @@
       maplocalleader = " ";
     };
 
-    # Color scheme
-    colorschemes.catppuccin = {
-      enable = true;
-      settings = {
-        flavour = "mocha";
-        background = {
-          light = "latte";
-          dark = "mocha";
-        };
-        transparent_background = false;
-        show_end_of_buffer = false;
-        term_colors = false;
-        dim_inactive = {
-          enabled = false;
-          shade = "dark";
-          percentage = 0.15;
-        };
-        no_italic = false;
-        no_bold = false;
-        no_underline = false;
-        styles = {
-          comments = [ "italic" ];
-          conditionals = [ "italic" ];
-          loops = [ ];
-          functions = [ ];
-          keywords = [ ];
-          strings = [ ];
-          variables = [ ];
-          numbers = [ ];
-          booleans = [ ];
-          properties = [ ];
-          types = [ ];
-          operators = [ ];
-        };
-        color_overrides = { };
-        custom_highlights = { };
-        integrations = {
-          cmp = true;
-          gitsigns = true;
-          nvimtree = true;
-          telescope = true;
-          treesitter = true;
-          which_key = true;
-        };
-      };
-    };
+    # Color scheme - using global catppuccin theme
+    # colorschemes.catppuccin is handled by the global catppuccin module
 
     # Plugins
     plugins = {
@@ -121,7 +77,6 @@
           gopls.enable = true;
           pyright.enable = true;
           marksman.enable = true;
-          dot_ls.enable = true;
           lua_ls = {
             enable = true;
             settings = {
@@ -224,30 +179,33 @@
       # Status line
       lualine = {
         enable = true;
-        theme = "catppuccin";
-        componentSeparators = {
-          left = "";
-          right = "";
-        };
-        sectionSeparators = {
-          left = "";
-          right = "";
-        };
-        sections = {
-          lualine_a = [ "mode" ];
-          lualine_b = [
-            "branch"
-            "diff"
-            "diagnostics"
-          ];
-          lualine_c = [ "filename" ];
-          lualine_x = [
-            "encoding"
-            "fileformat"
-            "filetype"
-          ];
-          lualine_y = [ "progress" ];
-          lualine_z = [ "location" ];
+        settings = {
+          options = {
+            component_separators = {
+              left = "";
+              right = "";
+            };
+            section_separators = {
+              left = "";
+              right = "";
+            };
+          };
+          sections = {
+            lualine_a = [ "mode" ];
+            lualine_b = [
+              "branch"
+              "diff"
+              "diagnostics"
+            ];
+            lualine_c = [ "filename" ];
+            lualine_x = [
+              "encoding"
+              "fileformat"
+              "filetype"
+            ];
+            lualine_y = [ "progress" ];
+            lualine_z = [ "location" ];
+          };
         };
       };
 
