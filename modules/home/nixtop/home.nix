@@ -8,6 +8,7 @@
     ../desktop
     ../plasma
     ../gaming
+    ../firefox
   ];
 
   programs.home-manager.enable = true;
@@ -16,7 +17,7 @@
   home.username = "zoe";
   home.homeDirectory = "/home/zoe";
 
-  home.packages = 
+  home.packages =
     let
       development = with pkgs; [
       ];
@@ -29,8 +30,8 @@
         networkmanager
       ];
 
-      graphical = with pkgs; [];
+      graphical = with pkgs; [ ];
 
     in
-  development ++ fonts ++ misc-packages ++ graphical;
+    development ++ fonts ++ misc-packages ++ graphical;
 }

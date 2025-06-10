@@ -29,33 +29,34 @@
     };
   };
 
-  outputs = {
-    nixpkgs,
-    home-manager,
-    nix-index-database,
-    catppuccin,
-    flatpaks,
-    plasma-manager,
-    firefox-addons,
-    ...
-  }@inputs:
-  let
-    system = "x86_64-linux";
-    machines = [
-      "chuwu"
-      "copyright-respecter"
-      "nixtop"
-    ];
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      nix-index-database,
+      catppuccin,
+      flatpaks,
+      plasma-manager,
+      firefox-addons,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+      machines = [
+        "chuwu"
+        "copyright-respecter"
+        "nixtop"
+      ];
 
-  overlays = [];
+      overlays = [ ];
 
-    pkgs = import nixpkgs {
-      inherit system overlays;
+      pkgs = import nixpkgs {
+        inherit system overlays;
 
-      config = {
-        allowUnfree = true;
+        config = {
+          allowUnfree = true;
+        };
       };
-    };
 
     in
     with nixpkgs.lib;
@@ -81,7 +82,7 @@
 
             home-manager.nixosModules.default
             {
-              home-manager={
+              home-manager = {
                 extraSpecialArgs = {
                   inherit system inputs;
                 };

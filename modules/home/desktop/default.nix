@@ -5,36 +5,37 @@
 {
   # Desktop-independent GUI applications and configurations
   # This module contains software that you'd want on any desktop environment
-  
+
   home.packages = with pkgs; [
     # Web browsers
-    
+
     # messaging
     (discord.override {
-   #   withOpenASAR = true;
+      #   withOpenASAR = true;
       withVencord = true;
     })
-    
+
     signal-desktop
-    
+    firefox
+
     # Media
     vlc
     mpv
-    
+
     # Graphics & Design
     gimp
     inkscape
-    
+
     # Office & Productivity
     libreoffice
-    
+
     # File management
     kdePackages.dolphin
-    
+
     # System utilities
     gparted
     # wireshark  # Network analysis
-    
+
     # Development (GUI)
     vscode-fhs
 
@@ -48,7 +49,7 @@
   # XDG configuration for desktop applications
   xdg = {
     enable = true;
-    
+
     # Default applications
     mimeApps = {
       enable = true;
