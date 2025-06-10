@@ -5,5 +5,5 @@
 - [ ] actually keep all system configs up to date
 - [ ] fix commit history
 - [ ] improve firefox config
-- [ ] fix neovim config
+- [x] fix neovim config
 - [ ] restructuring?
