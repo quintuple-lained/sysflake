@@ -55,6 +55,7 @@
         ripgrep
         nil
         onefetch
+        git-filter-repo
       ];
 
       fonts = with pkgs; [
