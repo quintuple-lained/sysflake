@@ -1,0 +1,32 @@
+name: Key Rotation Reminder
+on:
+  schedule:
+    # First Saturday of January, April, July, October at 9 AM UTC
+    - cron: '0 9 1-7 1,4,7,10 6'
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create reminder issue
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🔑 Quarterly AGE Key Rotation Reminder',
+              body: `Time to rotate your SOPS/AGE encryption keys!
+              
+              **Tasks:**
+              - [ ] Generate new AGE key pair
+              - [ ] Update .sops.yaml with new public key
+              - [ ] Re-encrypt all secrets with \`sops updatekeys\`
+              - [ ] Deploy new private key to all machines
+              - [ ] Test decryption on all hosts
+              - [ ] Remove old private keys
+              - [ ] Update Github Keys
+              `,
+              labels: ['security', 'maintenance']
+            })
