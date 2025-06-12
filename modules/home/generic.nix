@@ -57,6 +57,7 @@
         onefetch
         git-filter-repo
         age
+        sops
 
       ];
 
