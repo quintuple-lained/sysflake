@@ -56,6 +56,8 @@
         nil
         onefetch
         git-filter-repo
+        age
+
       ];
 
       fonts = with pkgs; [
@@ -74,6 +76,7 @@
         nix-search-cli
         openvpn
         wireguard-tools
+        htop
       ];
     in
     development ++ fonts ++ misc-packages;
