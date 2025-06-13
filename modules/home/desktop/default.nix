@@ -3,8 +3,6 @@
   ...
 }:
 {
-  # Desktop-independent GUI applications and configurations
-  # This module contains software that you'd want on any desktop environment
 
   home.packages = with pkgs; [
     # Web browsers
