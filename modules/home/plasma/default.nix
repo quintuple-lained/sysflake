@@ -63,8 +63,7 @@
         widgets = [
           # Application launcher
           {
-            kickoff = {
-              sortAlphabetically = true;
+            kicker = {
               icon = "nix-snowflake";
             };
           }
@@ -162,8 +161,8 @@
       "kwin"."Window Operations Menu" = "Meta+Space";
 
       # Screenshot
-      "org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Meta+Shift+S";
-      "org.kde.spectacle.desktop"."FullScreenScreenShot" = "Print";
+      "org.kde.spectacle.desktop"."RectangularRegionScreenShot" = "Print";
+      "org.kde.spectacle.desktop"."FullScreenScreenShot" = "Meta+Shift+S";
 
       # Audio
       "kmix"."increase_volume" = "Volume Up";
