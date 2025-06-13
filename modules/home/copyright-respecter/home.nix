@@ -5,8 +5,6 @@
 {
   imports = [
     ../generic.nix
-    ../desktop
-    ../plasma
   ];
 
   programs.home-manager.enable = true;
@@ -15,7 +13,7 @@
   home.username = "zoe";
   home.homeDirectory = "/home/zoe";
 
-  home.packages = 
+  home.packages =
     let
       development = with pkgs; [
       ];
@@ -24,11 +22,10 @@
       ];
 
       misc-packages = with pkgs; [
-        yt-dlp
         networkmanager
       ];
 
-      graphical = with pkgs; [];
+      graphical = with pkgs; [ ];
     in
-  development ++ fonts ++ misc-packages ++ graphical;
+    development ++ fonts ++ misc-packages ++ graphical;
 }
