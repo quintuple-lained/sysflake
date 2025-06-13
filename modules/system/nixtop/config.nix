@@ -1,6 +1,9 @@
 { pkgs, options, ... }:
 
 {
+  imports = [
+    ../../ssh/ssh-client/default.nix
+  ];
   boot = {
     loader.systemd-boot = {
       enable = true;
