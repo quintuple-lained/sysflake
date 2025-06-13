@@ -36,13 +36,10 @@ in
 
   };
 
-  users.users.zoe.openssh.authorizedKeys.keyFiles = [
-    #    lib.optional (canAccessSopsSecrets.success && canAccessSopsSecrets.value)
-    # [
-    #   config.sops.secrets.ssh_public_key.path
-    # ];
+  users.users.zoe.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHX33TgIE5tl4xrrBYN5bG4o5xdPX4RhQCpoiRzSjrAS quintuple_lained@proton.me"
   ];
+
   # Fail2ban for additional security
   services.fail2ban = {
     enable = true;
