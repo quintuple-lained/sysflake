@@ -30,7 +30,7 @@
       forceImportRoot = true;
       forceImportAll = true;
       extraPools = [ "main_pool" ];
-      
+
       # Declarative ZFS dataset management
       datasets = {
         "main_pool" = {
@@ -53,6 +53,7 @@
           };
         };
       };
+    };
     # Use latest kernel for best ZFS compatibility
     kernelPackages = pkgs.linuxPackages;
   };
