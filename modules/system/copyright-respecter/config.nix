@@ -30,9 +30,9 @@
       forceImportAll = true;
       extraPools = [ "main_pool" ];
     };
+    # Use latest kernel for best ZFS compatibility
+    kernelPackages = pkgs.linuxPackages;
   };
-  # Use latest kernel for best ZFS compatibility
-  kernelPackages = pkgs.linuxPackages;
 
   # ZFS Services Configuration
   services.zfs = {
