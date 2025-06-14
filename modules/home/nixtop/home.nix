@@ -20,6 +20,11 @@
   home.packages =
     let
       development = with pkgs; [
+        rustc
+        cargo
+        gcc
+        pkg-config
+
       ];
 
       fonts = with pkgs; [

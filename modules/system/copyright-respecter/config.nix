@@ -9,7 +9,7 @@
   imports = [
     ./hardware-config.nix
     ../../ssh/ssh-server/default.nix
-    #../../srv/services/vpn-server.nix
+    ../../srv/services/vpn-server.nix
     #../../srv/services/jellyfin.nix
     #../../srv/services/nextcloud.nix
     #../../srv/services/torrent.nix

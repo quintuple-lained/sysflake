@@ -77,7 +77,6 @@
                 "applications:kitty.desktop"
                 "applications:code.desktop"
                 "applications:discord.desktop"
-                "applications:org.prismLauncher.prismLauncher.desktop"
               ];
               appearance = {
                 showTooltips = true;
