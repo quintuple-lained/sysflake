@@ -29,7 +29,30 @@
     zfs = {
       forceImportRoot = true;
       forceImportAll = true;
-    };
+      extraPools = [ "main_pool" ];
+      
+      # Declarative ZFS dataset management
+      datasets = {
+        "main_pool" = {
+          type = "zfs_fs";
+          mountpoint = "/main_pool";
+          options = {
+            canmount = "on";
+            compression = "lz4";
+            atime = "off";
+          };
+        };
+        "main_pool/storage" = {
+          type = "zfs_fs";
+          mountpoint = "/main_pool/storage";
+          options = {
+            canmount = "on";
+            compression = "lz4";
+            atime = "off";
+            quota = "8T";
+          };
+        };
+      };
     # Use latest kernel for best ZFS compatibility
     kernelPackages = pkgs.linuxPackages;
   };

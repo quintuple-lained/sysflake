@@ -24,15 +24,6 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/main_pool" =
-    { device = "main_pool";
-      fsType = "zfs";
-    };
-
-  fileSystems."/main_pool/storage" =
-    { device = "main_pool/storage";
-      fsType = "zfs";
-    };
 
   swapDevices =
     [ { device = "/dev/disk/by-uuid/d133856e-c701-46dd-bb96-0c6bb163d8c5"; }
