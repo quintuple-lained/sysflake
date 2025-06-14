@@ -9,7 +9,6 @@
   imports = [
     ./hardware-config.nix
     ../../ssh/ssh-server/default.nix
-    ../../srv/services/vpn-server.nix
     #../../srv/services/jellyfin.nix
     #../../srv/services/nextcloud.nix
     #../../srv/services/torrent.nix
@@ -30,33 +29,10 @@
       forceImportRoot = true;
       forceImportAll = true;
       extraPools = [ "main_pool" ];
-
-      # Declarative ZFS dataset management
-      datasets = {
-        "main_pool" = {
-          type = "zfs_fs";
-          mountpoint = "/main_pool";
-          options = {
-            canmount = "on";
-            compression = "lz4";
-            atime = "off";
-          };
-        };
-        "main_pool/storage" = {
-          type = "zfs_fs";
-          mountpoint = "/main_pool/storage";
-          options = {
-            canmount = "on";
-            compression = "lz4";
-            atime = "off";
-            quota = "8T";
-          };
-        };
-      };
     };
-    # Use latest kernel for best ZFS compatibility
-    kernelPackages = pkgs.linuxPackages;
   };
+  # Use latest kernel for best ZFS compatibility
+  kernelPackages = pkgs.linuxPackages;
 
   # ZFS Services Configuration
   services.zfs = {
