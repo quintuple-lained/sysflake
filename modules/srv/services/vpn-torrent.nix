@@ -8,9 +8,9 @@
 {
   # Add sops secret for VPN configuration
   sops = {
-    defaultSopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets.wireguard_config = {
+      sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
       key = "copyright-respecter.config"; # Fixed typo
       owner = "root";
       group = "root";
