@@ -23,14 +23,16 @@
         key = "qbittorrent.username";
         owner = "root";
         group = "root";
-        mode = "0600";
+        mode = "0644";
+        # Don't specify path - will be at /run/secrets/qbittorrent_username
       };
       qbittorrent_password = {
         sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
         key = "qbittorrent.password";
         owner = "root";
         group = "root";
-        mode = "0600";
+        mode = "0644";
+        # Don't specify path - will be at /run/secrets/qbittorrent_password
       };
     };
   };
@@ -55,19 +57,27 @@
     after = [
       "docker.service"
       "network.target"
+      "sops-nix.service" # Ensure secrets are available
     ];
     requires = [ "docker.service" ];
+    wants = [ "sops-nix.service" ];
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      # Add a delay to ensure container is fully started
+      ExecStartPost = "${pkgs.coreutils}/bin/sleep 10";
       ExecStartPre = [
         # Stop and remove existing container if it exists
         "-${pkgs.docker}/bin/docker stop qbittorrent-vpn"
         "-${pkgs.docker}/bin/docker rm qbittorrent-vpn"
-        # Create docker volume if it doesn't exist (fixed syntax)
+        # Create docker volume if it doesn't exist
         "-${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker volume create qbittorrent_data || true'"
+        # Verify secrets exist
+        "${pkgs.coreutils}/bin/test -f ${config.sops.secrets.wireguard_config.path}"
+        "${pkgs.coreutils}/bin/test -f /run/secrets/qbittorrent_username"
+        "${pkgs.coreutils}/bin/test -f /run/secrets/qbittorrent_password"
       ];
       ExecStart = ''
         ${pkgs.docker}/bin/docker run -d \
@@ -95,10 +105,12 @@
           -e VPN_HEALTHCHECK_ENABLED=true \
           -e PRIVOXY_ENABLED=false \
           -e UNBOUND_ENABLED=false \
-          -e QBITTORRENT_USERNAME_FILE=${config.sops.secrets.qbittorrent_username.path} \
-          -e QBITTORRENT_PASSWORD_FILE=${config.sops.secrets.qbittorrent_password.path} \
+          -e QBITTORRENT_USERNAME_FILE=/tmp/qbittorrent_username \
+          -e QBITTORRENT_PASSWORD_FILE=/tmp/qbittorrent_password \
           -v qbittorrent_data:/config \
           -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
+          -v /run/secrets/qbittorrent_username:/tmp/qbittorrent_username:ro \
+          -v /run/secrets/qbittorrent_password:/tmp/qbittorrent_password:ro \
           -v /main_pool/storage/torrent/incomplete:/data/incomplete \
           -v /main_pool/storage/torrent/complete:/data/complete \
           ghcr.io/hotio/qbittorrent:latest
@@ -107,10 +119,21 @@
     };
   };
 
-  # Open firewall for web interface (VPN traffic will be routed through the container's VPN)
+  # Open firewall for web interface
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
-  # Optional: Add a systemd timer to restart the service daily to refresh VPN connection
+  # Health check service to verify container is running
+  systemd.services.qbittorrent-vpn-healthcheck = {
+    description = "qBittorrent VPN Health Check";
+    after = [ "qbittorrent-vpn.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "${pkgs.bash}/bin/bash -c 'until ${pkgs.curl}/bin/curl -f http://localhost:8080 >/dev/null 2>&1; do sleep 5; done'";
+      TimeoutStartSec = "300";
+    };
+  };
+
+  # Optional: Add a systemd timer to restart the service daily
   systemd.timers.qbittorrent-vpn-restart = {
     description = "Restart qBittorrent VPN daily";
     wantedBy = [ "timers.target" ];
