@@ -9,7 +9,8 @@
   imports = [
     ./hardware-config.nix
     ../../ssh/ssh-server/default.nix
-    ../../srv/services/vpn-torrent.nix
+    #    ../../srv/services/vpn-torrent.nix
+    ../../srv/services/omniservice.nix
   ];
 
   boot = {
@@ -30,6 +31,28 @@
     # Use latest kernel for best ZFS compatibility
     kernelPackages = pkgs.linuxPackages;
   };
+
+  hardware = {
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        nvidia-vaapi-driver
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+    };
+    nvidia = {
+      modesetting.enable = true;
+      powerManagement.enable = true;
+      powerManagement.finegrained = false;
+      open = false;
+      nvidiaSettings = true;
+      package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    };
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   # ZFS Services Configuration
   services.zfs = {

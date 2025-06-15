@@ -19,7 +19,7 @@
         mode = "0600";
         path = "/var/lib/qbittorrent/wireguard/wg0.conf";
       };
-      
+
       # qBittorrent Credentials
       qbittorrent_username = {
         sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
@@ -35,7 +35,7 @@
         group = "root";
         mode = "0644";
       };
-      
+
       # Nextcloud Admin Password
       nextcloud_admin_password = {
         sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
@@ -45,7 +45,7 @@
         mode = "0600";
         path = "/var/lib/nextcloud/admin-pass";
       };
-      
+
       # Nextcloud Database Password
       nextcloud_db_password = {
         sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
@@ -54,7 +54,7 @@
         group = "postgres";
         mode = "0600";
       };
-      
+
       # ACME/Let's Encrypt email for SSL certificates
       acme_email = {
         sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
@@ -63,29 +63,6 @@
         group = "acme";
         mode = "0600";
       };
-    };
-  };
-
-  # NVIDIA GPU Support for GTX 660
-  hardware = {
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-      extraPackages = with pkgs; [
-        nvidia-vaapi-driver
-        vaapiVdpau
-        libvdpau-va-gl
-      ];
-    };
-    nvidia = {
-      modesetting.enable = true;
-      powerManagement.enable = false;
-      powerManagement.finegrained = false;
-      open = false; # GTX 660 requires proprietary driver
-      nvidiaSettings = true;
-      # Force specific driver version for GTX 660 compatibility
-      package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     };
   };
 
@@ -102,7 +79,7 @@
     "d /var/lib/qbittorrent 0755 root root"
     "d /var/lib/qbittorrent/config 0755 root root"
     "d /var/lib/qbittorrent/wireguard 0700 root root"
-    
+
     # Storage structure on ZFS
     "d /main_pool/storage 0755 root root"
     "d /main_pool/storage/torrent 0755 zoe users"
@@ -115,7 +92,7 @@
     "d /main_pool/storage/nextcloud 0755 nextcloud nextcloud"
     "d /main_pool/storage/jellyfin 0755 jellyfin jellyfin"
     "d /main_pool/storage/backups 0755 root root"
-    
+
     # ACME directory for Let's Encrypt certificates
     "d /var/lib/acme 0755 acme acme"
   ];
@@ -143,12 +120,78 @@
     port = 6379;
   };
 
+  services.caddy = {
+    enable = true;
+
+    virtualHosts = {
+      # Main landing page
+      "copyright-respecter.local" = {
+        extraConfig = ''
+          respond `<html><head><title>Media Server</title><style>body{font-family:Arial;margin:40px;background:#f5f5f5}h1{color:#333}.service{background:white;padding:20px;margin:10px 0;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.service a{text-decoration:none;color:#0066cc;font-weight:bold;display:inline-block;margin-top:10px;padding:8px 16px;background:#f0f8ff;border-radius:4px;border:1px solid #0066cc}.service a:hover{background:#0066cc;color:white}.status{font-size:12px;color:#666;margin-top:5px}</style></head><body><h1>🏠 Copyright Respecter Media Server</h1><div class="service"><h3>🌩️ Nextcloud</h3><p>File management, sync, and media organization</p><a href="https://nextcloud.copyright-respecter.local">Open Nextcloud</a><div class="status">Secure file storage with automatic syncing</div></div><div class="service"><h3>🎬 Jellyfin</h3><p>Media streaming server with GPU acceleration</p><a href="https://jellyfin.copyright-respecter.local">Open Jellyfin</a><div class="status">Hardware-accelerated video streaming</div></div><div class="service"><h3>📁 qBittorrent</h3><p>Secure torrent client with VPN protection</p><a href="https://torrent.copyright-respecter.local">Open qBittorrent</a><div class="status">VPN-protected torrenting</div></div><div style="margin-top:40px;padding:20px;background:#e8f4fd;border-radius:8px;border-left:4px solid #0066cc;"><h4>📋 Server Status</h4><p><strong>ZFS Pool:</strong> main_pool<br><strong>GPU:</strong> NVIDIA GTX 660 (Hardware acceleration enabled)<br><strong>VPN:</strong> WireGuard active<br><strong>SSL:</strong> Automatic certificate management</p></div></body></html>`
+        '';
+      };
+
+      # Nextcloud
+      "nextcloud.copyright-respecter.local" = {
+        extraConfig = ''
+          reverse_proxy localhost:80
+
+          # Security headers
+          header {
+            Strict-Transport-Security "max-age=31536000; includeSubDomains"
+            Referrer-Policy "no-referrer"
+            X-Content-Type-Options "nosniff"
+            X-Download-Options "noopen"
+            X-Frame-Options "SAMEORIGIN"
+            X-Permitted-Cross-Domain-Policies "none"
+            X-Robots-Tag "none"
+            X-XSS-Protection "1; mode=block"
+          }
+        '';
+      };
+
+      # Jellyfin
+      "jellyfin.copyright-respecter.local" = {
+        extraConfig = ''
+          reverse_proxy localhost:8096 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+          }
+        '';
+      };
+
+      # qBittorrent
+      "torrent.copyright-respecter.local" = {
+        extraConfig = ''
+          reverse_proxy localhost:8080 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+            header_up -Referer
+            header_up -Origin
+          }
+        '';
+      };
+    };
+  };
+
+  # For local development with self-signed certs, add this to Caddy config:
+  services.caddy.globalConfig = ''
+    {
+      # For local domains, use internal CA
+      local_certs
+    }
+  '';
+
   # Nextcloud Configuration
   services.nextcloud = {
     enable = true;
-    package = pkgs.nextcloud28;
+    package = pkgs.nextcloud31;
     hostName = "nextcloud.copyright-respecter.local";
-    
+
     config = {
       dbtype = "pgsql";
       dbuser = "nextcloud";
@@ -162,21 +205,24 @@
     home = "/main_pool/storage/nextcloud";
     configureRedis = true;
     caching.redis = true;
-    
+
     settings = {
-      trusted_domains = [ 
-        "nextcloud.copyright-respecter.local" 
+      trusted_domains = [
+        "nextcloud.copyright-respecter.local"
         "192.168.178.109"
-        "localhost" 
+        "localhost"
       ];
-      trusted_proxies = [ "127.0.0.1" "192.168.178.0/24" ];
-      
+      trusted_proxies = [
+        "127.0.0.1"
+        "192.168.178.0/24"
+      ];
+
       "memcache.local" = "\\OC\\Memcache\\APCu";
       "memcache.distributed" = "\\OC\\Memcache\\Redis";
       "memcache.locking" = "\\OC\\Memcache\\Redis";
-      
+
       default_phone_region = "DE";
-      
+
       enable_previews = true;
       enabledPreviewProviders = [
         "OC\\Preview\\BMP"
@@ -196,9 +242,9 @@
 
     autoUpdateApps.enable = true;
     extraAppsEnable = true;
-    extraApps = with config.services.nextcloud.package.packages; {
-      inherit memories files_texteditor previewgenerator;
-    };
+    #extraApps = with config.services.nextcloud.package.packages; {
+    # inherit previewgenerator;
+    #};
   };
 
   # Jellyfin Configuration
@@ -210,219 +256,6 @@
     configDir = "/main_pool/storage/jellyfin/config";
     cacheDir = "/main_pool/storage/jellyfin/cache";
     logDir = "/main_pool/storage/jellyfin/log";
-  };
-
-  # ACME (Let's Encrypt) Configuration for automatic SSL certificates
-  security.acme = {
-    acceptTerms = true;
-    defaults = {
-      email = builtins.readFile config.sops.secrets.acme_email.path;
-      # Use DNS challenge for internal domains or HTTP challenge for public domains
-      # For internal domains, you might want to use a different method
-      dnsProvider = "route53"; # Change this to your DNS provider or remove for HTTP challenge
-      # For HTTP challenge (if your domains are publicly accessible):
-      # webroot = "/var/lib/acme/acme-challenge";
-    };
-    # Create certificates for all our domains
-    certs = {
-      "copyright-respecter.local" = {
-        domain = "copyright-respecter.local";
-        extraDomainNames = [
-          "nextcloud.copyright-respecter.local"
-          "jellyfin.copyright-respecter.local"
-          "torrent.copyright-respecter.local"
-        ];
-      };
-    };
-  };
-
-  # Self-signed certificate fallback for local development
-  systemd.services.generate-self-signed-certs = {
-    description = "Generate self-signed certificates for local domains";
-    wantedBy = [ "multi-user.target" ];
-    before = [ "nginx.service" ];
-    serviceConfig = {
-      Type = "oneshot";
-      RemainAfterExit = true;
-      ExecStart = pkgs.writeShellScript "generate-certs" ''
-        CERT_DIR="/var/lib/acme/copyright-respecter.local"
-        mkdir -p "$CERT_DIR"
-        
-        # Only generate if certificates don't exist
-        if [ ! -f "$CERT_DIR/cert.pem" ] || [ ! -f "$CERT_DIR/key.pem" ]; then
-          echo "Generating self-signed certificates..."
-          
-          # Create certificate authority
-          ${pkgs.openssl}/bin/openssl genrsa -out "$CERT_DIR/ca.key" 4096
-          ${pkgs.openssl}/bin/openssl req -new -x509 -days 3650 -key "$CERT_DIR/ca.key" -out "$CERT_DIR/ca.crt" -subj "/C=DE/ST=NRW/L=Bad Salzuflen/O=HomeServer/CN=Copyright Respecter CA"
-          
-          # Create server key
-          ${pkgs.openssl}/bin/openssl genrsa -out "$CERT_DIR/key.pem" 4096
-          
-          # Create certificate signing request
-          cat > "$CERT_DIR/server.conf" << EOF
-[req]
-distinguished_name = req_distinguished_name
-req_extensions = v3_req
-prompt = no
-
-[req_distinguished_name]
-C = DE
-ST = NRW
-L = Bad Salzuflen
-O = HomeServer
-CN = copyright-respecter.local
-
-[v3_req]
-keyUsage = keyEncipherment, dataEncipherment
-extendedKeyUsage = serverAuth
-subjectAltName = @alt_names
-
-[alt_names]
-DNS.1 = copyright-respecter.local
-DNS.2 = nextcloud.copyright-respecter.local
-DNS.3 = jellyfin.copyright-respecter.local
-DNS.4 = torrent.copyright-respecter.local
-DNS.5 = localhost
-IP.1 = 192.168.178.109
-IP.2 = 127.0.0.1
-EOF
-
-          ${pkgs.openssl}/bin/openssl req -new -key "$CERT_DIR/key.pem" -out "$CERT_DIR/server.csr" -config "$CERT_DIR/server.conf"
-          
-          # Sign the certificate
-          ${pkgs.openssl}/bin/openssl x509 -req -in "$CERT_DIR/server.csr" -CA "$CERT_DIR/ca.crt" -CAkey "$CERT_DIR/ca.key" -CAcreateserial -out "$CERT_DIR/cert.pem" -days 3650 -extensions v3_req -extfile "$CERT_DIR/server.conf"
-          
-          # Set proper permissions
-          chown -R acme:nginx "$CERT_DIR"
-          chmod 640 "$CERT_DIR"/*.pem
-          chmod 644 "$CERT_DIR"/*.crt
-          
-          echo "Self-signed certificates generated successfully!"
-          echo "To trust these certificates, add $CERT_DIR/ca.crt to your browser's trusted certificate authorities."
-        else
-          echo "Certificates already exist, skipping generation."
-        fi
-      '';
-    };
-  };
-
-  # Nginx Reverse Proxy with human-friendly URLs
-  services.nginx = {
-    enable = true;
-    recommendedTlsSettings = true;
-    recommendedOptimisation = true;
-    recommendedGzipSettings = true;
-    recommendedProxySettings = true;
-    
-    # Global proxy settings
-    appendHttpConfig = ''
-      # Rate limiting
-      limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
-      
-      # Real IP configuration
-      set_real_ip_from 192.168.178.0/24;
-      real_ip_header X-Forwarded-For;
-      real_ip_recursive on;
-    '';
-    
-    virtualHosts = {
-      # Main landing page
-      "copyright-respecter.local" = {
-        forceSSL = true;
-        useACMEHost = "copyright-respecter.local";
-        
-        locations."/" = {
-          return = "200 '<html><head><title>Media Server</title><style>body{font-family:Arial;margin:40px;background:#f5f5f5}h1{color:#333}.service{background:white;padding:20px;margin:10px 0;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}.service a{text-decoration:none;color:#0066cc;font-weight:bold;display:inline-block;margin-top:10px;padding:8px 16px;background:#f0f8ff;border-radius:4px;border:1px solid #0066cc}.service a:hover{background:#0066cc;color:white}.status{font-size:12px;color:#666;margin-top:5px}</style></head><body><h1>🏠 Copyright Respecter Media Server</h1><div class=\"service\"><h3>🌩️ Nextcloud</h3><p>File management, sync, and media organization</p><a href=\"https://nextcloud.copyright-respecter.local\">Open Nextcloud</a><div class=\"status\">Secure file storage with automatic syncing</div></div><div class=\"service\"><h3>🎬 Jellyfin</h3><p>Media streaming server with GPU acceleration</p><a href=\"https://jellyfin.copyright-respecter.local\">Open Jellyfin</a><div class=\"status\">Hardware-accelerated video streaming</div></div><div class=\"service\"><h3>📁 qBittorrent</h3><p>Secure torrent client with VPN protection</p><a href=\"https://torrent.copyright-respecter.local\">Open qBittorrent</a><div class=\"status\">VPN-protected torrenting</div></div><div style=\"margin-top:40px;padding:20px;background:#e8f4fd;border-radius:8px;border-left:4px solid #0066cc;\"><h4>📋 Server Status</h4><p><strong>ZFS Pool:</strong> main_pool<br><strong>GPU:</strong> NVIDIA GTX 660 (Hardware acceleration enabled)<br><strong>VPN:</strong> WireGuard active<br><strong>SSL:</strong> Automatic certificate management</p></div></body></html>'";
-          extraConfig = ''
-            add_header Content-Type text/html;
-          '';
-        };
-      };
-      
-      # Nextcloud
-      "nextcloud.copyright-respecter.local" = {
-        forceSSL = true;
-        useACMEHost = "copyright-respecter.local";
-        
-        locations = {
-          "/" = {
-            extraConfig = ''
-              # Security headers
-              add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
-              add_header Referrer-Policy "no-referrer" always;
-              add_header X-Content-Type-Options "nosniff" always;
-              add_header X-Download-Options "noopen" always;
-              add_header X-Frame-Options "SAMEORIGIN" always;
-              add_header X-Permitted-Cross-Domain-Policies "none" always;
-              add_header X-Robots-Tag "none" always;
-              add_header X-XSS-Protection "1; mode=block" always;
-              
-              # Rate limiting for login
-              location ~ ^/login {
-                limit_req zone=login burst=5 nodelay;
-                try_files $uri $uri/ /index.php$request_uri;
-              }
-            '';
-          };
-        };
-      };
-      
-      # Jellyfin
-      "jellyfin.copyright-respecter.local" = {
-        forceSSL = true;
-        useACMEHost = "copyright-respecter.local";
-        
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8096";
-          extraConfig = ''
-            # Jellyfin specific headers
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_set_header X-Forwarded-Protocol $scheme;
-            proxy_set_header X-Forwarded-Host $http_host;
-            
-            # Disable buffering for streaming
-            proxy_buffering off;
-            proxy_request_buffering off;
-            
-            # Increase timeouts for large file streaming
-            proxy_connect_timeout 600s;
-            proxy_send_timeout 600s;
-            proxy_read_timeout 600s;
-            
-            # WebSocket support
-            proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
-          '';
-        };
-      };
-      
-      # qBittorrent
-      "torrent.copyright-respecter.local" = {
-        forceSSL = true;
-        useACMEHost = "copyright-respecter.local";
-        
-        locations."/" = {
-          proxyPass = "http://127.0.0.1:8080";
-          extraConfig = ''
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
-            
-            # qBittorrent WebUI specific
-            proxy_hide_header Referer;
-            proxy_hide_header Origin;
-            proxy_set_header Referer '';
-            proxy_set_header Origin '';
-          '';
-        };
-      };
-    };
   };
 
   # qBittorrent container service (updated with secrets integration)
@@ -498,27 +331,30 @@ EOF
   systemd.services.create-media-symlinks = {
     description = "Create symlinks for media management";
     wantedBy = [ "multi-user.target" ];
-    after = [ "local-fs.target" "nextcloud-setup.service" ];
+    after = [
+      "local-fs.target"
+      "nextcloud-setup.service"
+    ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
       ExecStart = pkgs.writeShellScript "create-symlinks" ''
         # Wait for Nextcloud to be ready
         sleep 30
-        
+
         # Create symlinks in Nextcloud data for easy access
         mkdir -p /main_pool/storage/nextcloud/data/admin/files/Media
         mkdir -p /main_pool/storage/nextcloud/data/admin/files
-        
+
         ln -sfn /main_pool/storage/media/movies /main_pool/storage/nextcloud/data/admin/files/Media/Movies
         ln -sfn /main_pool/storage/media/tv /main_pool/storage/nextcloud/data/admin/files/Media/TV
         ln -sfn /main_pool/storage/media/music /main_pool/storage/nextcloud/data/admin/files/Media/Music
         ln -sfn /main_pool/storage/torrent/complete /main_pool/storage/nextcloud/data/admin/files/Downloads
-        
+
         # Set proper permissions
         chown -h nextcloud:nextcloud /main_pool/storage/nextcloud/data/admin/files/Media/* 2>/dev/null || true
         chown -h nextcloud:nextcloud /main_pool/storage/nextcloud/data/admin/files/Downloads 2>/dev/null || true
-        
+
         # Trigger Nextcloud files scan
         sudo -u nextcloud ${config.services.nextcloud.occ}/bin/nextcloud-occ files:scan admin
       '';
@@ -533,16 +369,16 @@ EOF
       ExecStart = pkgs.writeShellScript "backup-configs" ''
         BACKUP_DIR="/main_pool/storage/backups/$(date +%Y%m%d_%H%M%S)"
         mkdir -p "$BACKUP_DIR"
-        
+
         # Backup Nextcloud config
         tar -czf "$BACKUP_DIR/nextcloud-config.tar.gz" -C /main_pool/storage/nextcloud config || true
-        
+
         # Backup Jellyfin config
         tar -czf "$BACKUP_DIR/jellyfin-config.tar.gz" -C /main_pool/storage/jellyfin config || true
-        
+
         # Backup PostgreSQL database
         sudo -u postgres pg_dump nextcloud > "$BACKUP_DIR/nextcloud-db.sql" || true
-        
+
         # Keep only last 7 days of backups
         find /main_pool/storage/backups -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \; 2>/dev/null || true
       '';
@@ -566,16 +402,16 @@ EOF
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "healthcheck" ''
         echo "Checking service health..."
-        
+
         # Check qBittorrent
         ${pkgs.curl}/bin/curl -f http://localhost:8080 >/dev/null 2>&1 || echo "qBittorrent not responding"
-        
+
         # Check Jellyfin
         ${pkgs.curl}/bin/curl -f http://localhost:8096 >/dev/null 2>&1 || echo "Jellyfin not responding"
-        
+
         # Check Nextcloud
         ${pkgs.curl}/bin/curl -f http://nextcloud.copyright-respecter.local >/dev/null 2>&1 || echo "Nextcloud not responding"
-        
+
         echo "Health check completed"
       '';
     };
@@ -611,13 +447,13 @@ EOF
 
   # Open firewall ports (only HTTP/HTTPS, services proxied internally)
   networking.firewall = {
-    allowedTCPPorts = [ 
-      80    # HTTP
-      443   # HTTPS
+    allowedTCPPorts = [
+      80 # HTTP
+      443 # HTTPS
     ];
-    allowedUDPPorts = [ 
-      1900  # Jellyfin DLNA
-      7359  # Jellyfin auto-discovery
+    allowedUDPPorts = [
+      1900 # Jellyfin DLNA
+      7359 # Jellyfin auto-discovery
     ];
   };
 
