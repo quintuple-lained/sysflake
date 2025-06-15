@@ -79,42 +79,48 @@
         "${pkgs.coreutils}/bin/test -f /run/secrets/qbittorrent_username"
         "${pkgs.coreutils}/bin/test -f /run/secrets/qbittorrent_password"
       ];
-      ExecStart = ''
-        ${pkgs.docker}/bin/docker run -d \
-          --name qbittorrent-vpn \
-          --restart unless-stopped \
-          -p 8080:8080 \
-          -p 5573:5573 \
-          --cap-add NET_ADMIN \
-          --sysctl net.ipv4.conf.all.src_valid_mark=1 \
-          --sysctl net.ipv6.conf.all.disable_ipv6=0 \
-          -e PUID=1000 \
-          -e PGID=1000 \
-          -e UMASK=002 \
-          -e TZ=Europe/Berlin \
-          -e WEBUI_PORTS=8080/tcp,8080/udp \
-          -e VPN_ENABLED=true \
-          -e VPN_CONF=wg0 \
-          -e VPN_PROVIDER=generic \
-          -e VPN_LAN_NETWORK=192.168.178.0/24 \
-          -e VPN_LAN_LEAK_ENABLED=false \
-          -e VPN_AUTO_PORT_FORWARD=true \
-          -e VPN_AUTO_PORT_FORWARD_TO_PORTS=5573 \
-          -e VPN_KEEP_LOCAL_DNS=false \
-          -e VPN_FIREWALL_TYPE=auto \
-          -e VPN_HEALTHCHECK_ENABLED=true \
-          -e PRIVOXY_ENABLED=false \
-          -e UNBOUND_ENABLED=false \
-          -e QBITTORRENT_USERNAME_FILE=/tmp/qbittorrent_username \
-          -e QBITTORRENT_PASSWORD_FILE=/tmp/qbittorrent_password \
-          -v qbittorrent_data:/config \
-          -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
-          -v /run/secrets/qbittorrent_username:/tmp/qbittorrent_username:ro \
-          -v /run/secrets/qbittorrent_password:/tmp/qbittorrent_password:ro \
-          -v /main_pool/storage/torrent/incomplete:/data/incomplete \
-          -v /main_pool/storage/torrent/complete:/data/complete \
-          ghcr.io/hotio/qbittorrent:latest
-      '';
+      ExecStart =
+        let
+          # Create a script that reads the secrets and starts the container
+          startScript = pkgs.writeShellScript "start-qbittorrent-vpn" ''
+            USERNAME=$(cat /run/secrets/qbittorrent_username)
+            PASSWORD=$(cat /run/secrets/qbittorrent_password)
+
+            ${pkgs.docker}/bin/docker run -d \
+              --name qbittorrent-vpn \
+              --restart unless-stopped \
+              -p 8080:8080 \
+              -p 5573:5573 \
+              --cap-add NET_ADMIN \
+              --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+              --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+              -e PUID=1000 \
+              -e PGID=1000 \
+              -e UMASK=002 \
+              -e TZ=Europe/Berlin \
+              -e WEBUI_PORTS=8080/tcp,8080/udp \
+              -e VPN_ENABLED=true \
+              -e VPN_CONF=wg0 \
+              -e VPN_PROVIDER=generic \
+              -e VPN_LAN_NETWORK=192.168.178.0/24 \
+              -e VPN_LAN_LEAK_ENABLED=false \
+              -e VPN_AUTO_PORT_FORWARD=true \
+              -e VPN_AUTO_PORT_FORWARD_TO_PORTS=5573 \
+              -e VPN_KEEP_LOCAL_DNS=false \
+              -e VPN_FIREWALL_TYPE=auto \
+              -e VPN_HEALTHCHECK_ENABLED=true \
+              -e PRIVOXY_ENABLED=false \
+              -e UNBOUND_ENABLED=false \
+              -e QBITTORRENT_USERNAME="$USERNAME" \
+              -e QBITTORRENT_PASSWORD="$PASSWORD" \
+              -v qbittorrent_data:/config \
+              -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
+              -v /main_pool/storage/torrent/incomplete:/data/incomplete \
+              -v /main_pool/storage/torrent/complete:/data/complete \
+              ghcr.io/hotio/qbittorrent:latest
+          '';
+        in
+        "${startScript}";
       ExecStop = "${pkgs.docker}/bin/docker stop qbittorrent-vpn";
     };
   };
