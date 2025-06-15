@@ -9,13 +9,29 @@
   # Add sops secret for VPN configuration
   sops = {
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
-    secrets.wireguard_config = {
-      sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
-      key = "copyright-respecter.config";
-      owner = "root";
-      group = "root";
-      mode = "0600";
-      path = "/var/lib/qbittorrent/wireguard/wg0.conf";
+    secrets = {
+      wireguard_config = {
+        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        key = "copyright-respecter.config";
+        owner = "root";
+        group = "root";
+        mode = "0600";
+        path = "/var/lib/qbittorrent/wireguard/wg0.conf";
+      };
+      qbittorrent_username = {
+        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        key = "qbittorrent.username";
+        owner = "root";
+        group = "root";
+        mode = "0600";
+      };
+      qbittorrent_password = {
+        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        key = "qbittorrent.password";
+        owner = "root";
+        group = "root";
+        mode = "0600";
+      };
     };
   };
 
@@ -79,6 +95,8 @@
           -e VPN_HEALTHCHECK_ENABLED=true \
           -e PRIVOXY_ENABLED=false \
           -e UNBOUND_ENABLED=false \
+          -e QBITTORRENT_USERNAME_FILE=${config.sops.secrets.qbittorrent_username.path} \
+          -e QBITTORRENT_PASSWORD_FILE=${config.sops.secrets.qbittorrent_password.path} \
           -v qbittorrent_data:/config \
           -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
           -v /main_pool/storage/torrent/incomplete:/data/incomplete \
