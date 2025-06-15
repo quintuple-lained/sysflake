@@ -11,7 +11,7 @@
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets.wireguard_config = {
       sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
-      key = "copyright-respecter.config"; # Fixed typo
+      key = "copyright-respecter.config";
       owner = "root";
       group = "root";
       mode = "0600";
@@ -27,9 +27,10 @@
   systemd.tmpfiles.rules = [
     "d /var/lib/qbittorrent 0755 root root"
     "d /var/lib/qbittorrent/config 0755 root root"
-    "d /var/lib/qbittorrent/downloads 0755 root root"
     "d /var/lib/qbittorrent/wireguard 0700 root root"
-    "d /mnt/media 0755 zoe users"
+    "d /main_pool/storage/torrent 0755 zoe users"
+    "d /main_pool/storage/torrent/incomplete 0755 zoe users"
+    "d /main_pool/storage/torrent/complete 0755 zoe users"
   ];
 
   # qBittorrent container service
@@ -49,8 +50,8 @@
         # Stop and remove existing container if it exists
         "-${pkgs.docker}/bin/docker stop qbittorrent-vpn"
         "-${pkgs.docker}/bin/docker rm qbittorrent-vpn"
-        # Create docker volume if it doesn't exist
-        "${pkgs.docker}/bin/docker volume create qbittorrent_data || true"
+        # Create docker volume if it doesn't exist (fixed syntax)
+        "-${pkgs.bash}/bin/bash -c '${pkgs.docker}/bin/docker volume create qbittorrent_data || true'"
       ];
       ExecStart = ''
         ${pkgs.docker}/bin/docker run -d \
@@ -80,8 +81,8 @@
           -e UNBOUND_ENABLED=false \
           -v qbittorrent_data:/config \
           -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
-          -v /var/lib/qbittorrent/downloads:/data/incomplete \
-          -v /mnt/media:/data/complete \
+          -v /main_pool/storage/torrent/incomplete:/data/incomplete \
+          -v /main_pool/storage/torrent/complete:/data/complete \
           ghcr.io/hotio/qbittorrent:latest
       '';
       ExecStop = "${pkgs.docker}/bin/docker stop qbittorrent-vpn";
