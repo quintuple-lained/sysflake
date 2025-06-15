@@ -11,7 +11,7 @@
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets = {
       wireguard_config = {
-        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
         key = "copyright-respecter.config";
         owner = "root";
         group = "root";
@@ -19,7 +19,7 @@
         path = "/var/lib/qbittorrent/wireguard/wg0.conf";
       };
       qbittorrent_username = {
-        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
         key = "qbittorrent.username";
         owner = "root";
         group = "root";
@@ -27,7 +27,7 @@
         # Don't specify path - will be at /run/secrets/qbittorrent_username
       };
       qbittorrent_password = {
-        sopsFile = ../../../secrets/vpn/copyright-respecter.yaml;
+        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
         key = "qbittorrent.password";
         owner = "root";
         group = "root";
