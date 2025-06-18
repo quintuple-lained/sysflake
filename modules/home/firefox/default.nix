@@ -37,6 +37,10 @@
                 url = "https://search.nixos.org/options";
               }
               {
+                name = "Proton Mail";
+                url = "https://mail.proton.me"
+              }
+              {
                 name = "Reddit";
                 url = "https://reddit.com";
               }
