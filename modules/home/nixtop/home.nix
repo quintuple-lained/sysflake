@@ -24,7 +24,7 @@
         cargo
         gcc
         pkg-config
-
+        kicad
       ];
 
       fonts = with pkgs; [

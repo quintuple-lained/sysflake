@@ -29,28 +29,32 @@
         force = true;
         settings = [
           {
-            name = "Nix Sites";
+            name = "Bookmarks Toolbar";
+            toolbar = true;
             bookmarks = [
               {
                 name = "NixOS Options";
                 url = "https://search.nixos.org/options";
               }
               {
-                name = "Home Manager Options";
-                url = "https://nix-community.github.io/home-manager/options.html";
+                name = "Reddit";
+                url = "https://reddit.com";
               }
               {
-                name = "Nixpkgs Manual";
-                url = "https://nixos.org/manual/nixpkgs/stable/";
+                name = "Youtube";
+                url = "https://youtube.com";
               }
-            ];
-          }
-          {
-            name = "Development";
-            bookmarks = [
               {
-                name = "GitHub";
+                name = "Wikipedia";
+                url = "https://en.wikipedia.org";
+              }
+              {
+                name = "Github";
                 url = "https://github.com";
+              }
+              {
+                name = "Twitter";
+                url = "https://twitter.com";
               }
             ];
           }
@@ -157,8 +161,10 @@
         "browser.sessionstore.interval" = 15000;
 
         # Downloads
-        "browser.download.useDownloadDir" = true; # Always ask where to save
+        "browser.download.useDownloadDir" = true;
         "browser.download.dir" = "/home/$(whoami)/Downloads";
+
+        "browser.toolbar.bookmarks.visibility" = "newtab";
 
         # Developer tools
         "devtools.theme" = "dark";
