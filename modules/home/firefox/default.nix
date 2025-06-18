@@ -38,7 +38,7 @@
               }
               {
                 name = "Proton Mail";
-                url = "https://mail.proton.me"
+                url = "https://mail.proton.me";
               }
               {
                 name = "Reddit";
