@@ -16,6 +16,13 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
+  sops.secrets.wg_config = {
+    sopsFile = ../../../secrets/devices/nixtop.yaml;
+    key = "nixtop.config";
+    path = "/etc/wireguard/wg0.conf";
+    mode = "0600";
+  };
+
   networking = rec {
     hostName = "nixtop";
     hostId = builtins.substring 0 8 (builtins.hashString "sha256" hostName);
