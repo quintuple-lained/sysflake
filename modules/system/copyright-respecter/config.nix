@@ -59,7 +59,7 @@
     autoScrub = {
       enable = true;
       pools = [ "main_pool" ];
-      interval = "weekly";
+      interval = "monthly";
     };
     autoSnapshot = {
       enable = true;
