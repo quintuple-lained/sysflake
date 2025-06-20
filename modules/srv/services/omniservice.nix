@@ -55,14 +55,6 @@
         mode = "0600";
       };
 
-      # ACME/Let's Encrypt email for SSL certificates
-      acme_email = {
-        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
-        key = "acme.email";
-        owner = "acme";
-        group = "acme";
-        mode = "0600";
-      };
     };
   };
 
