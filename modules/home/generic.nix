@@ -9,6 +9,7 @@
     inputs.nixvim.homeManagerModules.nixvim
     ./fish
     ./nixvim
+    ./git
   ];
 
   programs.home-manager.enable = true;
