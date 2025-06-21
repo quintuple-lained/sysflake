@@ -105,6 +105,7 @@
                 users.zoe.imports = [
                   catppuccin.homeModules.catppuccin
                   plasma-manager.homeManagerModules.plasma-manager
+                  sops-nix.homeManagerModules.sops  # Add this line
                   ./modules/home/${machine}/home.nix
                 ];
               };

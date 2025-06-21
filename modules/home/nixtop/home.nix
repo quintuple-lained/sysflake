@@ -25,6 +25,8 @@
         gcc
         pkg-config
         kicad
+        rust-analyzer
+        rustfmt
       ];
 
       fonts = with pkgs; [

@@ -17,39 +17,21 @@ in
     secrets = {
       work_email = {
         key = "git.work.email";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
       work_name = {
         key = "git.work.name";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
       pro_email = {
         key = "git.pro.email";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
       pro_name = {
         key = "git.pro.name";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
       fun_email = {
         key = "git.fun.email";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
       fun_name = {
         key = "git.fun.name";
-        owner = "zoe";
-        group = "users";
-        mode = "0600";
       };
     };
   };
@@ -63,18 +45,19 @@ in
     extraConfig = {
       user.useConfigOnly = true;
 
-      user.work.name = config.sops.secrets.work_name;
-      user.work.email = config.sops.secrets.work_email;
+      user.work.name = config.sops.secrets.work_name.path;
+      user.work.email = config.sops.secrets.work_email.path;
 
-      user.pro.name = config.sops.secrets.pro_name;
-      user.pro.email = config.sops.secrets.pro_email;
+      user.pro.name = config.sops.secrets.pro_name.path;
+      user.pro.email = config.sops.secrets.pro_email.path;
 
-      user.fun.name = config.sops.secrets.fun_name;
+      user.fun.name = config.sops.secrets.fun_name.path;
       user.fun.email = config.sops.secrets.fun_email;
 
-      user.personal.name = config.sops.secrets.fun_name;
-      user.personal.email = config.sops.secrets.fun_email;
+      user.personal.name = config.sops.secrets.fun_name.path;
+      user.personal.email = config.sops.secrets.fun_email.path;
     };
+
     aliases = {
       identity = "! git-identity";
       id = "! git-identity";
