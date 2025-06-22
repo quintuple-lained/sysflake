@@ -7,6 +7,7 @@
     ../generic.nix
     ../desktop
     ../plasma
+    ../firefox
   ];
 
   programs.home-manager.enable = true;
