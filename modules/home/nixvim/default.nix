@@ -1,4 +1,3 @@
-# modules/home/neovim/default.nix
 {
   config,
   pkgs,
@@ -108,18 +107,198 @@
         };
       };
 
-      # Enhanced LSP configuration with Rust focus
+      # Enhanced LSP configuration (without rust_analyzer)
       lsp = {
         enable = true;
         inlayHints = true;
         servers = {
-          # Primary Rust analyzer
-          rust_analyzer = {
+          # Rust analyzer is handled by rustaceanvim, so it's disabled here
+          # rust_analyzer.enable = false;  # Explicitly disabled
+
+          # Other LSP servers
+          nixd.enable = true;
+          nil_ls = {
             enable = true;
-            installCargo = false;
-            installRustc = false;
             settings = {
-              rust-analyzer = {
+              nil = {
+                formatting = {
+                  command = [ "nixfmt" ];
+                };
+              };
+            };
+          };
+          gopls.enable = true;
+          pyright.enable = true;
+          marksman.enable = true;
+          taplo.enable = true; # TOML support for Cargo.toml
+          lua_ls = {
+            enable = true;
+            settings = {
+              Lua = {
+                runtime = {
+                  version = "LuaJIT";
+                };
+                diagnostics = {
+                  globals = [ "vim" ];
+                };
+                workspace = {
+                  library = "vim.api.nvim_get_runtime_file('', true)";
+                };
+                telemetry = {
+                  enable = false;
+                };
+              };
+            };
+          };
+        };
+      };
+
+      # Enhanced completion
+      cmp = {
+        enable = true;
+        settings = {
+          snippet = {
+            expand = "function(args) require('luasnip').lsp_expand(args.body) end";
+          };
+          window = {
+            completion = {
+              winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
+              col_offset = -3;
+              side_padding = 0;
+            };
+          };
+          formatting = {
+            fields = [
+              "kind"
+              "abbr"
+              "menu"
+            ];
+            format = ''
+              function(entry, vim_item)
+                local kind_icons = {
+                  Text = "󰉿",
+                  Method = "󰆧",
+                  Function = "󰊕",
+                  Constructor = "",
+                  Field = "󰜢",
+                  Variable = "󰀫",
+                  Class = "󰠱",
+                  Interface = "",
+                  Module = "",
+                  Property = "󰜢",
+                  Unit = "󰑭",
+                  Value = "󰎠",
+                  Enum = "",
+                  Keyword = "󰌋",
+                  Snippet = "",
+                  Color = "󰏘",
+                  File = "󰈙",
+                  Reference = "󰈇",
+                  Folder = "󰉋",
+                  EnumMember = "",
+                  Constant = "󰏿",
+                  Struct = "󰙅",
+                  Event = "",
+                  Operator = "󰆕",
+                  TypeParameter = "",
+                }
+                vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
+                vim_item.menu = ({
+                  nvim_lsp = "[LSP]",
+                  luasnip = "[Snippet]",
+                  buffer = "[Buffer]",
+                  path = "[Path]",
+                  crates = "[Crates]",
+                })[entry.source.name]
+                return vim_item
+              end
+            '';
+          };
+          mapping = {
+            "<C-b>" = "cmp.mapping.scroll_docs(-4)";
+            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+            "<C-Space>" = "cmp.mapping.complete()";
+            "<C-e>" = "cmp.mapping.abort()";
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
+            "<Tab>" = ''
+              cmp.mapping(function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                elseif require('luasnip').expand_or_jumpable() then
+                  require('luasnip').expand_or_jump()
+                else
+                  fallback()
+                end
+              end, { 'i', 's' })
+            '';
+            "<S-Tab>" = ''
+              cmp.mapping(function(fallback)
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                elseif require('luasnip').jumpable(-1) then
+                  require('luasnip').jump(-1)      
+                else
+                  fallback()
+                end
+              end, { 'i', 's' })
+            '';
+          };
+          sources = [
+            {
+              name = "nvim_lsp";
+              priority = 1000;
+            }
+            {
+              name = "luasnip";
+              priority = 750;
+            }
+            {
+              name = "crates";
+              priority = 700;
+            }
+            {
+              name = "buffer";
+              priority = 500;
+            }
+            {
+              name = "path";
+              priority = 250;
+            }
+          ];
+        };
+      };
+
+      # Rust-specific plugins - FIXED: renamed crates-nvim to crates
+      crates = {
+        enable = true;
+      };
+
+      # Enhanced rustaceanvim configuration - FIXED: renamed settings to default_settings
+      rustaceanvim = {
+        enable = true;
+        settings = {
+          tools = {
+            hover_actions = {
+              auto_focus = true;
+            };
+            inlay_hints = {
+              show_parameter_hints = false;
+              parameter_hints_prefix = "<- ";
+              other_hints_prefix = "=> ";
+            };
+          };
+          server = {
+            on_attach = ''
+              function(client, bufnr)
+                -- Enable inlay hints
+                if client.server_capabilities.inlayHintProvider then
+                  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                end
+              end
+            '';
+            # FIXED: Move all rust-analyzer settings here under default_settings
+            default_settings = {
+              "rust-analyzer" = {
                 cargo = {
                   allFeatures = true;
                   loadOutDirsFromCheck = true;
@@ -127,11 +306,7 @@
                     enable = true;
                   };
                 };
-                checkOnSave = {
-                  enable = true;
-                  command = "clippy";
-                  extraArgs = [ "--all" "--" "-W" "clippy::all" ];
-                };
+                checkOnSave = true;
                 procMacro = {
                   enable = true;
                   ignored = {
@@ -226,182 +401,6 @@
               };
             };
           };
-
-          # Other LSP servers
-          nixd.enable = true;
-          nil_ls = {
-            enable = true;
-            settings = {
-              nil = {
-                formatting = {
-                  command = [ "nixfmt" ];
-                };
-              };
-            };
-          };
-          gopls.enable = true;
-          pyright.enable = true;
-          marksman.enable = true;
-          taplo.enable = true; # TOML support for Cargo.toml
-          lua_ls = {
-            enable = true;
-            settings = {
-              Lua = {
-                runtime = {
-                  version = "LuaJIT";
-                };
-                diagnostics = {
-                  globals = [ "vim" ];
-                };
-                workspace = {
-                  library = "vim.api.nvim_get_runtime_file('', true)";
-                };
-                telemetry = {
-                  enable = false;
-                };
-              };
-            };
-          };
-        };
-      };
-
-      # Enhanced completion
-      cmp = {
-        enable = true;
-        settings = {
-          snippet = {
-            expand = "function(args) require('luasnip').lsp_expand(args.body) end";
-          };
-          window = {
-            completion = {
-              winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None";
-              col_offset = -3;
-              side_padding = 0;
-            };
-          };
-          formatting = {
-            fields = [ "kind" "abbr" "menu" ];
-            format = ''
-              function(entry, vim_item)
-                local kind_icons = {
-                  Text = "󰉿",
-                  Method = "󰆧",
-                  Function = "󰊕",
-                  Constructor = "",
-                  Field = "󰜢",
-                  Variable = "󰀫",
-                  Class = "󰠱",
-                  Interface = "",
-                  Module = "",
-                  Property = "󰜢",
-                  Unit = "󰑭",
-                  Value = "󰎠",
-                  Enum = "",
-                  Keyword = "󰌋",
-                  Snippet = "",
-                  Color = "󰏘",
-                  File = "󰈙",
-                  Reference = "󰈇",
-                  Folder = "󰉋",
-                  EnumMember = "",
-                  Constant = "󰏿",
-                  Struct = "󰙅",
-                  Event = "",
-                  Operator = "󰆕",
-                  TypeParameter = "",
-                }
-                vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
-                vim_item.menu = ({
-                  nvim_lsp = "[LSP]",
-                  luasnip = "[Snippet]",
-                  buffer = "[Buffer]",
-                  path = "[Path]",
-                  crates = "[Crates]",
-                })[entry.source.name]
-                return vim_item
-              end
-            '';
-          };
-          mapping = {
-            "<C-b>" = "cmp.mapping.scroll_docs(-4)";
-            "<C-f>" = "cmp.mapping.scroll_docs(4)";
-            "<C-Space>" = "cmp.mapping.complete()";
-            "<C-e>" = "cmp.mapping.abort()";
-            "<CR>" = "cmp.mapping.confirm({ select = true })";
-            "<Tab>" = ''
-              cmp.mapping(function(fallback)
-                if cmp.visible() then
-                  cmp.select_next_item()
-                elseif require('luasnip').expand_or_jumpable() then
-                  require('luasnip').expand_or_jump()
-                else
-                  fallback()
-                end
-              end, { 'i', 's' })
-            '';
-            "<S-Tab>" = ''
-              cmp.mapping(function(fallback)
-                if cmp.visible() then
-                  cmp.select_prev_item()
-                elseif require('luasnip').jumpable(-1) then
-                  require('luasnip').jump(-1)      
-                else
-                  fallback()
-                end
-              end, { 'i', 's' })
-            '';
-          };
-          sources = [
-            { name = "nvim_lsp"; priority = 1000; }
-            { name = "luasnip"; priority = 750; }
-            { name = "crates"; priority = 700; }
-            { name = "buffer"; priority = 500; }
-            { name = "path"; priority = 250; }
-          ];
-        };
-      };
-
-      # Rust-specific plugins
-      crates-nvim = {
-        enable = true;
-        settings = {
-          completion = {
-            cmp = {
-              enabled = true;
-            };
-          };
-          lsp = {
-            enabled = true;
-            actions = true;
-            completion = true;
-            hover = true;
-          };
-        };
-      };
-
-      rustaceanvim = {
-        enable = true;
-        settings = {
-          tools = {
-            hover_actions = {
-              auto_focus = true;
-            };
-            inlay_hints = {
-              show_parameter_hints = false;
-              parameter_hints_prefix = "<- ";
-              other_hints_prefix = "=> ";
-            };
-          };
-          server = {
-            on_attach = ''
-              function(client, bufnr)
-                -- Enable inlay hints
-                if client.server_capabilities.inlayHintProvider then
-                  vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                end
-              end
-            '';
-          };
         };
       };
 
@@ -419,49 +418,8 @@
           }
         ];
       };
-
-      # Debugging support
-      dap = {
-        enable = true;
-        extensions = {
-          dap-ui = {
-            enable = true;
-            settings = {
-              expand_lines = true;
-              icons = {
-                expanded = "";
-                collapsed = "";
-                current_frame = "";
-              };
-              mappings = {
-                expand = [ "<CR>" "<2-LeftMouse>" ];
-                open = "o";
-                remove = "d";
-                edit = "e";
-                repl = "r";
-                toggle = "t";
-              };
-              element_mappings = {};
-              controls = {
-                enabled = true;
-                element = "repl";
-                icons = {
-                  pause = "";
-                  play = "";
-                  step_into = "";
-                  step_over = "";
-                  step_out = "";
-                  step_back = "";
-                  run_last = "";
-                  terminate = "";
-                };
-              };
-            };
-          };
-          dap-virtual-text.enable = true;
-        };
-      };
-
+      dap-virtual-text.enable = true;
+      dap-ui.enable = true;
       # Testing support
       neotest = {
         enable = true;
@@ -478,7 +436,16 @@
             non_collapsible = "─";
             passed = "";
             running = "";
-            running_animated = [ "/" "|" "\\" "-" "/" "|" "\\" "-" ];
+            running_animated = [
+              "/"
+              "|"
+              "\\"
+              "-"
+              "/"
+              "|"
+              "\\"
+              "-"
+            ];
             skipped = "";
             unknown = "";
             watching = "";
@@ -494,36 +461,6 @@
           width = 35;
           side = "left";
         };
-        renderer = {
-          groupEmpty = true;
-          icons = {
-            glyphs = {
-              default = "";
-              symlink = "";
-              bookmark = "󰆤";
-              modified = "●";
-              folder = {
-                arrow_closed = "";
-                arrow_open = "";
-                default = "";
-                open = "";
-                empty = "";
-                empty_open = "";
-                symlink = "";
-                symlink_open = "";
-              };
-              git = {
-                unstaged = "✗";
-                staged = "✓";
-                unmerged = "";
-                renamed = "➜";
-                untracked = "★";
-                deleted = "";
-                ignored = "◌";
-              };
-            };
-          };
-        };
         filters = {
           dotfiles = false;
           custom = [ ".DS_Store" ];
@@ -531,7 +468,6 @@
         git = {
           enable = true;
           ignore = true;
-          show_on_dirs = true;
           timeout = 400;
         };
       };
@@ -572,7 +508,16 @@
             path_display = [ "truncate" ];
             winblend = 0;
             border = true;
-            borderchars = [ "─" "│" "─" "│" "╭" "╮" "╯" "╰" ];
+            borderchars = [
+              "─"
+              "│"
+              "─"
+              "│"
+              "╭"
+              "╮"
+              "╯"
+              "╰"
+            ];
             color_devicons = true;
             use_less = true;
             set_env = {
@@ -581,7 +526,13 @@
           };
           pickers = {
             find_files = {
-              find_command = [ "rg" "--files" "--hidden" "--glob" "!**/.git/*" ];
+              find_command = [
+                "rg"
+                "--files"
+                "--hidden"
+                "--glob"
+                "!**/.git/*"
+              ];
             };
           };
         };
@@ -619,10 +570,10 @@
               right = "";
             };
             disabled_filetypes = {
-              statusline = [];
-              winbar = [];
+              statusline = [ ];
+              winbar = [ ];
             };
-            ignore_focus = [];
+            ignore_focus = [ ];
             always_divide_middle = true;
             globalstatus = false;
             refresh = {
@@ -662,17 +613,17 @@
             lualine_z = [ "location" ];
           };
           inactive_sections = {
-            lualine_a = [];
-            lualine_b = [];
+            lualine_a = [ ];
+            lualine_b = [ ];
             lualine_c = [ "filename" ];
             lualine_x = [ "location" ];
-            lualine_y = [];
-            lualine_z = [];
+            lualine_y = [ ];
+            lualine_z = [ ];
           };
-          tabline = {};
-          winbar = {};
-          inactive_winbar = {};
-          extensions = [];
+          tabline = { };
+          winbar = { };
+          inactive_winbar = { };
+          extensions = [ ];
         };
       };
 
@@ -731,34 +682,12 @@
       };
 
       # Auto pairs
-      nvim-autopairs = {
-        enable = true;
-        settings = {
-          check_ts = true;
-          ts_config = {
-            lua = [ "string" "source" ];
-            javascript = [ "string" "template_string" ];
-            java = false;
-          };
-          disable_filetype = [ "TelescopePrompt" "spectre_panel" ];
-          fast_wrap = {
-            map = "<M-e>";
-            chars = [ "{" "[" "(" "\"" "'" ];
-            pattern = "[%'%\"%)%>%]%)%}%,]";
-            offset = 0;
-            end_key = "$";
-            keys = "qwertyuiopzxcvbnmasdfghjkl";
-            check_comma = true;
-            highlight = "PmenuSel";
-            highlight_grey = "LineNr";
-          };
-        };
-      };
+      nvim-autopairs.enable = true;
 
       # Comment toggling
       comment.enable = true;
 
-      # Which key for keybinding help
+      # FIXED: Which key configuration updated for v3
       which-key = {
         enable = true;
         settings = {
@@ -767,15 +696,19 @@
             separator = "➜";
             group = "+";
           };
-          popup_mappings = {
-            scroll_down = "<c-d>";
-            scroll_up = "<c-u>";
-          };
-          window = {
+          win = {
             border = "rounded";
             position = "bottom";
-            margin = [ 1 0 1 0 ];
-            padding = [ 2 2 2 2 ];
+            margin = [
+              1
+              0
+              1
+              0
+            ];
+            padding = [
+              2
+              2
+            ];
             winblend = 0;
           };
           layout = {
@@ -790,19 +723,20 @@
             spacing = 3;
             align = "left";
           };
-          ignore_missing = true;
-          hidden = [ "<silent>" "<cmd>" "<Cmd>" "<CR>" "call" "lua" "^:" "^ " ];
           show_help = true;
-          triggers = "auto";
-          triggers_blacklist = {
-            i = [ "j" "k" ];
-            v = [ "j" "k" ];
-          };
+          # FIXED: triggers should be a list, not a string
+          triggers = [
+            {
+              "<leader>" = {
+                mode = "n";
+              };
+            }
+          ];
         };
       };
 
-      # Better syntax highlighting
-      nvim-colorizer.enable = true;
+      # FIXED: Better syntax highlighting - renamed nvim-colorizer to colorizer
+      colorizer.enable = true;
 
       # Indentation guides
       indent-blankline = {
@@ -843,7 +777,7 @@
           size = 20;
           open_mapping = "[[<c-\\>]]";
           hide_numbers = true;
-          shade_filetypes = [];
+          shade_filetypes = [ ];
           shade_terminals = true;
           shading_factor = 2;
           start_in_insert = true;
@@ -863,66 +797,62 @@
         };
       };
 
-      # Trouble for diagnostics
+      # FIXED: Trouble v3 configuration - updated deprecated options
       trouble = {
         enable = true;
         settings = {
-          position = "bottom";
-          height = 10;
-          width = 50;
-          icons = true;
-          mode = "workspace_diagnostics";
-          severity = null;
-          fold_open = "";
-          fold_closed = "";
-          group = true;
-          padding = true;
-          cycle_results = true;
-          action_keys = {
-            close = "q";
-            cancel = "<esc>";
-            refresh = "r";
-            jump = [ "<cr>" "<tab>" "<2-leftmouse>" ];
-            open_split = [ "<c-x>" ];
-            open_vsplit = [ "<c-v>" ];
-            open_tab = [ "<c-t>" ];
-            jump_close = [ "o" ];
-            toggle_mode = "m";
-            switch_severity = "s";
-            toggle_preview = "P";
-            hover = "K";
-            preview = "p";
-            open_code_href = "c";
-            close_folds = [ "zM" "zm" ];
-            open_folds = [ "zR" "zr" ];
-            toggle_fold = [ "zA" "za" ];
-            previous = "k";
-            next = "j";
-            help = "?";
+          # v3 configuration structure
+          modes = {
+            diagnostics = {
+              mode = "diagnostics";
+              preview = {
+                type = "split";
+                relative = "win";
+                position = "right";
+                size = 0.3;
+              };
+            };
           };
-          multiline = true;
-          indent_lines = true;
-          win_config = {
-            border = "single";
+          icons = {
+            indent = {
+              top = "│ ";
+              middle = "├╴";
+              last = "└╴";
+              fold_open = " ";
+              fold_closed = " ";
+              ws = "  ";
+            };
+            folder_closed = " ";
+            folder_open = " ";
+            kinds = {
+              Array = " ";
+              Boolean = "󰨙 ";
+              Class = " ";
+              Constant = "󰏿 ";
+              Constructor = " ";
+              Enum = " ";
+              EnumMember = " ";
+              Event = " ";
+              Field = " ";
+              File = " ";
+              Function = "󰊕 ";
+              Interface = " ";
+              Key = " ";
+              Method = "󰊕 ";
+              Module = " ";
+              Namespace = "󰦮 ";
+              Null = " ";
+              Number = "󰎠 ";
+              Object = " ";
+              Operator = " ";
+              Package = " ";
+              Property = " ";
+              String = " ";
+              Struct = "󰆼 ";
+              TypeParameter = " ";
+              Variable = "󰀫 ";
+            };
           };
-          auto_open = false;
-          auto_close = false;
-          auto_preview = true;
-          auto_fold = false;
-          auto_jump = [ "lsp_definitions" ];
-          include_declaration = [
-            "lsp_references"
-            "lsp_implementations"
-            "lsp_definitions"
-          ];
-          signs = {
-            error = "";
-            warning = "";
-            hint = "";
-            information = "";
-            other = "";
-          };
-          use_diagnostic_signs = false;
         };
       };
     };
@@ -1129,3 +1059,7 @@
         options = {
           desc = "Rename";
         };
+      }
+    ];
+  };
+}
