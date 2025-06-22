@@ -59,7 +59,13 @@
         git-filter-repo
         age
         sops
-
+        rustc
+        cargo
+        gcc
+        pkg-config
+        kicad
+        rust-analyzer
+        rustfmt
       ];
 
       fonts = with pkgs; [
