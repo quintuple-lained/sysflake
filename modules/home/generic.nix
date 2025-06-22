@@ -63,7 +63,6 @@
         cargo
         gcc
         pkg-config
-        kicad
         rust-analyzer
         rustfmt
       ];

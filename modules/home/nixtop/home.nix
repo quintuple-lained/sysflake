@@ -20,6 +20,7 @@
   home.packages =
     let
       development = with pkgs; [
+        kicad
       ];
 
       fonts = with pkgs; [
