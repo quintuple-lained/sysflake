@@ -85,6 +85,21 @@
         };
       };
 
+      # Auto-formatting
+      conform-nvim = {
+        enable = true;
+        settings = {
+          formatters_by_ft = {
+            nix = [ "nixfmt" ];
+            rust = [ "rustfmt" ];
+          };
+          format_on_save = {
+            timeout_ms = 500;
+            lsp_fallback = true;
+          };
+        };
+      };
+
       # Completion
       cmp = {
         enable = true;
@@ -151,6 +166,9 @@
       rust-analyzer
       clippy
 
+      # Nix formatter
+      nixfmt-rfc-style
+
       # Basic tools
       ripgrep
       fd
@@ -170,6 +188,14 @@
         key = "<leader>q";
         action = ":q<CR>";
         options.desc = "Quit";
+      }
+
+      # Manual formatting
+      {
+        mode = "n";
+        key = "<leader>f";
+        action = "<cmd>lua require('conform').format()<cr>";
+        options.desc = "Format buffer";
       }
 
       # LSP mappings
@@ -223,8 +249,6 @@
         action = "<cmd>Gitsigns reset_hunk<cr>";
         options.desc = "Reset git hunk";
       }
-
-      # Comment toggling (handled by comment.nvim automatically with gcc and gc)
     ];
   };
 }

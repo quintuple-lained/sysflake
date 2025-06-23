@@ -44,6 +44,13 @@
     kitty
   ];
 
+  home.file."projects/pro/.keep" = {
+    text = "";
+  };
+  home.file."projects/fun/.keep" = {
+    text = "";
+  };
+
   # XDG configuration for desktop applications
   xdg = {
     enable = true;
