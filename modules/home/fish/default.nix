@@ -93,6 +93,18 @@
         body = "git status $argv";
       };
 
+      gip = {
+        description = "alias gip = git pull";
+        wraps = "git pull";
+        body = "git pull $argv";
+      };
+
+      gif = {
+        description = "alias gif = git fetch";
+        wraps = "git fetch";
+        body = "git fetch $argv";
+      };
+
       doas = {
         description = "alias doas = sudo";
         wraps = "sudo";

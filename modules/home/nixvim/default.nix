@@ -56,21 +56,17 @@
       lsp = {
         enable = true;
         servers = {
-          # Rust is handled by rustaceanvim, not here
-          
           # Nix
           nixd.enable = true;
-          
-          # Other common languages
-          gopls.enable = true;        # Go
-          pyright.enable = true;      # Python
-          lua_ls.enable = true;       # Lua
-          marksman.enable = true;     # Markdown
-          taplo.enable = true;        # TOML
+
+          gopls.enable = true; # Go
+          pyright.enable = true; # Python
+          lua_ls.enable = true; # Lua
+          marksman.enable = true; # Markdown
+          taplo.enable = true; # TOML
         };
       };
 
-      # Rust support via rustaceanvim
       rustaceanvim = {
         enable = true;
         settings = {
@@ -85,7 +81,6 @@
         };
       };
 
-      # Auto-formatting
       conform-nvim = {
         enable = true;
         settings = {
@@ -109,7 +104,6 @@
             "<C-Space>" = "cmp.mapping.complete()";
             "<C-e>" = "cmp.mapping.abort()";
             "<CR>" = "cmp.mapping.confirm({ select = true })";
-            # Use different keys to avoid conflicts, or remove these if you prefer the existing mappings
             "<C-n>" = "cmp.mapping.select_next_item()";
             "<C-p>" = "cmp.mapping.select_prev_item()";
           };
