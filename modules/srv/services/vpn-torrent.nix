@@ -92,8 +92,10 @@
               -p 8080:8080 \
               -p 5573:5573 \
               --cap-add NET_ADMIN \
+              --cap-add SYS_MODULE \
               --sysctl net.ipv4.conf.all.src_valid_mark=1 \
               --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+              --device /dev/net/tun \
               -e PUID=1000 \
               -e PGID=1000 \
               -e UMASK=002 \
@@ -113,6 +115,8 @@
               -e UNBOUND_ENABLED=false \
               -e QBITTORRENT_USERNAME="$USERNAME" \
               -e QBITTORRENT_PASSWORD="$PASSWORD" \
+              -e QBITTORRENT_WEBUI_PORT=8080 \
+              -e QBITTORRENT_CONFIG_VALIDATION=true \
               -v qbittorrent_data:/config \
               -v ${config.sops.secrets.wireguard_config.path}:/config/wireguard/wg0.conf:ro \
               -v /main_pool/storage/torrent/incomplete:/data/incomplete \
@@ -122,19 +126,43 @@
         in
         "${startScript}";
       ExecStop = "${pkgs.docker}/bin/docker stop qbittorrent-vpn";
+      ExecReload = "${pkgs.docker}/bin/docker restart qbittorrent-vpn";
     };
   };
 
   # Open firewall for web interface
   networking.firewall.allowedTCPPorts = [ 8080 ];
 
-  # Health check service to verify container is running
   systemd.services.qbittorrent-vpn-healthcheck = {
     description = "qBittorrent VPN Health Check";
     after = [ "qbittorrent-vpn.service" ];
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "${pkgs.bash}/bin/bash -c 'until ${pkgs.curl}/bin/curl -f http://localhost:8080 >/dev/null 2>&1; do sleep 5; done'";
+      ExecStart = pkgs.writeShellScript "qbittorrent-healthcheck" ''
+        # Wait for service to start
+        sleep 30
+
+        # Check if container is running
+        if ! ${pkgs.docker}/bin/docker ps | grep -q qbittorrent-vpn; then
+          echo "Container not running"
+          exit 1
+        fi
+
+        # Check if web interface is accessible
+        if ! ${pkgs.curl}/bin/curl -f http://localhost:8080 >/dev/null 2>&1; then
+          echo "Web interface not accessible"
+          exit 1
+        fi
+
+        # Check VPN status via container logs
+        if ${pkgs.docker}/bin/docker logs qbittorrent-vpn 2>&1 | grep -q "VPN connection established"; then
+          echo "VPN connection verified"
+        else
+          echo "Warning: VPN status unclear"
+        fi
+
+        echo "Health check passed"
+      '';
       TimeoutStartSec = "300";
     };
   };
@@ -144,9 +172,9 @@
     description = "Restart qBittorrent VPN daily";
     wantedBy = [ "timers.target" ];
     timerConfig = {
-      OnCalendar = "daily";
+      OnCalendar = "03:00";
       Persistent = true;
-      RandomizedDelaySec = "1h";
+      RandomizedDelaySec = "30m";
     };
   };
 

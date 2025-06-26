@@ -9,8 +9,11 @@
   imports = [
     ./hardware-config.nix
     ../../ssh/ssh-server/default.nix
-    #    ../../srv/services/vpn-torrent.nix
-    ../../srv/services/omniservice.nix
+
+    ../../srv/services/caddy.nix
+    ../../srv/services/vpn-torrent.nix
+    ../../srv/services/nextcloud.nix
+    ../../srv/services/jellyfin.nix
   ];
 
   boot = {
@@ -136,6 +139,10 @@
     wget
     stress
     fastfetch
+    curl
+    rsync
+    htop
+    ncdu
   ];
 
   system.stateVersion = "25.05";

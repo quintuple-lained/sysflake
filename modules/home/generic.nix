@@ -65,6 +65,7 @@
         pkg-config
         rust-analyzer
         rustfmt
+        nix-prefetch-git
       ];
 
       fonts = with pkgs; [
