@@ -85,6 +85,7 @@
         openvpn
         wireguard-tools
         htop
+        nh
       ];
     in
     development ++ fonts ++ misc-packages;
