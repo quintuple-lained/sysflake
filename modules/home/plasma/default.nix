@@ -275,6 +275,13 @@
     kdePackages.okular # PDF viewer
     kdePackages.gwenview # Image viewer
     kdePackages.kcharselect # Character selector
+    kdePackages.ksystemlog
+    kdePackages.isoimagewriter
+    kdiff3
+    wayland-utils
+    wl-clipboard
+    hardinfo2
+    kdePackages.partitionmanager
 
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration

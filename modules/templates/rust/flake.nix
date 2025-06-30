@@ -78,7 +78,10 @@
             check-json.enable = true;
             check-toml.enable = true;
             check-merge-conflicts.enable = true;
-            check-added-large-files.enable = true;
+            check-added-large-files = {
+              enable = true;
+              args = [ "--maxkb=5120" ];
+            };
             end-of-file-fixer.enable = true;
 
             # Custom hook for cargo check

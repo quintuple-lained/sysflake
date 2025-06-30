@@ -14,6 +14,7 @@
     ../../srv/services/vpn-torrent.nix
     ../../srv/services/nextcloud.nix
     ../../srv/services/jellyfin.nix
+    ../../srv/services/minecraft.nix
   ];
 
   boot = {
