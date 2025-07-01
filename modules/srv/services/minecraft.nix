@@ -17,7 +17,7 @@
         owner = "root";
         group = "root";
         mode = "0600";
-        path = "/var/lib/crafty/wireguard/wg0.conf";
+        path = "/var/lib/crafty2/wireguard/wg0.conf";
       };
     };
   };
@@ -28,14 +28,14 @@
 
   # Create necessary directories
   systemd.tmpfiles.rules = [
-    "d /var/lib/crafty 0755 root root"
-    "d /var/lib/crafty/wireguard 0700 root root"
-    "d /var/lib/crafty/docker 0755 root root"
-    "d /var/lib/crafty/docker/backups 0755 root root"
-    "d /var/lib/crafty/docker/logs 0755 root root"
-    "d /var/lib/crafty/docker/servers 0755 root root"
-    "d /var/lib/crafty/docker/config 0755 root root"
-    "d /var/lib/crafty/docker/import 0755 root root"
+    "d /var/lib/crafty2 0755 root root"
+    "d /var/lib/crafty2/wireguard 0700 root root"
+    "d /var/lib/crafty2/docker 0755 root root"
+    "d /var/lib/crafty2/docker/backups 0755 root root"
+    "d /var/lib/crafty2/docker/logs 0755 root root"
+    "d /var/lib/crafty2/docker/servers 0755 root root"
+    "d /var/lib/crafty2/docker/config 0755 root root"
+    "d /var/lib/crafty2/docker/import 0755 root root"
   ];
 
   # Crafty Controller container service with VPN
@@ -65,10 +65,10 @@
         let
           startScript = pkgs.writeShellScript "start-crafty-vpn" ''
                         # Create config directory if it doesn't exist
-                        mkdir -p /var/lib/crafty/docker/config
+                        mkdir -p /var/lib/crafty2/docker/config
                         
                         # Create or update config.json to bind to all interfaces
-                        cat > /var/lib/crafty/docker/config/config.json << 'EOF'
+                        cat > /var/lib/crafty2/docker/config/config.json << 'EOF'
             {
               "web_interface": {
                 "interface": "0.0.0.0",
@@ -100,11 +100,11 @@
                           -e VPN_FIREWALL_TYPE=auto \
                           -e VPN_HEALTHCHECK_ENABLED=true \
                           -v ${config.sops.secrets.crafty_wireguard_config.path}:/config/wireguard/wg0.conf:ro \
-                          -v /var/lib/crafty/docker/backups:/crafty/backups \
-                          -v /var/lib/crafty/docker/logs:/crafty/logs \
-                          -v /var/lib/crafty/docker/servers:/crafty/servers \
-                          -v /var/lib/crafty/docker/config:/crafty/app/config \
-                          -v /var/lib/crafty/docker/import:/crafty/import \
+                          -v /var/lib/crafty2/docker/backups:/crafty2/backups \
+                          -v /var/lib/crafty2/docker/logs:/crafty2/logs \
+                          -v /var/lib/crafty2/docker/servers:/crafty2/servers \
+                          -v /var/lib/crafty2/docker/config:/crafty2/app/config \
+                          -v /var/lib/crafty2/docker/import:/crafty2/import \
                           registry.gitlab.com/crafty-controller/crafty-4:latest
           '';
         in
