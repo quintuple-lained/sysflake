@@ -11,6 +11,7 @@
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets = {
       crafty_wireguard_config = {
+        # Changed from wireguard_config
         sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
         key = "crafty-server.config";
         owner = "root";
@@ -58,41 +59,53 @@
         "-${pkgs.docker}/bin/docker stop crafty-vpn"
         "-${pkgs.docker}/bin/docker rm crafty-vpn"
         # Verify secrets exist
-        "${pkgs.coreutils}/bin/test -f ${config.sops.secrets.crafty_wireguard_config.path}"
+        "${pkgs.coreutils}/bin/test -f ${config.sops.secrets.crafty_wireguard_config.path}" # Updated reference
       ];
       ExecStart =
         let
           startScript = pkgs.writeShellScript "start-crafty-vpn" ''
-            ${pkgs.docker}/bin/docker run -d \
-              --name crafty-vpn \
-              --restart unless-stopped \
-              -p 8443:8443 \
-              -p 8123:8123 \
-              -p 19132:19132/udp \
-              -p 25500-25600:25500-25600 \
-              --cap-add NET_ADMIN \
-              --cap-add SYS_MODULE \
-              --sysctl net.ipv4.conf.all.src_valid_mark=1 \
-              --sysctl net.ipv6.conf.all.disable_ipv6=0 \
-              --device /dev/net/tun \
-              -e PUID=1000 \
-              -e PGID=1000 \
-              -e TZ=Etc/UTC \
-              -e VPN_ENABLED=true \
-              -e VPN_CONF=wg0 \
-              -e VPN_PROVIDER=generic \
-              -e VPN_LAN_NETWORK=192.168.178.0/24 \
-              -e VPN_LAN_LEAK_ENABLED=false \
-              -e VPN_FIREWALL_TYPE=auto \
-              -e VPN_HEALTHCHECK_ENABLED=true \
-              -e CRAFTY_WEB_HOST=0.0.0.0 \ 
-              -v ${config.sops.secrets.crafty_wireguard_config.path}:/config/wireguard/wg0.conf:ro \
-              -v /var/lib/crafty/docker/backups:/crafty/backups \
-              -v /var/lib/crafty/docker/logs:/crafty/logs \
-              -v /var/lib/crafty/docker/servers:/crafty/servers \
-              -v /var/lib/crafty/docker/config:/crafty/app/config \
-              -v /var/lib/crafty/docker/import:/crafty/import \
-              registry.gitlab.com/crafty-controller/crafty-4:latest
+                        # Create config directory if it doesn't exist
+                        mkdir -p /var/lib/crafty/docker/config
+                        
+                        # Create or update config.json to bind to all interfaces
+                        cat > /var/lib/crafty/docker/config/config.json << 'EOF'
+            {
+              "web_interface": {
+                "interface": "0.0.0.0",
+                "port": 8443
+              }
+            }
+            EOF
+
+                        ${pkgs.docker}/bin/docker run -d \
+                          --name crafty-vpn \
+                          --restart unless-stopped \
+                          -p 8443:8443 \
+                          -p 8123:8123 \
+                          -p 19132:19132/udp \
+                          -p 25500-25600:25500-25600 \
+                          --cap-add NET_ADMIN \
+                          --cap-add SYS_MODULE \
+                          --sysctl net.ipv4.conf.all.src_valid_mark=1 \
+                          --sysctl net.ipv6.conf.all.disable_ipv6=0 \
+                          --device /dev/net/tun \
+                          -e PUID=1000 \
+                          -e PGID=1000 \
+                          -e TZ=Etc/UTC \
+                          -e VPN_ENABLED=true \
+                          -e VPN_CONF=wg0 \
+                          -e VPN_PROVIDER=generic \
+                          -e VPN_LAN_NETWORK=192.168.178.0/24 \
+                          -e VPN_LAN_LEAK_ENABLED=false \
+                          -e VPN_FIREWALL_TYPE=auto \
+                          -e VPN_HEALTHCHECK_ENABLED=true \
+                          -v ${config.sops.secrets.crafty_wireguard_config.path}:/config/wireguard/wg0.conf:ro \
+                          -v /var/lib/crafty/docker/backups:/crafty/backups \
+                          -v /var/lib/crafty/docker/logs:/crafty/logs \
+                          -v /var/lib/crafty/docker/servers:/crafty/servers \
+                          -v /var/lib/crafty/docker/config:/crafty/app/config \
+                          -v /var/lib/crafty/docker/import:/crafty/import \
+                          registry.gitlab.com/crafty-controller/crafty-4:latest
           '';
         in
         "${startScript}";
