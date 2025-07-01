@@ -85,7 +85,7 @@
               -e VPN_LAN_LEAK_ENABLED=false \
               -e VPN_FIREWALL_TYPE=auto \
               -e VPN_HEALTHCHECK_ENABLED=true \
-              -e CRAFTY_WEB_HOST=0.0.0.0
+              -e CRAFTY_WEB_HOST=0.0.0.0 \ 
               -v ${config.sops.secrets.crafty_wireguard_config.path}:/config/wireguard/wg0.conf:ro \
               -v /var/lib/crafty/docker/backups:/crafty/backups \
               -v /var/lib/crafty/docker/logs:/crafty/logs \
