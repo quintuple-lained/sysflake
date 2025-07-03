@@ -100,7 +100,7 @@
               git
               pre-commit
             ]
-            ++ pre-commit-check.enablePackages;
+            ++ pre-commit-check.enabledPackages;
 
           HUGO_ENVIRONMENT = "development";
           HUGO_ENABLEGITINFO = "true";
