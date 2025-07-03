@@ -8,11 +8,8 @@
     ../desktop
     ../plasma
     ../firefox
-<<<<<<< HEAD
     ../gaming
-=======
     ../nixvim/dev.nix
->>>>>>> 784774fa5223139db13e1d0fb15cc26377641156
   ];
 
   programs.home-manager.enable = true;
