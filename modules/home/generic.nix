@@ -8,7 +8,6 @@
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ./fish
-    ./nixvim
     ./git
   ];
 
@@ -47,8 +46,6 @@
   home.packages =
     let
       development = with pkgs; [
-        nixfmt-rfc-style
-        direnv
         fd
         tree
         file
@@ -59,12 +56,8 @@
         git-filter-repo
         age
         sops
-        rustc
-        cargo
-        gcc
         pkg-config
-        rust-analyzer
-        rustfmt
+        nix-prefetch-git
       ];
 
       fonts = with pkgs; [
@@ -84,6 +77,7 @@
         openvpn
         wireguard-tools
         htop
+        nh
       ];
     in
     development ++ fonts ++ misc-packages;

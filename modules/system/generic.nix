@@ -17,6 +17,7 @@
 
   time.timeZone = "Europe/Berlin";
 
+  services.resolved.enable = true;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -34,14 +35,6 @@
       cores = 0;
 
       auto-optimise-store = true;
-    };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = ''
-        --delete-older-than 56d
-      '';
     };
 
     extraOptions = ''
@@ -65,6 +58,13 @@
   };
 
   programs.nix-index-database.comma.enable = true;
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 4d --keep 3";
+    flake = "/home/zoe/sysflake";
+  };
 
   services.avahi = {
     enable = true;

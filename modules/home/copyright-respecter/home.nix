@@ -5,6 +5,7 @@
 {
   imports = [
     ../generic.nix
+    ../nixvim
   ];
 
   programs.home-manager.enable = true;

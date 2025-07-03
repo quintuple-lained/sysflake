@@ -82,6 +82,10 @@
     enable32Bit = true;
   };
 
+  users.groups.libvirtd.members = [ "zoe" ];
+  virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
+
   hardware.steam-hardware.enable = true;
   hardware.bluetooth.enable = true;
 
