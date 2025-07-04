@@ -282,6 +282,7 @@
     wl-clipboard
     hardinfo2
     kdePackages.partitionmanager
+    kdePackages.kclock
 
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration
