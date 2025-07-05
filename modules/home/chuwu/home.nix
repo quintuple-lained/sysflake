@@ -29,6 +29,7 @@
       misc-packages = with pkgs; [
         yt-dlp
         networkmanager
+        kicad
       ];
 
       graphical = with pkgs; [ ];

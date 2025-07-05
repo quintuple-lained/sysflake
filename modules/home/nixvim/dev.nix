@@ -10,6 +10,13 @@
   imports = [ ./default.nix ];
 
   programs.nixvim = {
+    # File type detection for Typst files
+    filetype = {
+      extension = {
+        typ = "typst";
+      };
+    };
+
     # Development-specific plugins
     plugins = {
       # LSP configuration
@@ -24,6 +31,15 @@
           lua_ls.enable = true; # Lua
           marksman.enable = true; # Markdown
           taplo.enable = true; # TOML
+
+          # Typst language server
+          tinymist = {
+            enable = true;
+            settings = {
+              exportPdf = "onType";
+              formatterMode = "typstyle";
+            };
+          };
         };
       };
 
@@ -49,6 +65,7 @@
           formatters_by_ft = {
             nix = [ "nixfmt" ];
             rust = [ "rustfmt" ];
+            typst = [ "typstyle" ];
           };
           format_on_save = {
             timeout_ms = 500;
@@ -112,7 +129,63 @@
           EOF
         '';
       }
+      {
+        plugin = pkgs.vimUtils.buildVimPlugin {
+          name = "typst-preview-nvim";
+          src = pkgs.fetchFromGitHub {
+            owner = "chomosuke";
+            repo = "typst-preview.nvim";
+            rev = "master";
+            sha256 = "sha256-BGNgGpg6ixvQ7bZl1pFRi3B1lqKDZqI4Ix3gFQVFxXg=";
+          };
+        };
+        config = ''
+          lua << EOF
+          require('typst-preview').setup({})
+          EOF
+        '';
+      }
     ];
+
+    # Custom configuration for Typst
+    extraConfigLua = ''
+      -- Typst-specific configuration
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "typst",
+        callback = function()
+          vim.bo.commentstring = "// %s"
+        end,
+      })
+
+      -- Function to pin main file for multi-file projects
+      local function pin_main_file()
+        vim.lsp.buf.execute_command({
+          command = 'tinymist.pinMain',
+          arguments = { vim.api.nvim_buf_get_name(0) }
+        })
+      end
+
+      -- Function to unpin main file
+      local function unpin_main_file()
+        vim.lsp.buf.execute_command({
+          command = 'tinymist.pinMain',
+          arguments = { vim.v.null }
+        })
+      end
+
+      -- Create user commands for pinning
+      vim.api.nvim_create_user_command('TypstPinMain', pin_main_file, {})
+      vim.api.nvim_create_user_command('TypstUnpinMain', unpin_main_file, {})
+
+      -- PDF opener command
+      vim.api.nvim_create_user_command('TypstOpenPdf', function()
+        local filepath = vim.api.nvim_buf_get_name(0)
+        if filepath:match("%.typ$") then
+          local pdf_path = filepath:gsub("%.typ$", ".pdf")
+          vim.system({ "xdg-open", pdf_path })
+        end
+      end, {})
+    '';
 
     # Development packages
     extraPackages = with pkgs; [
@@ -128,6 +201,11 @@
 
       # Hex editor
       xxd
+
+      # Typst tools
+      tinymist
+      typst
+      typstyle
     ];
 
     # Development key mappings
@@ -210,6 +288,32 @@
         key = "<leader>hd";
         action = "<cmd>HexDump<cr>";
         options.desc = "Hex dump";
+      }
+
+      # Typst-specific mappings
+      {
+        mode = "n";
+        key = "<leader>tp";
+        action = "<cmd>TypstPinMain<cr>";
+        options.desc = "Pin main Typst file";
+      }
+      {
+        mode = "n";
+        key = "<leader>tu";
+        action = "<cmd>TypstUnpinMain<cr>";
+        options.desc = "Unpin main Typst file";
+      }
+      {
+        mode = "n";
+        key = "<leader>to";
+        action = "<cmd>TypstOpenPdf<cr>";
+        options.desc = "Open generated PDF";
+      }
+      {
+        mode = "n";
+        key = "<leader>tv";
+        action = "<cmd>TypstPreview<cr>";
+        options.desc = "Toggle Typst preview";
       }
     ];
   };

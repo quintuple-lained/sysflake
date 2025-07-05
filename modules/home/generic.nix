@@ -58,6 +58,7 @@
         sops
         pkg-config
         nix-prefetch-git
+        nix-prefetch-github
       ];
 
       fonts = with pkgs; [
