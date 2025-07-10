@@ -8,6 +8,7 @@
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
+    nativeMessagingHosts = [ pkgs.firefoxpwa ];
 
     # Manage Firefox settings
     profiles.default = {
@@ -173,6 +174,15 @@
         # Developer tools
         "devtools.theme" = "dark";
         "devtools.toolbox.footer.height" = 250;
+
+        "dom.webnotifications.enabled" = true;
+        "dom.webnotifications.serviceworker.enabled" = true;
+        "dom.serviceWorkers.enabled" = true;
+        "dom.push.enabled" = true;
+        "browser.ssb.enabled" = true;
+        "dom.manifest.enabled" = true;
+        "dom.webcomponents.enabled" = true;
+        "dom.push.connection.enabled" = true;
       };
     };
   };
