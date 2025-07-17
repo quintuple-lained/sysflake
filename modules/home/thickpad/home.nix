@@ -59,6 +59,7 @@
         yt-dlp
         networkmanager
         ncmpcpp
+        mpc
       ];
 
       graphical = with pkgs; [ ];
