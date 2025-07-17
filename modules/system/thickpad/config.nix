@@ -109,15 +109,15 @@
     bluetooth = {
       enable = true;
       powerOnBoot = true;
-    }
+    };
   graphics = {
     enable = true;
     enable32Bit = true;
     extraPackages = with pkgs; [
       amdvlk
       driversi687Linux.amdvlk
-    ]
-  }
+    ];
+  };
   }
 
   # List packages installed in system profile. To search, run:
