@@ -185,8 +185,5 @@ in
         WantedBy = [ "default.target" ];
       };
     };
-
-    # Enable and start the service on login
-    systemd.user.services.mpd.enable = true;
   };
 }
