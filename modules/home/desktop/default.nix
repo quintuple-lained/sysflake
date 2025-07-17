@@ -43,6 +43,7 @@
     zip
     kitty
     nicotine-plus
+    tldr
   ];
 
   home.file."projects/pro/.keep" = {
