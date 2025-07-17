@@ -15,7 +15,7 @@
   services.mpd = {
     enable = true;
     musicDirectory = "~/Music";
-    extraContig = ''
+    extraConfig = ''
       audio_output {
         type "pulse"
         name "pulse audio"
