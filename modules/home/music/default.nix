@@ -188,8 +188,5 @@ in
 
     # Enable and start the service on login
     systemd.user.services.mpd.enable = true;
-    
-    # Start MPD automatically when user logs in
-    systemd.user.targets.default.wants = [ "mpd.service" ];
   };
 }
