@@ -57,6 +57,7 @@
         "chuwu"
         "copyright-respecter"
         "nixtop"
+        "thickpad"
       ];
 
       overlays = [ ];
@@ -105,7 +106,7 @@
                 users.zoe.imports = [
                   catppuccin.homeModules.catppuccin
                   plasma-manager.homeManagerModules.plasma-manager
-                  sops-nix.homeManagerModules.sops  # Add this line
+                  sops-nix.homeManagerModules.sops
                   ./modules/home/${machine}/home.nix
                 ];
               };
