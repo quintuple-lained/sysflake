@@ -118,7 +118,7 @@
       driversi687Linux.amdvlk
     ];
   };
-  }
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
