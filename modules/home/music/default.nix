@@ -3,10 +3,10 @@
 with lib;
 
 let
-  cfg = config.services.mpd;
+  cfg = config.services.music-player;  # Changed from services.mpd
 in
 {
-  options.services.mpd = {
+  options.services.music-player = {  # Changed from services.mpd
     enable = mkEnableOption "MPD (Music Player Daemon) user service";
     
     musicDirectory = mkOption {

@@ -19,7 +19,7 @@
   home.username = "zoe";
   home.homeDirectory = "/home/zoe";
 
-  services.mpd = {
+  services.music-player = {
     enable = true;
     musicDirectory = "/home/zoe/Music";
   };
