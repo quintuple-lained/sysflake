@@ -31,7 +31,6 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot.initrd.luks.devices."luks-f4584a8d-ea9e-46ef-9f8c-4e17adb42adb".device = "/dev/disk/by-uuid/f4584a8d-ea9e-46ef-9f8c-4e17adb42adb";
-  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
