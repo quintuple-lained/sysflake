@@ -20,6 +20,7 @@
         ncmpcpp
         mpc
         ashuffle
-      ]
-
+      ];
+      in
+      music-packages;
   }
