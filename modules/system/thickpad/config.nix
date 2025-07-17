@@ -115,7 +115,7 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       amdvlk
-      driversi687Linux.amdvlk
+      driversi686Linux.amdvlk
     ];
   };
   };
