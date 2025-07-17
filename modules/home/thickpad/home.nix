@@ -10,7 +10,6 @@
     ../gaming
     ../firefox
     ../nixvim/dev.nix
-    ../music
   ];
 
   services.mpd = {
