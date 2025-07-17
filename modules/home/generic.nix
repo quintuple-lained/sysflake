@@ -60,6 +60,7 @@
         nix-prefetch-git
         nix-prefetch-github
         detox
+        ncdu
       ];
 
       fonts = with pkgs; [
