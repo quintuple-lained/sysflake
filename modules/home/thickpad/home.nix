@@ -10,6 +10,7 @@
     ../gaming
     ../firefox
     ../nixvim/dev.nix
+    ../music
   ];
 
   programs.home-manager.enable = true;
@@ -17,6 +18,11 @@
 
   home.username = "zoe";
   home.homeDirectory = "/home/zoe";
+
+  services.mpd = {
+    enable = true;
+    musicDirectory = "/home/zoe/Music";
+  };
 
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
