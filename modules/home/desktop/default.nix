@@ -42,6 +42,7 @@
     unzip
     zip
     kitty
+    nicotine-plus
   ];
 
   home.file."projects/pro/.keep" = {
