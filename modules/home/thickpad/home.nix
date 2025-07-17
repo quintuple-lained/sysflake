@@ -10,18 +10,8 @@
     ../gaming
     ../firefox
     ../nixvim/dev.nix
+    ../music
   ];
-
-  services.mpd = {
-    enable = true;
-    musicDirectory = "~/Music";
-    extraConfig = ''
-      audio_output {
-        type "pulse"
-        name "pulse audio"
-        }
-    '';
-  };
 
   programs.home-manager.enable = true;
   home.stateVersion = "25.05";
@@ -58,8 +48,6 @@
       misc-packages = with pkgs; [
         yt-dlp
         networkmanager
-        ncmpcpp
-        mpc
       ];
 
       graphical = with pkgs; [ ];
