@@ -59,6 +59,7 @@
         pkg-config
         nix-prefetch-git
         nix-prefetch-github
+        detox
       ];
 
       fonts = with pkgs; [
