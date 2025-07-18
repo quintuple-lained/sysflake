@@ -2,12 +2,7 @@
   pkgs,
   ...
 }:
-{
-  home-manager.users.zoe.services.kdeconnect.enable = true;
-  networking.firewall = rec {
-    allowedTCPPortRanges = [ { from = 1714; to = 1764; } ];
-    allowedUDPPortRanges = allowedTCPPortRanges;
-  };
+  services.kdeconnect.enable = true;
 
   # Enable Plasma Manager
   programs.plasma = {

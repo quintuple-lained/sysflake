@@ -73,6 +73,15 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  networking.firewall = {
+    allowedTCPPortRanges = [
+      { from = 1714; to = 1764; }
+    ];
+  allowedUDPPortRanges = [
+      { from = 1714; to = 1764; }
+    ];
+  };
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
