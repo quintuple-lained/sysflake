@@ -44,6 +44,7 @@
     kitty
     nicotine-plus
     tldr
+    exfatprogs
   ];
 
   home.file."projects/pro/.keep" = {
