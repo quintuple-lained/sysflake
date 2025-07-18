@@ -2,6 +2,7 @@
   pkgs,
   ...
 }:
+{
   services.kdeconnect.enable = true;
 
   # Enable Plasma Manager
