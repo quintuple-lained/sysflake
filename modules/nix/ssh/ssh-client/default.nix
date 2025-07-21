@@ -13,7 +13,7 @@ let
 in
 {
   sops = {
-    defaultSopsFile = ../../../secrets/ssh-keys.yaml;
+    defaultSopsFile = ../../../../secrets/ssh-keys.yaml;
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets = {
       ssh_private_key = {
