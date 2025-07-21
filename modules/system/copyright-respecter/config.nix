@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-config.nix
-    ../../ssh/ssh-server/default.nix
+    ../../nix/ssh/ssh-server/default.nix
 
     ../../srv/services/caddy.nix
     ../../srv/services/vpn-torrent.nix
