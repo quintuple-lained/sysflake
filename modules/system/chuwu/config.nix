@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../ssh/ssh-client/default.nix
+    ../../nix/ssh/ssh-client/default.nix
   ];
   boot = {
     loader.systemd-boot = {
