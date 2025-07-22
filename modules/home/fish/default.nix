@@ -63,6 +63,12 @@
         body = "git add --all $argv";
       };
 
+      ls = {
+        description = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
+        wraps = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
+        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
+      };
+
       gcm = {
         description = "alias gcm=git commit -m";
         wraps = "git commit -m";

@@ -47,6 +47,13 @@
     let
       development = with pkgs; [
         fd
+        bat
+        dua
+        du-dust
+        yazi
+        fselect
+        ripgrep-all
+        eza
         tree
         file
         git
@@ -61,6 +68,7 @@
         nix-prefetch-github
         detox
         ncdu
+        uutils-coreutils-noprefix
       ];
 
       fonts = with pkgs; [

@@ -2,8 +2,13 @@
   description = "My system";
 
   inputs = {
+    # Define all the channels you want
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
+    nixpkgs-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    nixpkgs-stable-small.url = "github:nixos/nixpkgs/nixos-24.11-small";
 
+    # Your other inputs
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -11,9 +16,7 @@
 
     nix-index-database = {
       url = "github:nix-community/nix-index-database";
-      inputs = {
-        nixpkgs.follows = "nixpkgs";
-      };
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixvim = {
@@ -22,9 +25,7 @@
     };
 
     firefox-addons.url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-
     catppuccin.url = "github:catppuccin/nix";
-
     flatpaks.url = "github:gmodena/nix-flatpak";
 
     sops-nix = {
@@ -40,8 +41,11 @@
   };
 
   outputs =
-    {
+    inputs@{
       nixpkgs,
+      nixpkgs-stable,
+      nixpkgs-small,
+      nixpkgs-stable-small,
       home-manager,
       nix-index-database,
       catppuccin,
@@ -50,70 +54,130 @@
       firefox-addons,
       sops-nix,
       ...
-    }@inputs:
+    }:
     let
       system = "x86_64-linux";
-      machines = [
-        "chuwu"
-        "copyright-respecter"
-        "nixtop"
-        "thickpad"
-      ];
-
       overlays = [ ];
 
-      pkgs = import nixpkgs {
-        inherit system overlays;
-
-        config = {
-          allowUnfree = true;
-          nvidia.acceptLicense = true;
+      # Machine configurations with their preferred channels
+      machineConfigs = {
+        # Full-featured machines
+        chuwu = {
+          channel = nixpkgs;
         };
+        copyright-respecter = {
+          channel = nixpkgs;
+        };
+        nixtop = {
+          channel = nixpkgs;
+        };
+        thickpad = {
+          channel = nixpkgs;
+        };
+
+        #        minimal-vps = {
+        #          channel = nixpkgs-small;
+        #        };
       };
 
-    in
-    with nixpkgs.lib;
-    {
-      nixosConfigurations = genAttrs machines (
-        machine:
-        nixosSystem {
-          inherit pkgs system;
-
-          specialArgs = {
-            inherit inputs;
+      channelPkgs =
+        builtins.mapAttrs
+          (
+            name: channel:
+            import channel {
+              inherit system overlays;
+              config = {
+                allowUnfree = true;
+                nvidia.acceptLicense = true;
+              };
+            }
+          )
+          {
+            inherit
+              nixpkgs
+              nixpkgs-stable
+              nixpkgs-small
+              nixpkgs-stable-small
+              ;
           };
 
+      # Helper function to create nixosSystem configurations
+      makeNixosSystem =
+        machine: config:
+        let
+          pkgs = channelPkgs.${config.channel.outPath or "nixpkgs"};
+          # Fallback to finding the right pkgs
+          actualPkgs =
+            if config.channel == nixpkgs then
+              channelPkgs.nixpkgs
+            else if config.channel == nixpkgs-stable then
+              channelPkgs.nixpkgs-stable
+            else if config.channel == nixpkgs-small then
+              channelPkgs.nixpkgs-small
+            else if config.channel == nixpkgs-stable-small then
+              channelPkgs.nixpkgs-stable-small
+            else
+              channelPkgs.nixpkgs;
+        in
+        nixpkgs.lib.nixosSystem {
+          pkgs = actualPkgs;
+          inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
-            # things from inputs
-            catppuccin.nixosModules.catppuccin
-            nix-index-database.nixosModules.nix-index
-
-            sops-nix.nixosModules.sops
-
-            # system configs
+            # Common modules
             ./modules/system/generic.nix
             ./modules/system/${machine}/config.nix
             ./modules/system/${machine}/hardware-config.nix
 
+            # Always include sops-nix
+            sops-nix.nixosModules.sops
+
+            # Conditional modules based on channel choice
+            (
+              if config.channel == nixpkgs || config.channel == nixpkgs-stable then
+                {
+                  imports = [
+                    catppuccin.nixosModules.catppuccin
+                    nix-index-database.nixosModules.nix-index
+                  ];
+                }
+              else
+                {
+                  # Minimal configuration - just the essentials
+                  imports = [ ];
+                }
+            )
+
+            # Home Manager for all configurations
             home-manager.nixosModules.default
             {
               home-manager = {
-                extraSpecialArgs = {
-                  inherit system inputs;
-                };
+                extraSpecialArgs = { inherit system inputs; };
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.zoe.imports = [
-                  catppuccin.homeModules.catppuccin
-                  plasma-manager.homeManagerModules.plasma-manager
-                  sops-nix.homeManagerModules.sops
-                  ./modules/home/${machine}/home.nix
-                ];
+                users.zoe.imports =
+                  [
+                    sops-nix.homeManagerModules.sops
+                    ./modules/home/${machine}/home.nix
+                  ]
+                  ++ (
+                    if config.channel == nixpkgs || config.channel == nixpkgs-stable then
+                      [
+                        catppuccin.homeModules.catppuccin
+                        plasma-manager.homeManagerModules.plasma-manager
+                      ]
+                    else
+                      [ ]
+                  );
               };
             }
           ];
-        }
-      );
+        };
+
+    in
+    with nixpkgs.lib;
+    {
+      nixosConfigurations = mapAttrs makeNixosSystem machineConfigs;
 
       templates = {
         full = {
@@ -122,6 +186,8 @@
         };
       } // import ./modules/templates;
 
-      devShells."${system}".default = import ./shell.nix { inherit pkgs; };
+      devShells."${system}".default = import ./shell.nix {
+        pkgs = channelPkgs.nixpkgs;
+      };
     };
 }
