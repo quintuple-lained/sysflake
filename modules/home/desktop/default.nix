@@ -26,6 +26,9 @@
 
     # Office & Productivity
     libreoffice
+    # for sql because autism
+    litecli
+    dbeaver-bin
 
     # File management
     kdePackages.dolphin
