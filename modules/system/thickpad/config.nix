@@ -6,7 +6,8 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [
+      # Include the results of the hardware scan.
       ./hardware-config.nix
     ];
 
@@ -77,7 +78,7 @@
     allowedTCPPortRanges = [
       { from = 1714; to = 1764; }
     ];
-  allowedUDPPortRanges = [
+    allowedUDPPortRanges = [
       { from = 1714; to = 1764; }
     ];
   };
@@ -108,7 +109,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       kdePackages.kate
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
@@ -119,14 +120,14 @@
       enable = true;
       powerOnBoot = true;
     };
-  graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [
-      amdvlk
-      driversi686Linux.amdvlk
-    ];
-  };
+    graphics = {
+      enable = true;
+      enable32Bit = true;
+      extraPackages = with pkgs; [
+        amdvlk
+        driversi686Linux.amdvlk
+      ];
+    };
   };
 
   # List packages installed in system profile. To search, run:

@@ -1,9 +1,8 @@
-{
-  pkgs,
-...
+{ pkgs
+, ...
 }:
 {
-    services.mpd = {
+  services.mpd = {
     enable = true;
     musicDirectory = "~/Music";
     extraConfig = ''
@@ -13,14 +12,14 @@
         }
     '';
   };
-  
-  home.packages = 
-    let 
+
+  home.packages =
+    let
       music-packages = with pkgs; [
         ncmpcpp
         mpc
         ashuffle
       ];
-      in
-      music-packages;
-  }
+    in
+    music-packages;
+}

@@ -1,4 +1,4 @@
-{ pkgs, options, ...}:
+{ pkgs, options, ... }:
 
 {
   imports = [
@@ -16,17 +16,17 @@
     ];
     zfs.forceImportRoot = false;
     kernelParams = [
-      "fbcon=rotate:1"           # Console rotation (90° left)
-      "video=DSI-1:panel_orientation=left_side_up"  # Panel orientation
+      "fbcon=rotate:1" # Console rotation (90° left)
+      "video=DSI-1:panel_orientation=left_side_up" # Panel orientation
     ];
   };
 
   networking = {
     hostName = "chuwu";
     hostId = "7f630874";
-    networkmanager.enable = true;  # Add this line
+    networkmanager.enable = true; # Add this line
   };
-  
+
   services.openssh.enable = true;
 
   services.desktopManager.plasma6.enable = true;
@@ -55,7 +55,7 @@
       ${pkgs.xorg.xrandr}/bin/xrandr --output LVDS1 --rotate left || true
     '';
   };
-  
+
   hardware.steam-hardware.enable = true;
   hardware.bluetooth.enable = true;
 

@@ -1,8 +1,7 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
+{ config
+, pkgs
+, lib
+, ...
 }:
 
 {
@@ -63,12 +62,6 @@
         body = "git add --all $argv";
       };
 
-      ls = {
-        description = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
-        wraps = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
-        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
-      };
-
       gcm = {
         description = "alias gcm=git commit -m";
         wraps = "git commit -m";
@@ -109,6 +102,18 @@
         description = "alias gif = git fetch";
         wraps = "git fetch";
         body = "git fetch $argv";
+      };
+
+      ranger = {
+        description = "alias ranger = yazi";
+        wraps = "yazi";
+        body = "yazi $argv";
+      };
+
+      ls = {
+        description = "alias ls = eza";
+        wraps = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
+        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
       };
 
       doas = {

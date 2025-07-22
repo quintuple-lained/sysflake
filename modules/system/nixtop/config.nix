@@ -61,8 +61,7 @@
 
   services.displayManager.sddm.settings = {
     # X11 settings for rotation
-    X11 = {
-    };
+    X11 = { };
   };
 
   services.xserver = {

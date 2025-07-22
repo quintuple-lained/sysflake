@@ -27,7 +27,8 @@
             intelhex
           ]);
         gnuarmemb = pkgs.pkgsCross.arm-embedded.buildPackages.gcc;
-      in rec {
+      in
+      rec {
         devShells.default = pkgs.mkShell {
           nativeBuildInputs = with pkgs; [
             autoconf

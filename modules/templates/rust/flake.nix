@@ -11,13 +11,13 @@
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      flake-utils,
-      naersk,
-      rust-overlay,
-      pre-commit-hooks,
+    { self
+    , nixpkgs
+    , flake-utils
+    , naersk
+    , rust-overlay
+    , pre-commit-hooks
+    ,
     }:
     flake-utils.lib.eachDefaultSystem (
       system:

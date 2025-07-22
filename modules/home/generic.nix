@@ -1,14 +1,12 @@
-{
-  pkgs,
-  inputs,
-  system,
-  ...
+{ pkgs
+, inputs
+, system
+, ...
 }:
 {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
     ./fish
-    ./git
   ];
 
   programs.home-manager.enable = true;

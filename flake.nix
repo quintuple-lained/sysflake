@@ -2,13 +2,11 @@
   description = "My system";
 
   inputs = {
-    # Define all the channels you want
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-stable.url = "github:nixos/nixpkgs/nixos-24.11";
     nixpkgs-small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     nixpkgs-stable-small.url = "github:nixos/nixpkgs/nixos-24.11-small";
 
-    # Your other inputs
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,22 +36,23 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
+
+    pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
   outputs =
-    inputs@{
-      nixpkgs,
-      nixpkgs-stable,
-      nixpkgs-small,
-      nixpkgs-stable-small,
-      home-manager,
-      nix-index-database,
-      catppuccin,
-      flatpaks,
-      plasma-manager,
-      firefox-addons,
-      sops-nix,
-      ...
+    inputs@{ nixpkgs
+    , nixpkgs-stable
+    , nixpkgs-small
+    , nixpkgs-stable-small
+    , home-manager
+    , nix-index-database
+    , catppuccin
+    , flatpaks
+    , plasma-manager
+    , firefox-addons
+    , sops-nix
+    , ...
     }:
     let
       system = "x86_64-linux";
@@ -84,13 +83,13 @@
         builtins.mapAttrs
           (
             name: channel:
-            import channel {
-              inherit system overlays;
-              config = {
-                allowUnfree = true;
-                nvidia.acceptLicense = true;
-              };
-            }
+              import channel {
+                inherit system overlays;
+                config = {
+                  allowUnfree = true;
+                  nvidia.acceptLicense = true;
+                };
+              }
           )
           {
             inherit
@@ -179,6 +178,21 @@
     {
       nixosConfigurations = mapAttrs makeNixosSystem machineConfigs;
 
+      checks."${system}" = {
+        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            nixpkgs-fmt.enable = true;
+            check-yaml.enable = true;
+            check-json.enable = true;
+            check-toml.enable = true;
+            check-merge-conflicts.enable = true;
+            check-added-large-files.enable = true;
+            end-of-file-fixer.enable = true;
+          };
+        };
+      };
+
       templates = {
         full = {
           path = ./.;
@@ -188,6 +202,8 @@
 
       devShells."${system}".default = import ./shell.nix {
         pkgs = channelPkgs.nixpkgs;
+        pre-commit-hooks = inputs.pre-commit-hooks;
+        inherit system;
       };
     };
 }
