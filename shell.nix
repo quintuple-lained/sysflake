@@ -79,12 +79,13 @@ pkgs.mkShell {
   shellHook =
     pre-commit-check.shellHook
     + ''
+      alias fmt="nixpkgs-fmt ."
+      alias check="nix flake check"
+      alias fix="nixpkgs-fmt . && nix flake check"
 
       # Automatically install pre-commit hooks if git repo exists
       if [ -d .git ] && [ ! -f .git/hooks/pre-commit ]; then
-        echo "🔧 Installing pre-commit hooks..."
         ${pkgs.pre-commit}/bin/pre-commit install
-        echo "✅ Pre-commit hooks installed!"
       fi
 
       echo "setup done"

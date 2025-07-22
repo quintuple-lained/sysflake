@@ -205,6 +205,9 @@
       tinymist
       typst
       typstyle
+
+      # more programming tools
+      just
     ];
 
     # Development key mappings
