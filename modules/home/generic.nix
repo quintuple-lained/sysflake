@@ -67,6 +67,7 @@
         detox
         ncdu
         uutils-coreutils-noprefix
+        efibootmgr
       ];
 
       fonts = with pkgs; [

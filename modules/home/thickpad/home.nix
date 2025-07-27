@@ -51,6 +51,10 @@
 
       graphical = with pkgs; [ ];
 
+      security = with pkgs; [
+        sbctl
+      ];
+
     in
-    development ++ fonts ++ misc-packages ++ graphical;
+    development ++ fonts ++ misc-packages ++ graphical ++ security;
 }

@@ -31,13 +31,13 @@ NIX_BINTOOLS='/nix/store/hhfm5fkvb1alg1np5a69m2qlcjqhr062-binutils-wrapper-2.44'
 export NIX_BINTOOLS
 NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_BUILD_CORES='24'
+NIX_BUILD_CORES='16'
 export NIX_BUILD_CORES
 NIX_CC='/nix/store/0fsnicvfpf55nkza12cjnad0w84d6ba7-gcc-wrapper-14.2.1.20250322'
 export NIX_CC
 NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_CC_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
-NIX_CFLAGS_COMPILE=' -frandom-seed=6mp8y1n1f1 -isystem /nix/store/901c80rlps5q05bnjk1sj4zaz5k736nc-python3-3.12.7/include -isystem /nix/store/901c80rlps5q05bnjk1sj4zaz5k736nc-python3-3.12.7/include'
+NIX_CFLAGS_COMPILE=' -frandom-seed=r4vvsjj7va -isystem /nix/store/901c80rlps5q05bnjk1sj4zaz5k736nc-python3-3.12.7/include -isystem /nix/store/901c80rlps5q05bnjk1sj4zaz5k736nc-python3-3.12.7/include'
 export NIX_CFLAGS_COMPILE
 NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
@@ -140,7 +140,7 @@ declare -a envHostHostHooks=('ccWrapper_addCVars' 'bintoolsWrapper_addLDVars' 'a
 declare -a envHostTargetHooks=('ccWrapper_addCVars' 'bintoolsWrapper_addLDVars' 'addPythonPath' 'sysconfigdataHook' )
 declare -a envTargetTargetHooks=()
 declare -a fixupOutputHooks=('if [ -z "${dontPatchELF-}" ]; then patchELF "$prefix"; fi' 'if [[ -z "${noAuditTmpdir-}" && -e "$prefix" ]]; then auditTmpdir "$prefix"; fi' 'if [ -z "${dontGzipMan-}" ]; then compressManPages "$prefix"; fi' '_moveLib64' '_moveSbin' '_moveSystemdUserUnits' 'patchShebangsAuto' '_pruneLibtoolFiles' '_doStrip' )
-guess='24'
+guess='16'
 initialPath='/nix/store/87fck6hm17chxjq7badb11mq036zbyv9-coreutils-9.7 /nix/store/7y59hzi3svdj1xjddjn2k7km96pifcyl-findutils-4.10.0 /nix/store/7h0sard22wnbz0jyz07w8y9y0fcs795r-diffutils-3.12 /nix/store/clbb2cvigynr235ab5zgi18dyavznlk2-gnused-4.9 /nix/store/gqmr3gixlddz3667ba1iyqck3c0dkpvd-gnugrep-3.11 /nix/store/fcyn0dqszgfysiasdmkv1jh3syncajay-gawk-5.3.2 /nix/store/wrxvqj822kz8746608lgns7h8mkpn79f-gnutar-1.35 /nix/store/afhkqb5a94zlwjxigsnwsfwkf38h21dk-gzip-1.14 /nix/store/1abbyfv3bpxalfjfgpmwg8jcy931bf76-bzip2-1.0.8-bin /nix/store/kv10h4pidkmx8cjs2sw2pi9rlcnighbc-gnumake-4.4.1 /nix/store/xy4jjgw87sbgwylm5kn047d9gkbhsr9x-bash-5.2p37 /nix/store/x0kaspzb5jqvgp357bj27z6iq24ximfg-patch-2.7.6 /nix/store/98zamhd8d0jq3skqwz28dlgph94mrqir-xz-5.8.1-bin /nix/store/imhzyxqr7swq08ip81az5kfa07r07kg0-file-5.46'
 installPhase='justInstallPhase'
 mesonFlags=''
@@ -260,12 +260,13 @@ else
     fi
   fi
 fi
+alias fmt="nixpkgs-fmt ."
+alias check="nix flake check"
+alias fix="nixpkgs-fmt . && nix flake check"
 
 # Automatically install pre-commit hooks if git repo exists
 if [ -d .git ] && [ ! -f .git/hooks/pre-commit ]; then
-  echo "🔧 Installing pre-commit hooks..."
   /nix/store/qx2b0gcg7xl29pz5zi071fjpwsx0rn4g-pre-commit-4.2.0/bin/pre-commit install
-  echo "✅ Pre-commit hooks installed!"
 fi
 
 echo "setup done"
