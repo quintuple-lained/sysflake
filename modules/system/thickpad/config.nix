@@ -20,7 +20,7 @@
     loader.systemd-boot = {
       enable = false;
       configurationLimit = 7;
-      memtest86.enable = true;
+      memtest86.enable = false;
     };
 
     lanzaboote = {
