@@ -47,6 +47,7 @@
     nicotine-plus
     tldr
     exfatprogs
+    cinny-desktop
   ];
 
   home.file."projects/pro/.keep" = {
