@@ -5,11 +5,11 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-config.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-config.nix
+    ../../nix/ssh/ssh-client/default.nix
+  ];
 
   # Bootloader.
   boot = {
@@ -31,7 +31,8 @@
 
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-f4584a8d-ea9e-46ef-9f8c-4e17adb42adb".device = "/dev/disk/by-uuid/f4584a8d-ea9e-46ef-9f8c-4e17adb42adb";
+  boot.initrd.luks.devices."luks-f4584a8d-ea9e-46ef-9f8c-4e17adb42adb".device =
+    "/dev/disk/by-uuid/f4584a8d-ea9e-46ef-9f8c-4e17adb42adb";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -76,10 +77,16 @@
 
   networking.firewall = {
     allowedTCPPortRanges = [
-      { from = 1714; to = 1764; }
+      {
+        from = 1714;
+        to = 1764;
+      }
     ];
     allowedUDPPortRanges = [
-      { from = 1714; to = 1764; }
+      {
+        from = 1714;
+        to = 1764;
+      }
     ];
   };
 
@@ -106,7 +113,10 @@
   users.users.zoe = {
     isNormalUser = true;
     description = "zoe";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
       kdePackages.kate
       #  thunderbird
