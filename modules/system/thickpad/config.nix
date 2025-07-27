@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config
+, pkgs
+, lib
+, ...
+}:
 
 {
   imports = [
@@ -14,10 +18,16 @@
   # Bootloader.
   boot = {
     loader.systemd-boot = {
-      enable = true;
+      enable = false;
       configurationLimit = 7;
       memtest86.enable = true;
     };
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl/";
+    };
+
     supportedFilesystems = [
       "xfs"
     ];

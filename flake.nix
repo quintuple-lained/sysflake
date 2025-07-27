@@ -37,6 +37,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v0.4.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
   };
 
@@ -52,6 +57,7 @@
     , plasma-manager
     , firefox-addons
     , sops-nix
+    , lanzaboote
     , ...
     }:
     let
@@ -138,6 +144,7 @@
                   imports = [
                     catppuccin.nixosModules.catppuccin
                     nix-index-database.nixosModules.nix-index
+                    lanzaboote.nixosModules.lanzaboote
                   ];
                 }
               else

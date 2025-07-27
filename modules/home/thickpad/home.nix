@@ -53,6 +53,7 @@
 
       security = with pkgs; [
         sbctl
+        lanzaboote-tool
       ];
 
     in
