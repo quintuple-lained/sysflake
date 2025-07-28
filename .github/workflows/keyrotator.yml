@@ -11,15 +11,39 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: Create reminder issue
+      - name: Check if issue already exists
+        id: check-issue
         uses: actions/github-script@v6
         with:
           script: |
+            const { data: issues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security,maintenance',
+              per_page: 100
+            });
+            
+            const existingIssue = issues.find(issue => 
+              issue.title.includes('Quarterly AGE Key Rotation Reminder')
+            );
+            
+            return existingIssue ? existingIssue.number : null;
+            
+      - name: Create reminder issue
+        if: steps.check-issue.outputs.result == 'null'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const currentDate = new Date();
+            const quarter = Math.floor(currentDate.getMonth() / 3) + 1;
+            const year = currentDate.getFullYear();
+            
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: '🔑 Quarterly AGE Key Rotation Reminder',
-              body: `Time to rotate your SOPS/AGE encryption keys!
+              title: `🔑 Q${quarter} ${year} AGE Key Rotation Reminder`,
+              body: `Time to rotate your SOPS/AGE encryption keys for Q${quarter} ${year}!
               
               **Tasks:**
               - [ ] Generate new AGE key pair
@@ -29,6 +53,8 @@ jobs:
               - [ ] Test decryption on all hosts
               - [ ] Remove old private keys
               - [ ] Update Github Keys
+              
+              **Due Date:** End of ${currentDate.toLocaleString('default', { month: 'long' })} ${year}
               `,
               labels: ['security', 'maintenance']
             })
