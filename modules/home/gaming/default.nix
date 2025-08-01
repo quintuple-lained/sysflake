@@ -5,6 +5,7 @@
   home.packages = with pkgs; [
     libgdiplus
     gamescope
+    ryubing
     (prismlauncher.override {
       jdks = [
         jdk8

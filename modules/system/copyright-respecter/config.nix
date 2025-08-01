@@ -9,11 +9,12 @@
     ./hardware-config.nix
     ../../nix/ssh/ssh-server/default.nix
 
-    ../../nix/services/caddy.nix
-    ../../nix/services/vpn-torrent.nix
-    ../../nix/services/nextcloud.nix
-    ../../nix/services/jellyfin.nix
-    ../../nix/services/minecraft.nix
+    #    ../../nix/services/caddy.nix
+    #    ../../nix/services/vpn-torrent.nix
+    #    ../../nix/services/nextcloud.nix
+    #    ../../nix/services/jellyfin.nix
+    #    ../../nix/services/minecraft.nix
+
   ];
 
   boot = {

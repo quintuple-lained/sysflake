@@ -43,6 +43,8 @@
     };
 
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
+
+    copyparty.url = "github:9001/copyparty";
   };
 
   outputs =
@@ -58,6 +60,7 @@
     , firefox-addons
     , sops-nix
     , lanzaboote
+    , copyparty
     , ...
     }:
     let
@@ -136,6 +139,7 @@
 
             # Always include sops-nix
             sops-nix.nixosModules.sops
+            copyparty.nixosModules.default
 
             # Conditional modules based on channel choice
             (
@@ -145,6 +149,13 @@
                     catppuccin.nixosModules.catppuccin
                     nix-index-database.nixosModules.nix-index
                     lanzaboote.nixosModules.lanzaboote
+
+                    (
+                      { pkgs, ... }:
+                      {
+                        nixpkgs.overlays = [ copyparty.overlays.default ];
+                      }
+                    )
                   ];
                 }
               else

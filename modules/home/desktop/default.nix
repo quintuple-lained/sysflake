@@ -48,6 +48,9 @@
     tldr
     exfatprogs
     cinny-desktop
+
+    # who?
+    whois
   ];
 
   home.file."projects/pro/.keep" = {

@@ -68,6 +68,7 @@
         ncdu
         uutils-coreutils-noprefix
         efibootmgr
+        unrar-free
       ];
 
       fonts = with pkgs; [
