@@ -48,7 +48,9 @@
         networkmanager
       ];
 
-      graphical = with pkgs; [ ];
+      graphical = with pkgs; [
+        ryubing
+      ];
 
     in
     development ++ fonts ++ misc-packages ++ graphical;
