@@ -33,8 +33,8 @@
             toolbar = true;
             bookmarks = [
               {
-                name = "NixOS Options";
-                url = "https://search.nixos.org/options";
+                name = "NixOS Packages";
+                url = "https://search.nixos.org/packages";
               }
               {
                 name = "Proton Mail";
@@ -57,8 +57,13 @@
                 url = "https://github.com";
               }
               {
+                # twitter is entirely unsuable at this point, bluesky is shit as well but its less shit
                 name = "Twitter";
-                url = "https://twitter.com";
+                url = "https://bsky.app";
+              }
+              {
+                name = "Jelly";
+                url = "media.insanitypost.ing";
               }
             ];
           }

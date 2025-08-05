@@ -48,7 +48,13 @@
         networkmanager
       ];
 
-      graphical = with pkgs; [ ];
+      graphical = with pkgs; [
+        blender
+        presenterm
+        obs-studio
+        obsidian
+        orca-slicer
+      ];
 
     in
     development ++ fonts ++ misc-packages ++ graphical;
