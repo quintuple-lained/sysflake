@@ -49,11 +49,16 @@
       ];
 
       graphical = with pkgs; [
+        <<<<<<< HEAD
         blender
         presenterm
         obs-studio
         obsidian
         orca-slicer
+        =======
+        ryubing
+        >>>>>>> 85808
+        c59f0bd5cfc3363206c5489312e12a8d8d6
       ];
 
     in

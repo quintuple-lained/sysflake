@@ -6,10 +6,16 @@
   ];
   boot = {
     loader.systemd-boot = {
-      enable = true;
+      enable = false;
       configurationLimit = 7;
-      memtest86.enable = true;
+      memtest86.enable = false;
     };
+
+    lanzaboote = {
+      enable = true;
+      pkiBundle = "/var/lib/sbctl";
+    };
+
     supportedFilesystems = [
       "zfs"
       "xfs"
@@ -26,6 +32,8 @@
     hostId = "7f630874";
     networkmanager.enable = true; # Add this line
   };
+
+  boot.loader.efi.canTouchEfiVariables = true;
 
   services.openssh.enable = true;
 
