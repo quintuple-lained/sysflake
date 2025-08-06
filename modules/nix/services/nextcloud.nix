@@ -25,7 +25,7 @@
       hostName = "192.168.178.109";
 
       # Use ZFS pool for data
-      home = "/main_pool/appdata/nextcloud";
+      home = "/main_pool/storage/nextcloud";
 
       database = {
         createLocally = true;
