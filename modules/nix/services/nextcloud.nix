@@ -7,7 +7,7 @@
 {
 
   systemd.tmpfiles.rules = [
-    "f /main_pool/storage/nextcloud/config/CAN_INSTALL nextcloud nextcloud"
+    "f /main_pool/storage/nextcloud/config/CAN_INSTALL 0644 nextcloud nextcloud"
   ];
 
   # Add secrets for Nextcloud
