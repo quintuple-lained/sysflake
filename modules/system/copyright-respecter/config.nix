@@ -43,26 +43,42 @@
       modesetting.enable = true;
       powerManagement.enable = true;
       powerManagement.finegrained = false;
+      # ZFS Services Configuration
       open = false;
       nvidiaSettings = true;
       package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
     };
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services = {
+    # ZFS config
+    zfs = {
+      autoScrub = {
+        enable = true;
+        pools = [ "main_pool" ];
+        interval = "monthly";
+      };
+      autoSnapshot = {
+        enable = true;
+        flags = "-k -p --utc";
+      };
+      trim.enable = true;
+    };
 
-  # ZFS Services Configuration
-  services.zfs = {
-    autoScrub = {
-      enable = true;
-      pools = [ "main_pool" ];
-      interval = "monthly";
+    # X config
+    xserver = {
+      videoDrivers = [ "nvidia" ];
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
     };
-    autoSnapshot = {
+
+    jellyfin = {
       enable = true;
-      flags = "-k -p --utc";
+      user = "zoe";
+      group = "users";
     };
-    trim.enable = true;
   };
 
   # Network Configuration
@@ -87,6 +103,7 @@
       "9.9.9.9"
       "8.8.8.8"
     ];
+    firewall.allowedTCPPorts = [ 8096 ];
   };
 
   # System Configuration
@@ -105,12 +122,6 @@
       LC_TELEPHONE = "de_DE.UTF-8";
       LC_TIME = "de_DE.UTF-8";
     };
-  };
-
-  # X11 Keymap
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
   };
 
   # User Configuration
