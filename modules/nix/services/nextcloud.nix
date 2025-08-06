@@ -39,7 +39,7 @@
     # Nextcloud
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud29;
+      package = pkgs.nextcloud31;
       hostName = "192.168.178.109";
 
       # Use ZFS pool for data
