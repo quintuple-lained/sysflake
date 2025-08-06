@@ -9,6 +9,7 @@
     ./hardware-config.nix
     ../../nix/ssh/ssh-server/default.nix
     ../../nix/services/vpn-torrent.nix
+    ../../nix/services/media.nix
   ];
 
   boot = {
@@ -73,12 +74,6 @@
         layout = "us";
         variant = "";
       };
-    };
-
-    jellyfin = {
-      enable = true;
-      user = "zoe";
-      group = "users";
     };
   };
 
