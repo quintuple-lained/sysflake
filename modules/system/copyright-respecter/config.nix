@@ -8,6 +8,7 @@
   imports = [
     ./hardware-config.nix
     ../../nix/ssh/ssh-server/default.nix
+    ../../nix/services/vpn-torrent.nix
   ];
 
   boot = {
