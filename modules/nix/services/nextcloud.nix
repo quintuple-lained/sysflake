@@ -5,6 +5,11 @@
 }:
 
 {
+
+  systemd.tmpfiles.rules = [
+    "f /main_pool/storage/nextcloud/config/CAN_INSTALL nextcloud nextcloud"
+  ];
+
   # Add secrets for Nextcloud
   sops.secrets = {
     nextcloud_admin_password = {
