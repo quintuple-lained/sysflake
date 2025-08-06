@@ -10,6 +10,7 @@
     ../../nix/ssh/ssh-server/default.nix
     ../../nix/services/vpn-torrent.nix
     ../../nix/services/media.nix
+    ../../nix/services/nextcloud.nix
   ];
 
   boot = {
@@ -99,7 +100,6 @@
       "9.9.9.9"
       "8.8.8.8"
     ];
-    firewall.allowedTCPPorts = [ 8096 ];
   };
 
   # System Configuration

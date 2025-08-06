@@ -43,6 +43,7 @@
   };
 
   networking.firewall.allowedTCPPorts = [
+    8096
     8989
     7878
     9696
