@@ -14,18 +14,12 @@
       group = "nextcloud";
       mode = "0600";
     };
-    nextcloud_db_password = {
-      sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
-      key = "nextcloud.db_password";
-      owner = "postgres";
-      group = "postgres";
-      mode = "0600";
-    };
   };
 
-  # Create necessary directories
+  # Create necessary directories and CAN_INSTALL file
   systemd.tmpfiles.rules = [
     "d /main_pool/appdata/nextcloud 0750 nextcloud nextcloud"
+    "f /main_pool/appdata/nextcloud/CAN_INSTALL 0644 nextcloud nextcloud"
   ];
 
   services = {
@@ -40,29 +34,24 @@
           ensureDBOwnership = true;
         }
       ];
-      # Set password from secrets
-      initialScript = pkgs.writeText "nextcloud-init.sql" ''
-        ALTER USER nextcloud PASSWORD '$(cat ${config.sops.secrets.nextcloud_db_password.path})';
-      '';
     };
 
     # Nextcloud
     nextcloud = {
       enable = true;
-      package = pkgs.nextcloud31;
+      package = pkgs.nextcloud29;
       hostName = "192.168.178.109";
 
       # Use ZFS pool for data
       home = "/main_pool/appdata/nextcloud";
 
       # Database config
-      database.createLocally = false;
+      database.createLocally = true;
       config = {
         dbtype = "pgsql";
         dbuser = "nextcloud";
-        dbhost = "localhost";
+        dbhost = "/run/postgresql";
         dbname = "nextcloud";
-        dbpassFile = config.sops.secrets.nextcloud_db_password.path;
         adminuser = "admin";
         adminpassFile = config.sops.secrets.nextcloud_admin_password.path;
       };
