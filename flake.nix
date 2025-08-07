@@ -205,7 +205,7 @@
             check-json.enable = true;
             check-toml.enable = true;
             check-merge-conflicts.enable = true;
-            check-added-large-files.enable = true;
+
             end-of-file-fixer.enable = true;
           };
         };
