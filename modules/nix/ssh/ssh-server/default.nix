@@ -22,33 +22,34 @@ in
     };
   };
 
-  services.openssh = {
-    enable = true;
-    ports = [ 22 ];
-    settings = {
-      PasswordAuthentication = false;
-      KbdInteractiveAuthentication = false;
-      PermitRootLogin = "no";
-      X11Forwarding = false;
-      AllowUsers = [ "zoe" ];
-    };
+  services = {
+    openssh = {
+      enable = true;
+      ports = [ 22 ];
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+        X11Forwarding = false;
+        AllowUsers = [ "zoe" ];
+      };
 
+      fail2ban = {
+        enable = true;
+        bantime = "24h";
+        bantime-increment = {
+          enable = true;
+          multipliers = "1 2 4 8 16 32 64";
+          maxtime = "168h";
+        };
+      };
+
+    };
   };
 
   users.users.zoe.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHX33TgIE5tl4xrrBYN5bG4o5xdPX4RhQCpoiRzSjrAS quintuple_lained@proton.me"
   ];
-
-  # Fail2ban for additional security
-  services.fail2ban = {
-    enable = true;
-    bantime = "24h";
-    bantime-increment = {
-      enable = true;
-      multipliers = "1 2 4 8 16 32 64";
-      maxtime = "168h";
-    };
-  };
 
   # Open firewall for SSH
   networking.firewall.allowedTCPPorts = [ 22 ];
