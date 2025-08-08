@@ -6,6 +6,7 @@
 
 {
   imports = [
-    ../../services/acquisitions/vpn-ns.nix
+    ./vpn-ns.nix
+    ./slskd.nix
   ];
 }
