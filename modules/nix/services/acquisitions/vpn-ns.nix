@@ -9,7 +9,7 @@
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets = {
       vpn_wireguard_config = {
-        sopsFile = ../../../../secrets/vpn.yaml;
+        sopsFile = ../../../../secrets/devices/copyright-respecter.yaml;
         key = "copyright-respecter.config";
         owner = "root";
         group = "root";
@@ -30,6 +30,7 @@
       "sops-nix.service"
     ];
     wants = [ "sops-nix.service" ];
+    requires = [ "network-online" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
