@@ -18,3 +18,28 @@
 | audiobookshelf    |       |       |       |
 | backup            |       |       |       |
 | deemix            |       |       |       |
+| deluge            |       |       |       |
+| homepage          |       |       |       |
+| immich            |       |       |       |
+| jellyfin          |       |       |       |
+| keycloak          |       |       |       |
+| microbin          |       |       |       |
+| miniflux          |       |       |       |
+| navidrome         |       |       |       |
+| ocis              |       |       |       |
+| paperless-ngx     |       |       |       |
+| radicale          |       |       |       |
+| sabnzbd           |       |       |       |
+| slskd             |       |       |       |
+| homeassistant     |       |       |       |
+| uptime-kuma       |       |       |       |
+| vaultwarden       |       |       |       |
+| wireguard-netns   |       |       |       |
+
+my setup:
+Services
+-acquisitions
+--vpn.nix
+--torrent.nix
+--soulseek.nix
+--default.nix
