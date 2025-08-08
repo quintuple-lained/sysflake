@@ -9,6 +9,9 @@
     ./hardware-config.nix
     ../../nix/ssh/ssh-server
     ../../nix/services/acquisitions
+    ../../nix/services/database
+    ../../nix/services/nextcloud
+    ../../nix/services/media
   ];
 
   boot = {
@@ -28,6 +31,7 @@
     };
     # Use latest kernel for best ZFS compatibility
     kernelPackages = pkgs.linuxPackages;
+    kernelParams = [ "zfs.zfs_arc_max=12884901888" ];
   };
 
   hardware = {
