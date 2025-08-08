@@ -10,14 +10,14 @@
     age.keyFile = "/home/zoe/.config/sops/age/keys.txt";
     secrets = {
       slskd_username = {
-        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
+        sopsFile = ../../../../secrets/devices/copyright-respecter.yaml;
         key = "slskd.username";
         owner = "root";
         group = "root";
         mode = "0644";
       };
       slskd_password = {
-        sopsFile = ../../../secrets/devices/copyright-respecter.yaml;
+        sopsFile = ../../../../secrets/devices/copyright-respecter.yaml;
         key = "slskd.password";
         owner = "root";
         group = "root";
