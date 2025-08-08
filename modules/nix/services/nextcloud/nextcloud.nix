@@ -32,17 +32,15 @@
     hostName = "192.168.178.109";
     home = "/main_pool/storage/nextcloud";
 
-    database = {
-      createLocally = false;
-      host = "localhost";
-      port = 5432;
-      name = "nextcloud";
-      user = "nextcloud_user";
-      passwordFile = config.sops.secrets.nextcloud_db_password.path;
-    };
+    database.createLocally = false;
 
     config = {
       dbtype = "pgsql";
+      dbname = "nextcloud";
+      dbhost = "localhost:5432";
+      dbuser = "nextcloud_user";
+      dbpassFile = config.sops.secrets.nextcloud_db_password.path;
+
       adminuser = "admin";
       adminpassFile = config.sops.secrets.nextcloud_admin_password.path;
     };
@@ -98,7 +96,6 @@
       "opcache.fast_shutdown" = "1";
 
       # Memory and execution limits
-      "memory_limit" = "2G";
       "upload_max_filesize" = "16G";
       "post_max_size" = "16G";
       "max_execution_time" = "3600";
