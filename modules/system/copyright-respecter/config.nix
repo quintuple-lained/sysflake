@@ -7,10 +7,8 @@
 {
   imports = [
     ./hardware-config.nix
-    ../../nix/ssh/ssh-server/default.nix
-    ../../nix/services/vpn-torrent.nix
-    ../../nix/services/media.nix
-    ../../nix/services/nextcloud.nix
+    ../../nix/ssh/ssh-server
+    ../../nix/services/acquisitions
   ];
 
   boot = {
