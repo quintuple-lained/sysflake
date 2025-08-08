@@ -29,7 +29,7 @@
 | ocis              | file sync and share           | :heavy_multiplication_x:  | ill do something else | :heavy_multiplication_x:  |
 | paperless-ngx     | document management system    | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
 | radicale          | calendar and contact server   | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
-| sabnzbd           | usenet download tool          | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
+| sabnzbd           | usenet download tool          | :heavy_multiplication_x:  |                       | :heavy_multiplication_x:  |
 | slskd             | soulseek                      | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
 | homeassistant     | homeassistant                 | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
 | uptime-kuma       | uptime watcher                | :heavy_check_mark:        |                       | :heavy_multiplication_x:  |
