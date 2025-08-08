@@ -30,7 +30,7 @@
       "sops-nix.service"
     ];
     wants = [ "sops-nix.service" ];
-    requires = [ "network-online" ];
+    requires = [ "network-online.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
