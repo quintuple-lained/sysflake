@@ -146,6 +146,7 @@
     rsync
     htop
     ncdu
+    kitty.terminfo
   ];
 
   system.stateVersion = "25.05";
