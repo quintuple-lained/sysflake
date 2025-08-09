@@ -71,6 +71,7 @@ pkgs.mkShell {
 
       # Development utilities
       direnv
+      screen
 
     ]
     ++ pre-commit-check.enabledPackages;
