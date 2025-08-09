@@ -29,7 +29,7 @@
   # Create database directories on ZFS pool
   systemd.tmpfiles.rules = [
     "d /main_pool/storage/databases 0755 postgres postgres"
-    "d /main_pool/storage/databases/postgresql 0755 postgres postgres"
+    "d /main_pool/storage/databases/postgresql 0700 postgres postgres"
     "d /main_pool/storage/databases/backups 0755 postgres postgres"
     "d /main_pool/storage/databases/logs 0755 postgres postgres"
   ];
