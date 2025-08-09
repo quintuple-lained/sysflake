@@ -31,6 +31,8 @@
     "d /main_pool/storage/databases 0755 postgres postgres"
     "d /main_pool/storage/databases/postgresql 0755 postgres postgres"
     "d /main_pool/storage/databases/backups 0755 postgres postgres"
+    "d /main_pool/storage/databases/logs 0755 postgres postgres"
+    "d /main_pool/storage/databases/postgres 0700 postgres postgres"
   ];
 
   services.postgresql = {
@@ -40,7 +42,7 @@
     # Use ZFS pool for database storage
     dataDir = "/main_pool/storage/databases/postgresql";
 
-    # Listen on all interfaces (adjust if you want more security)
+    # Listen on all interfaces
     settings = {
       listen_addresses = "*";
       port = 5432;
@@ -58,41 +60,44 @@
       max_wal_size = "8GB";
       checkpoint_completion_target = 0.9;
 
-      # HDD-optimized settings (unchanged)
-      random_page_cost = 4.0; # HDDs have high random access cost
-      seq_page_cost = 1.0; # Sequential reads are fast
-      effective_io_concurrency = 2; # Conservative for HDD RAID
+      # HDD-optimized settings
+      random_page_cost = 4.0;
+      seq_page_cost = 1.0;
+      effective_io_concurrency = 2;
 
       # Additional performance settings
-      temp_buffers = "32MB"; # Temporary table cache per session
-      max_files_per_process = 4000; # Handle more open files
+      temp_buffers = "32MB";
+      max_files_per_process = 4000;
 
       # Query planner settings
-      default_statistics_target = 500; # Better query planning
-      constraint_exclusion = "partition"; # Better for partitioned tables
+      default_statistics_target = 500;
+      constraint_exclusion = "partition";
 
       # Checkpointing for HDD optimization
-      checkpoint_timeout = "15min"; # Less frequent checkpoints
-      checkpoint_warning = "30s"; # Warn if checkpoints take too long
+      checkpoint_timeout = "15min";
+      checkpoint_warning = "30s";
 
       # Background writer settings for HDD
-      bgwriter_delay = "200ms"; # Background writer frequency
-      bgwriter_lru_maxpages = 100; # Pages written per round
-      bgwriter_lru_multiplier = 2.0; # Adaptive writing
+      bgwriter_delay = "200ms";
+      bgwriter_lru_maxpages = 100;
+      bgwriter_lru_multiplier = 2.0;
 
       # Autovacuum tuning
-      autovacuum_max_workers = 4; # Moderate number of workers
-      autovacuum_naptime = "30s"; # Frequent autovacuum
-      autovacuum_vacuum_scale_factor = 0.1; # Vacuum when 10% changes
-      autovacuum_analyze_scale_factor = 0.05; # Analyze when 5% changes
+      autovacuum_max_workers = 4;
+      autovacuum_naptime = "30s";
+      autovacuum_vacuum_scale_factor = 0.1;
+      autovacuum_analyze_scale_factor = 0.05;
 
       # Logging
       log_destination = "stderr";
       logging_collector = true;
-      log_directory = "/var/log/postgresql";
+      log_directory = "/main_pool/storage/databases/logs";
       log_filename = "postgresql-%Y-%m-%d_%H%M%S.log";
       log_statement = "all";
       log_min_duration_statement = 1000; # Log slow queries (>1s)
+      log_rotation_age = "1d";
+      log_rotation_size = "100MB";
+      log_truncate_on_rotation = false;
 
       # Connection and authentication
       ssl = false; # Enable if you need SSL
