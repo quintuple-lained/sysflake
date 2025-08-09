@@ -38,7 +38,11 @@
       ExecStartPre = [
         "${pkgs.coreutils}/bin/test -f ${config.sops.secrets.vpn_wireguard_config.path}"
         "${pkgs.kmod}/bin/modprobe wireguard"
+        # Clean up any existing namespace before starting
+        "${pkgs.bash}/bin/bash -c '${pkgs.iproute2}/bin/ip netns delete vpn 2>/dev/null || true'"
+        "${pkgs.bash}/bin/bash -c 'rm -f /var/run/netns/vpn || true'"
       ];
+
       ExecStart = pkgs.writeShellScript "vpn-namespace-up" ''
         set -euo pipefail
           
@@ -47,13 +51,13 @@
           
         echo "Setting up VPN namespace '$NAMESPACE'..."
           
-        # Create the namespace if it doesn't already exist
-        if ! ${pkgs.iproute2}/bin/ip netns list | ${pkgs.gnugrep}/bin/grep -q "^$NAMESPACE\$"; then
-          echo "Creating network namespace: $NAMESPACE"
-          ${pkgs.iproute2}/bin/ip netns add "$NAMESPACE"
-        else
-          echo "Network namespace $NAMESPACE already exists"
-        fi
+        # Clean up any existing namespace first (redundant but safe)
+        ${pkgs.iproute2}/bin/ip netns delete "$NAMESPACE" 2>/dev/null || true
+        rm -f "/var/run/netns/$NAMESPACE" 2>/dev/null || true
+
+        # Create the namespace 
+        echo "Creating network namespace: $NAMESPACE"
+        ${pkgs.iproute2}/bin/ip netns add "$NAMESPACE"
           
         # Set up DNS resolution within the namespace
         # We use Cloudflare's DNS by default, but you could make this configurable
@@ -127,8 +131,20 @@
         else
           echo "Namespace $NAMESPACE was not present"
         fi
+
+        # Clean up any leftover files
+        rm -f "/var/run/netns/$NAMESPACE" 2>/dev/null || true
+        rm -rf "/etc/netns/$NAMESPACE" 2>/dev/null || true
           
         echo "VPN namespace cleanup complete"
+      '';
+
+      # More aggressive cleanup on stop
+      ExecStopPost = pkgs.writeShellScript "vpn-namespace-cleanup" ''
+        # Final cleanup - make sure everything is gone
+        ${pkgs.iproute2}/bin/ip netns delete vpn 2>/dev/null || true
+        rm -f /var/run/netns/vpn 2>/dev/null || true
+        rm -rf /etc/netns/vpn 2>/dev/null || true
       '';
 
       # Restart the service if it fails
@@ -211,6 +227,29 @@
       echo ""
       echo "Current external IP address:"
       ${pkgs.iproute2}/bin/ip netns exec "$NAMESPACE" ${pkgs.curl}/bin/curl -s --connect-timeout 10 ifconfig.me 2>/dev/null || echo "Unable to determine external IP"
+    '')
+
+    # Add a cleanup script for manual use
+    (pkgs.writeShellScriptBin "vpn-cleanup" ''
+      # Manual cleanup script for stuck VPN namespace
+
+      echo "Cleaning up VPN namespace..."
+
+      # Stop the service first
+      sudo systemctl stop vpn-namespace.service 2>/dev/null || true
+
+      # Clean up namespace
+      sudo ${pkgs.iproute2}/bin/ip netns delete vpn 2>/dev/null || true
+
+      # Clean up files
+      sudo rm -f /var/run/netns/vpn 2>/dev/null || true
+      sudo rm -rf /etc/netns/vpn 2>/dev/null || true
+
+      # Clean up any wg0 interfaces
+      sudo ${pkgs.iproute2}/bin/ip link delete wg0 2>/dev/null || true
+
+      echo "Cleanup complete. You can now restart the service:"
+      echo "  sudo systemctl start vpn-namespace.service"
     '')
   ];
 }
