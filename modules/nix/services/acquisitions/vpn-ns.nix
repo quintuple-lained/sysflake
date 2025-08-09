@@ -14,14 +14,9 @@
         owner = "root";
         group = "root";
         mode = "0600";
-        path = "/var/lib/vpn-namespace/wg0.conf";
       };
     };
   };
-  systemd.tmpfiles.rules = [
-    "d /var/lib/vpn-namespace 0700 root root"
-  ];
-
   systemd.services.vpn-namespace = {
     description = "VPN network namespace wireguard";
     wantedBy = [ "multi-user.target" ];
