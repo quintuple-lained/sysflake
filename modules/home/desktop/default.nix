@@ -47,7 +47,6 @@
     nicotine-plus
     tldr
     exfatprogs
-    cinny-desktop
 
     # who?
     whois

@@ -17,6 +17,7 @@
 
       # Manage extensions per-profile (new format)
       extensions = {
+        force = true;
         packages = with inputs.firefox-addons.packages.${pkgs.system}; [
           ublock-origin
           bitwarden
