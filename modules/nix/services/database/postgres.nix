@@ -32,7 +32,6 @@
     "d /main_pool/storage/databases/postgresql 0755 postgres postgres"
     "d /main_pool/storage/databases/backups 0755 postgres postgres"
     "d /main_pool/storage/databases/logs 0755 postgres postgres"
-    "d /main_pool/storage/databases/postgres 0700 postgres postgres"
   ];
 
   services.postgresql = {
@@ -98,6 +97,13 @@
       log_rotation_age = "1d";
       log_rotation_size = "100MB";
       log_truncate_on_rotation = false;
+
+      log_line_prefix = "%t [%p-%l] %q%u@%d";
+      log_checkpoints = true;
+      log_connections = true;
+      log_disconnections = true;
+      log_lock_waits = true;
+      log_temp_files = 10240;
 
       # Connection and authentication
       ssl = false; # Enable if you need SSL
