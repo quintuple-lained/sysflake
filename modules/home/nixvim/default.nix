@@ -93,6 +93,12 @@
         action = ":q<CR>";
         options.desc = "Quit";
       }
+      {
+        mode = "n";
+        key = "<leader>s";
+        action = ":%s/";
+        options.desc = "Sed shortcut";
+      }
     ];
   };
 }

@@ -53,7 +53,6 @@
         presenterm
         obs-studio
         obsidian
-        orca-slicer
         ryubing
       ];
 
