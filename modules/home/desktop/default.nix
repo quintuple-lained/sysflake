@@ -13,7 +13,6 @@
     })
 
     signal-desktop
-    firefox
 
     # Media
     vlc
