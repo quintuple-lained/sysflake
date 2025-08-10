@@ -10,6 +10,8 @@
         jdk8
         jdk17
         temurin-bin-21
+        graalvm-ce
+        graalvm-oracle
       ];
     })
 

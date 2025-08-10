@@ -9,6 +9,7 @@
     ../gaming
     ../firefox
     ../nixvim/dev.nix
+    ../music
   ];
 
   programs.home-manager.enable = true;
