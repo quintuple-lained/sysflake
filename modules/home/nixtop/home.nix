@@ -10,6 +10,7 @@
     ../firefox
     ../nixvim/dev.nix
     ../music
+    ../develop
   ];
 
   programs.home-manager.enable = true;
@@ -39,6 +40,8 @@
         virt-manager
         okteta
         qbittorrent
+        imhex
+        google-chrome
       ];
 
       fonts = with pkgs; [
@@ -55,6 +58,9 @@
         obs-studio
         obsidian
         ryubing
+        opentrack
+        winetricks
+        wineWowPackages.stableFull
       ];
 
     in
