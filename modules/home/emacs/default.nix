@@ -25,7 +25,7 @@
         lsp-ui
         rustic
         flycheck
-        elgot
+        eglot
         markdown-mode
         yaml-mode
         json-mode
@@ -433,7 +433,7 @@
   home.packages = with pkgs; [
     cmake
     libtool
-    (nerdfonts.override { fonts = [ "NerdFontsSymbolsOnly" ]; })
+    nerd-fonts.symbols-only
     texlive.combined.scheme-basic
     rust-analyzer
     rustfmt

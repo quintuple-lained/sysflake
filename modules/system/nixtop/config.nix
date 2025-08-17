@@ -34,8 +34,6 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  services.desktopManager.plasma6.enable = true;
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "de_DE.UTF-8";
     LC_IDENTIFICATION = "de_DE.UTF-8";
@@ -51,6 +49,8 @@
   # Enable sound with pipewire.
   security.rtkit.enable = true;
   services = {
+    desktopManager.plasma6.enable = true;
+
     pipewire = {
       enable = true;
       alsa.enable = true;
@@ -108,6 +108,11 @@
     samba-wsdd = {
       enable = true;
       openFirewall = true;
+    };
+
+    emacs = {
+      enable = true;
+      package = pkgs.emacs-git;
     };
   };
 

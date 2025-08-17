@@ -109,18 +109,22 @@
         body = "yazi $argv";
       };
 
-      ls = {
-        description = "alias ls = eza";
-        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
-      };
-
       doas = {
         description = "alias doas = sudo";
         wraps = "sudo";
         body = "sudo $argv";
       };
 
-      # Utility functions
+      ls = {
+        description = "alias ls = eza";
+        body = "eza --time-style=long-iso --group-directories-first --icons --color=always $argv";
+      };
+
+      ll = {
+        description = "alias ll = eza -l";
+        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
+      };
+
       mt = ''
         for item in $argv
             if string match -q '*/' $item
@@ -137,8 +141,6 @@
         end
       '';
 
-      num = "ls -1 | wc -l";
-
       vim = {
         description = "alias vim=nvim";
         wraps = "nvim";
@@ -146,18 +148,17 @@
       };
     };
 
-    # Shell initialization
     shellInit = ''
       # Go development setup
       set -gx GOPATH $HOME/go
       set -gx PATH $PATH $GOPATH/bin
 
       set -gx PATH $PATH $HOME/.cargo/bin
+
+      # force override ls and ll functions
     '';
 
-    # Fisher plugins converted to Home Manager
     plugins = [
-      # Pure prompt theme
       {
         name = "pure";
         src = pkgs.fetchFromGitHub {
@@ -181,13 +182,11 @@
     ];
   };
 
-  # FZF configuration (integrated with Home Manager)
   # programs.fzf = {
   #  enable = true;
   #  enableFishIntegration = true;
   # };
 
-  # Pure prompt configuration using environment variables
   home.sessionVariables = {
     pure_begin_prompt_with_current_directory = "true";
     pure_check_for_new_release = "false";
@@ -211,11 +210,6 @@
     pure_symbol_prompt = "❯";
     pure_symbol_git_dirty = "*";
     pure_symbol_prefix_root_prompt = "#";
-  };
-
-  # Copy any complex functions as separate files if needed
-  home.file = {
-    # ".config/fish/functions/complex_function.fish".source = ./functions/complex_function.fish;
   };
 
   home.packages = with pkgs; [

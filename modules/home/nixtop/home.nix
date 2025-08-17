@@ -11,6 +11,7 @@
     ../nixvim/dev.nix
     ../music
     ../develop
+    ../emacs
   ];
 
   programs.home-manager.enable = true;
