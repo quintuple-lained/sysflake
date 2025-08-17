@@ -8,52 +8,51 @@
   programs.fish = {
     enable = true;
 
-    # i am unable to make this work, i dont use emacs that much anyways, so fuck it
     functions = {
       # Emacs vterm integration
 
-      # vterm_printf = ''
-      #   if begin; [  -n "$TMUX" ]  ; and  string match -q -r "screen|tmux" "$TERM"; end
-      #       # tell tmux to pass the escape sequences through
-      #       printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
-      #   else if string match -q -- "screen*" "$TERM"
-      #       # GNU screen (screen, screen-256color, screen-256color-bce)
-      #       printf "\eP\e]%s\007\e\\" "$argv"
-      #   else
-      #       printf "\e]%s\e\\" "$argv"
-      #   end
-      # '';
+      vterm_printf = ''
+        if begin; [  -n "$TMUX" ]  ; and  string match -q -r "screen|tmux" "$TERM"; end
+            # tell tmux to pass the escape sequences through
+            printf "\ePtmux;\e\e]%s\007\e\\" "$argv"
+        else if string match -q -- "screen*" "$TERM"
+            # GNU screen (screen, screen-256color, screen-256color-bce)
+            printf "\eP\e]%s\007\e\\" "$argv"
+        else
+            printf "\e]%s\e\\" "$argv"
+        end
+      '';
 
-      # find_file = ''
-      #   set -q argv[1]; or set argv[1] "."
-      #   vterm_cmd find-file (realpath "$argv")
-      # '';
+      find_file = ''
+        set -q argv[1]; or set argv[1] "."
+        vterm_cmd find-file (realpath "$argv")
+      '';
 
-      # say = ''
-      #   vterm_cmd message "%s" "$argv"
-      # '';
+      say = ''
+        vterm_cmd message "%s" "$argv"
+      '';
 
-      # vterm_cmd = ''
-      #   set -l vterm_elisp ()
-      #   for arg in $argv
-      #       set -a vterm_elisp (printf '"%s" ' (string replace -a -r '([\\\\"])' '\\\\\\\\$1' $arg))
-      #   end
-      #   vterm_printf "51;E"(string join '' $vterm_elisp)
-      # '';
+      vterm_cmd = ''
+        set -l vterm_elisp ()
+        for arg in $argv
+            set -a vterm_elisp (printf '"%s" ' (string replace -a -r '([\\\\"])' '\\\\\\\\$1' $arg))
+        end
+        vterm_printf "51;E"(string join \'\' $vterm_elisp)
+      '';
 
-      # vterm_prompt_end = ''
-      #   vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
-      # '';
+      vterm_prompt_end = ''
+        vterm_printf '51;A'(whoami)'@'(hostname)':'(pwd)
+      '';
 
-      # # Override clear for vterm
-      # clear = ''
-      #   if [ "$INSIDE_EMACS" = 'vterm' ]
-      #     vterm_printf "51;Evterm-clear-scrollback"
-      #     tput clear
-      #   else
-      #     command clear
-      #   end
-      # '';
+      # Override clear for vterm
+      clear = ''
+        if [ "$INSIDE_EMACS" = 'vterm' ]
+          vterm_printf "51;Evterm-clear-scrollback"
+          tput clear
+        else
+          command clear
+        end
+      '';
 
       # Your custom git functions
       gaa = {
@@ -112,7 +111,6 @@
 
       ls = {
         description = "alias ls = eza";
-        wraps = "eza --time-style=long-iso --group-directories-first --icons -l --color=always";
         body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
       };
 
@@ -219,7 +217,14 @@
   home.file = {
     # ".config/fish/functions/complex_function.fish".source = ./functions/complex_function.fish;
   };
+
+  home.packages = with pkgs; [
+    eza
+    yazi
+  ];
+
   programs.bash = {
+    enable = true;
     initExtra = ''
       if [[ $(${pkgs.procps}/bin/ps --no-header --pid=$PPID --format=comm) != "fish" && -z ''${BASH_EXECUTION_STRING} ]]
       then

@@ -49,25 +49,66 @@
   };
 
   # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-  };
+  services = {
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      jack.enable = true;
+    };
 
-  services.displayManager.sddm.settings = {
-    # X11 settings for rotation
-    X11 = { };
-  };
+    pulseaudio.enable = false;
 
-  services.xserver = {
-    enable = true;
-    xkb.layout = "us";
-    videoDrivers = [ "nvidia" ];
+    displayManager.sddm.settings = {
+      X11 = { };
+    };
+
+    xserver = {
+      enable = true;
+      xkb.layout = "us";
+      videoDrivers = [ "nvidia" ];
+    };
+    samba = {
+      enable = true;
+      openFirewall = true;
+      settings = {
+        global = {
+          workgroup = "WORKGROUP";
+          "server string" = "NixOS Samba Server";
+          "netbios name" = "nixos-server";
+          security = "user";
+          "map to guest" = "bad user";
+          "guest account" = "nobody";
+
+          # Enable better performance
+          "socket options" = "TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072";
+          "read raw" = "yes";
+          "write raw" = "yes";
+          "max xmit" = "65535";
+          "dead time" = "15";
+          "getwd cache" = "yes";
+        };
+
+        # Define the music share
+        music = {
+          path = "/home/zoe/Music";
+          "valid users" = "zoe";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          comment = "Zoe's Music Collection";
+          browseable = "yes";
+        };
+      };
+
+    };
+    samba-wsdd = {
+      enable = true;
+      openFirewall = true;
+    };
   };
 
   hardware.nvidia = {

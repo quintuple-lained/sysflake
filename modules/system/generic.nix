@@ -41,19 +41,23 @@
     '';
   };
 
-  users.users.zoe = {
-    shell = pkgs.bash;
-    isNormalUser = true;
-    autoSubUidGidRange = true;
-    home = "/home/zoe";
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "video"
-      "audio"
-    ];
+  users = {
+    users.zoe = {
+      shell = pkgs.bash;
+      isNormalUser = true;
+      autoSubUidGidRange = true;
+      home = "/home/zoe";
+      extraGroups = [
+        "wheel"
+        "networkmanager"
+        "video"
+        "audio"
+        "samba"
+      ];
 
-    initialPassword = "ZoeZoe";
+      initialPassword = "ZoeZoe";
+    };
+    groups.samba = { };
   };
 
   programs.nix-index-database.comma.enable = true;

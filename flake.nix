@@ -42,6 +42,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emacs-overlay = {
+      url = "github:nix-community/emacs-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
 
     copyparty.url = "github:9001/copyparty";
@@ -61,11 +66,12 @@
     , sops-nix
     , lanzaboote
     , copyparty
+    , emacs-overlay
     , ...
     }:
     let
       system = "x86_64-linux";
-      overlays = [ ];
+      overlays = [ emacs-overlay.overlays.default ];
 
       # Machine configurations with their preferred channels
       machineConfigs = {
@@ -172,20 +178,19 @@
                 extraSpecialArgs = { inherit system inputs; };
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                users.zoe.imports =
-                  [
-                    sops-nix.homeManagerModules.sops
-                    ./modules/home/${machine}/home.nix
-                  ]
-                  ++ (
-                    if config.channel == nixpkgs || config.channel == nixpkgs-stable then
-                      [
-                        catppuccin.homeModules.catppuccin
-                        plasma-manager.homeManagerModules.plasma-manager
-                      ]
-                    else
-                      [ ]
-                  );
+                users.zoe.imports = [
+                  sops-nix.homeManagerModules.sops
+                  ./modules/home/${machine}/home.nix
+                ]
+                ++ (
+                  if config.channel == nixpkgs || config.channel == nixpkgs-stable then
+                    [
+                      catppuccin.homeModules.catppuccin
+                      plasma-manager.homeManagerModules.plasma-manager
+                    ]
+                  else
+                    [ ]
+                );
               };
             }
           ];
@@ -216,7 +221,8 @@
           path = ./.;
           description = "My system";
         };
-      } // import ./modules/templates;
+      }
+      // import ./modules/templates;
 
       devShells."${system}".default = import ./shell.nix {
         pkgs = channelPkgs.nixpkgs;
