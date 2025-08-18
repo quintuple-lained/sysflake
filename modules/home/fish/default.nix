@@ -115,16 +115,6 @@
         body = "sudo $argv";
       };
 
-      ls = {
-        description = "alias ls = eza";
-        body = "eza --time-style=long-iso --group-directories-first --icons --color=always $argv";
-      };
-
-      ll = {
-        description = "alias ll = eza -l";
-        body = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
-      };
-
       mt = ''
         for item in $argv
             if string match -q '*/' $item
@@ -146,6 +136,10 @@
         wraps = "nvim";
         body = "nvim $argv";
       };
+    };
+    shellAliases = {
+      ls = "eza --time-style=long-iso --group-directories-first --icons --color=always";
+      ll = "eza --time-style=long-iso --group-directories-first --icons -l --color=always $argv";
     };
 
     shellInit = ''
