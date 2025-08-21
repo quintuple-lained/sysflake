@@ -284,6 +284,7 @@
     hardinfo2
     kdePackages.partitionmanager
     kdePackages.kclock
+    kdePackages.konversation
 
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration

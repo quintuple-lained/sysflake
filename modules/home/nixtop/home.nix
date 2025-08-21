@@ -43,6 +43,7 @@
         qbittorrent
         imhex
         google-chrome
+        virtualboxWithExtpack
       ];
 
       fonts = with pkgs; [

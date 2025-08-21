@@ -11,8 +11,8 @@
       #   withOpenASAR = true;
       withVencord = true;
     })
-
     signal-desktop
+    weechat
 
     # Media
     vlc
