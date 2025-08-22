@@ -35,8 +35,6 @@
 
        (load "~/.emacs.d/modules/org.el")
 
-      (add-hook 'emacs-startup-hook #'efs/display-startup-time)
-
       (custom-set-variables
        ;; custom-set-variables was added by Custom.
        ;; If you edit it by hand, you could mess it up, so be careful.

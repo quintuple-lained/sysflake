@@ -40,9 +40,16 @@
 
   home.file = {
     ".emacs.d/init.el".source = ./config/init.el;
-    ".emacs.d/basic.el".source = ./config/basics.el;
-    ".emacs.d/packages.el".source = ./config/packages.el;
-    ".emacs.d/org.el".source = ./config/org.el;
+    ".emacs.d/basics.el".source = ./config/basics.el;
+    ".emacs.d/modules/packages.el".source = ./config/packages.el;
+    ".emacs.d/modules/org.el".source = ./config/org.el;
+    ".emacs-autosaves/.keep".text = "";
+    ".emacs-doc-backups/.keep".text = "";
+
+    ".emacs.d/assets/nixos-black.svg".source = ./assets/nixos-logomark-black-flat-minimal.svg;
+    ".emacs.d/assets/nixos-white.svg".source = ./assets/nixos-logomark-white-flat-minimal.svg;
+    ".emacs.d/assets/nixos-default.svg".source = ./assets/nixos-logomark-default-gradient-minimal.svg;
+    ".emacs.d/assets/nixos-queer.svg".source = ./assets/nixos-logomark-rainbow-gradient-minimal.svg;
   };
 
   home.packages = with pkgs; [
