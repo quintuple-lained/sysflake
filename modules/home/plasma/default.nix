@@ -285,6 +285,7 @@
     kdePackages.partitionmanager
     kdePackages.kclock
     kdePackages.konversation
+    kdePackages.kcolorpicker
 
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration
