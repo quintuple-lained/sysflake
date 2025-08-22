@@ -140,10 +140,13 @@
 
             (defun set-random-dashboard-elements ()
               "set random elements for the dashboard"
-              (setq dashboard-banner-logo-title (random-element my-banner-titles))
-              (setq dashboard-startup-banner (random-element my-banner-images)))
+	      (when (and (boundp 'my-banner-titles) (boundp 'my-banner-images))
+		(setq dashboard-banner-logo-title (random-element my-banner-titles))
+		(setq dashboard-startup-banner (random-element my-banner-images))))
 
-              (add-hook 'dashboard-mode-hook #'set-random-dashboard-elements)
+	    (with-eval-after-load 'dashboard
+	      (set-random-dashboard-element)
+              (add-hook 'dashboard-mode-hook #'set-random-dashboard-elements))
 
         (setq dashboard-set-footer t 
               dashboard-footer-messages my-custom-strings)
@@ -154,7 +157,9 @@
                                 (registers . 5)))
         (setq dashboard-icon-type 'all-the-icons)
         (setq dashboard-center-content t)
-        (setq initial-buffer-choice (lambda () (get-buffer-create dashboard-buffer-name)))
+        (setq initial-buffer-choice (lambda ()
+				      (when (featurep 'dashboard)
+					(get-buffer-create dashboard-buffer-name))))
         (dashboard-setup-startup-hook)
         )
 
