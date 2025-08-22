@@ -94,6 +94,7 @@
         uutils-coreutils-noprefix
         efibootmgr
         unrar-free
+        killall
       ];
 
       fonts = with pkgs; [
