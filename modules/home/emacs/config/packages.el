@@ -121,10 +121,10 @@
                               "the only thing i do in this department is fix peoples emacs"
                               "people never quit emacs, they just die at some point"))
 
-          (defvar my-banner-images '("~/.emacs.d/assets/nixos-queer.svg"
-                                     "~/.emacs.d/assets/nixos-default.svg"
-                                     "~/.emacs.d/assets/nixos-black.svg"
-                                     "~/.emacs.d/assets/nixos-white.svg"))
+          (defvar my-banner-images '("~/.emacs.d/assets/nixos-queer.png"
+                                     "~/.emacs.d/assets/nixos-default.png"
+                                     "~/.emacs.d/assets/nixos-black.png"
+                                     "~/.emacs.d/assets/nixos-white.png"))
 
             (defvar my-banner-titles '( "My Emacs config: writing a clusterfuck, one commit at a time"
                                         "Emacs: The only IDE that's also an operating system"
