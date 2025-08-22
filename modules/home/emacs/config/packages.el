@@ -138,7 +138,7 @@
               "return a random elem)t from a LIST"
               (nth (random(length list)) list))
 
-            (defvar set-random-dashboard-elements ()
+            (defun set-random-dashboard-elements ()
               "set random elements for the dashboard"
               (setq dashboard-banner-logo-title (random-element my-banner-titles))
               (setq dashboard-startup-banner (random-element my-banner-images)))

@@ -46,10 +46,10 @@
     ".emacs-autosaves/.keep".text = "";
     ".emacs-doc-backups/.keep".text = "";
 
-    ".emacs.d/assets/nixos-black.svg".source = ./assets/nixos-logomark-black-flat-minimal.svg;
-    ".emacs.d/assets/nixos-white.svg".source = ./assets/nixos-logomark-white-flat-minimal.svg;
-    ".emacs.d/assets/nixos-default.svg".source = ./assets/nixos-logomark-default-gradient-minimal.svg;
-    ".emacs.d/assets/nixos-queer.svg".source = ./assets/nixos-logomark-rainbow-gradient-minimal.svg;
+    ".emacs.d/assets/nixos-black.png".source = ./assets/nixos-logomark-black-flat-minimal.png;
+    ".emacs.d/assets/nixos-white.png".source = ./assets/nixos-logomark-white-flat-minimal.png;
+    ".emacs.d/assets/nixos-default.png".source = ./assets/nixos-logomark-default-gradient-minimal.png;
+    ".emacs.d/assets/nixos-queer.png".source = ./assets/nixos-logomark-rainbow-gradient-minimal.png;
   };
 
   home.packages = with pkgs; [
