@@ -95,6 +95,7 @@
         efibootmgr
         unrar-free
         killall
+        nerd-fonts.anonymice
       ];
 
       fonts = with pkgs; [

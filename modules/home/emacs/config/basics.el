@@ -1,4 +1,5 @@
-  (use-package emacs
+;; -*- mode: emacs-lisp; lexical-bining: t; -*-
+(use-package emacs
               :init
               ;; GUI Settings (executed before package loading)
               (blink-cursor-mode 0)

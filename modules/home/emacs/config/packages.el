@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 (use-package base16-theme
         :config
         (load-theme 'base16-gruvbox-dark-soft t)

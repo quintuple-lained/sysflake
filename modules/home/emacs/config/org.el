@@ -1,4 +1,5 @@
- (use-package org
+;; -*- mode: emacs-lisp; lexical-binding: t; -*-
+(use-package org
                :hook ((org-mode . visual-line-mode)  ; wrap lines at word breaks
                      (org-mode . flyspell-mode))    ; spell checking!
                :config

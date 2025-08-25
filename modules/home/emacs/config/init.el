@@ -1,3 +1,4 @@
+;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 (setq debug-on-error t)
       (setq debug-on-quit t)
 

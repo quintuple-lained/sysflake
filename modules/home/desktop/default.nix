@@ -17,6 +17,7 @@
     # Media
     vlc
     mpv
+    jellyfin-media-player
 
     # Graphics & Design
     gimp

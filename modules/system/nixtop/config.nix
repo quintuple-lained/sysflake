@@ -46,6 +46,7 @@
     LC_TIME = "de_DE.UTF-8";
   };
 
+  console.font = "Anonymice";
   # Enable sound with pipewire.
   security.rtkit.enable = true;
   services = {
