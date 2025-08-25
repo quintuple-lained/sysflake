@@ -39,6 +39,8 @@
       (use-package vterm
         :custom
         (setq-default explicit-shell-file-name "/bin/fish")
+	(prefer-coding-system 'uft-8)
+	(set-default-coding-systems 'utf-8)
         )
 
       (use-package smartparens

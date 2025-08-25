@@ -59,6 +59,7 @@
     pkg-config
     libtool
     nerd-fonts.symbols-only
+    nerd-fonts.anonymice
     texlive.combined.scheme-basic
     rust-analyzer
     rustfmt

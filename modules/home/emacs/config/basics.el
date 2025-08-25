@@ -1,4 +1,4 @@
-;; -*- mode: emacs-lisp; lexical-bining: t; -*-
+;; -*- mode: emacs-lisp; lexical-binding: t; -*-
 (use-package emacs
               :init
               ;; GUI Settings (executed before package loading)
@@ -53,6 +53,8 @@
               ;; Auto Revert Mode
               (auto-revert-interval 1)
               (auto-revert-check-vc-info t)
+	      (add-to-list 'defaul-frame-alist '(font . "AnonymicePro Nerd Font Mono-11"))
+	      
               :config
               ;; Enable modes that need to load after package initialization
               (global-hl-line-mode 1)                            ;; Highlight current line
