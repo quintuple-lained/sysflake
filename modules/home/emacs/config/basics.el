@@ -53,9 +53,9 @@
               ;; Auto Revert Mode
               (auto-revert-interval 1)
               (auto-revert-check-vc-info t)
-	      (add-to-list 'defaul-frame-alist '(font . "AnonymicePro Nerd Font Mono-11"))
 	      
               :config
+	            (add-to-list 'default-frame-alist '(font . "AnonymicePro Nerd Font Mono-11"))
               ;; Enable modes that need to load after package initialization
               (global-hl-line-mode 1)                            ;; Highlight current line
               (display-time-mode 1)                              ;; Show time in mode-line

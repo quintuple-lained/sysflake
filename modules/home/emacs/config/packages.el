@@ -36,12 +36,18 @@
         (lsp-ui-mode)
         )
 
-      (use-package vterm
-        :custom
-        (setq-default explicit-shell-file-name "/bin/fish")
-	(prefer-coding-system 'uft-8)
-	(set-default-coding-systems 'utf-8)
-        )
+(use-package vterm
+  :custom
+  (setq-default explicit-shell-file-name "/bin/fish")
+  :config
+  ;; UTF-8 configuration for vterm
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  
+  ;; Fix cursor positioning issues
+  (setq vterm-set-bold-hightlight nil)
+  (setq vterm-use-vterm-prompt-detection-method 'shell-integration)
+	)
 
       (use-package smartparens
         :bind
