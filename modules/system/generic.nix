@@ -107,6 +107,7 @@
     curl
     wget
     neovim
+    smartmontool
   ];
 
   # i wish i could use it but it causes too many issues with nixos ;-;
