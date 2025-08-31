@@ -27,6 +27,7 @@
     };
     # Use latest kernel for best ZFS compatibility
     kernelPackages = pkgs.linuxPackages;
+    kernelParams = [ "zfs.zfs_arc_max=12884901888" ];
   };
 
   hardware = {
@@ -46,7 +47,7 @@
       # ZFS Services Configuration
       open = false;
       nvidiaSettings = true;
-      package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+      package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
   };
 
@@ -141,6 +142,7 @@
     rsync
     htop
     ncdu
+    kitty.terminfo
   ];
 
   system.stateVersion = "25.05";
