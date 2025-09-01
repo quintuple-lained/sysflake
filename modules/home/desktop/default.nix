@@ -50,6 +50,9 @@
 
     # who?
     whois
+    openvpn3
+    caligula
+    brightnessctl
   ];
 
   home.file."projects/pro/.keep" = {

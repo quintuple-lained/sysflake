@@ -45,6 +45,7 @@
         mpc
         ashuffle
         music-help
+        mmtc
       ];
     in
     music-packages;

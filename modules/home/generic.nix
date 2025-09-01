@@ -96,6 +96,7 @@
         unrar-free
         killall
         nerd-fonts.anonymice
+        fwupd
       ];
 
       fonts = with pkgs; [

@@ -36,6 +36,9 @@
   (add-to-list 'projectile-globally-ignored-directories "target")
   (add-to-list 'projectile-globally-ignored-directories "__pycache__"))
 
+(use-package nix-mode
+             :mode "\\.nix\\'")
+
 (use-package rg
   :bind (("M-s g" . rg)
          ("M-s d" . rg-dwim)

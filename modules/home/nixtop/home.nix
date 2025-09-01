@@ -44,6 +44,11 @@
         imhex
         google-chrome
         virtualboxWithExtpack
+        nmap
+        nmapsi4
+        zenmap
+        rustscan
+        inetutils
       ];
 
       fonts = with pkgs; [
