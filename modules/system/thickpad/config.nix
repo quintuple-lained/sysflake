@@ -30,6 +30,7 @@
 
     supportedFilesystems = [
       "xfs"
+      "ntfs"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
   };
