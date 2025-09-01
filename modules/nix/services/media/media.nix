@@ -25,19 +25,19 @@
       group = "users";
     };
     sonarr = {
-      enable = true;
+      enable = false;
       user = "sonarr";
       group = "users";
       dataDir = "/main_pool/appdata/sonarr";
     };
     radarr = {
-      enable = true;
+      enable = false;
       user = "radarr";
       group = "users";
       dataDir = "/main_pool/appdata/radarr";
     };
     prowlarr = {
-      enable = true;
+      enable = false;
       dataDir = "/main_pool/appdata/prowlarr";
     };
   };
