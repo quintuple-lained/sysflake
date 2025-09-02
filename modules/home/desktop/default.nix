@@ -51,7 +51,7 @@
 
     # who?
     whois
-    openvpn3
+    #openvpn3
     caligula
     brightnessctl
   ];

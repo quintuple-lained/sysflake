@@ -113,7 +113,7 @@
         fastfetch
         nix-index
         nix-search-cli
-        openvpn
+        #openvpn
         wireguard-tools
         htop
         nh
