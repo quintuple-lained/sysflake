@@ -45,7 +45,8 @@
         google-chrome
         virtualboxWithExtpack
         nmap
-        nmapsi4
+        # qt web engine
+        #nmapsi4
         zenmap
         rustscan
         inetutils

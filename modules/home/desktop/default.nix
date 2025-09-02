@@ -17,7 +17,8 @@
     # Media
     vlc
     mpv
-    jellyfin-media-player
+    # uses outdated qt web engine
+    #jellyfin-media-player
 
     # Graphics & Design
     gimp
