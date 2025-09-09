@@ -5,15 +5,7 @@
   home.packages = with pkgs; [
     libgdiplus
     gamescope
-    (prismlauncher.override {
-      jdks = [
-        jdk8
-        jdk17
-        temurin-bin-21
-        graalvm-ce
-        graalvm-oracle
-      ];
-    })
+    prismlauncher
 
     (steam.override {
       extraPkgs =
@@ -36,5 +28,10 @@
     })
     steam-run
     steam-run-native
+    jdk8
+    jdk17
+    temurin-bin-21
+    graalvm-ce
+    graalvm-oracle
   ];
 }
