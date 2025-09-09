@@ -96,6 +96,7 @@
         unrar-free
         killall
         nerd-fonts.anonymice
+        fwupd
       ];
 
       fonts = with pkgs; [
@@ -112,7 +113,7 @@
         fastfetch
         nix-index
         nix-search-cli
-        openvpn
+        #openvpn
         wireguard-tools
         htop
         nh

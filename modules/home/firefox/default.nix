@@ -66,6 +66,10 @@
                 name = "Jelly";
                 url = "media.insanitypost.ing";
               }
+              {
+                name = "drives";
+                url = "https://diskprices.com/?locale=de";
+              }
             ];
           }
         ];

@@ -19,6 +19,24 @@ let
       #   pass_filenames = false;
       # };
 
+      conventional-commits = {
+        enable = true;
+        name = "conventional-commits";
+        entry = "${pkgs.writeShellScript "conventional-commits-check" ''
+          commit_regex='^\[(feat|fix|init|docs|style|refactor|perf|test|build|ci|chore|revert)\] .+'
+
+          if ! grep -qE "$commit_regex" "$1"; then
+            echo "Invalid commit message format!"
+            echo "Format: [type] description" 
+            echo "Types: feat, fix, init, docs, style, refactor, perf, test, build, ci, chore, revert"
+            echo "Example: [feat] add user authentication"
+            exit 1
+          fi
+        ''}";
+        language = "system";
+        stages = [ "commit-msg" ];
+      };
+
       # Generic hooks
       check-yaml.enable = true;
       check-json.enable = true;
@@ -76,18 +94,16 @@ pkgs.mkShell {
     ++ pre-commit-check.enabledPackages;
 
   # Environment setup
-  shellHook =
-    pre-commit-check.shellHook
-    + ''
-      alias fmt="nixpkgs-fmt ."
-      alias check="nix flake check"
-      alias fix="nixpkgs-fmt . && nix flake check"
+  shellHook = pre-commit-check.shellHook + ''
+    alias fmt="nixpkgs-fmt ."
+    alias check="nix flake check"
+    alias fix="nixpkgs-fmt . && nix flake check"
 
-      # Automatically install pre-commit hooks if git repo exists
-      if [ -d .git ] && [ ! -f .git/hooks/pre-commit ]; then
-        ${pkgs.pre-commit}/bin/pre-commit install
-      fi
+    # Automatically install pre-commit hooks if git repo exists
+    if [ -d .git ] && [ ! -f .git/hooks/pre-commit ]; then
+      ${pkgs.pre-commit}/bin/pre-commit install
+    fi
 
-      echo "setup done"
-    '';
+    echo "setup done"
+  '';
 }

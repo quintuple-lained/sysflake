@@ -115,6 +115,8 @@
       enable = true;
       package = pkgs.emacs-git;
     };
+
+    fwupd.enable = true;
   };
 
   hardware.nvidia = {

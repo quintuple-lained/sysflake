@@ -17,7 +17,8 @@
     # Media
     vlc
     mpv
-    jellyfin-media-player
+    # uses outdated qt web engine
+    #jellyfin-media-player
 
     # Graphics & Design
     gimp
@@ -50,6 +51,9 @@
     # who?
     whois
     nix-ld
+    #openvpn3
+    caligula
+    brightnessctl
   ];
 
   home.file."projects/pro/.keep" = {
