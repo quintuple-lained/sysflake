@@ -35,9 +35,8 @@
 
     # System utilities
     gparted
-    # wireshark  # Network analysis
+    # wireshark
 
-    # Development (GUI)
     vscode-fhs
 
     # Archive management
@@ -51,6 +50,7 @@
 
     # who?
     whois
+    nix-ld
     #openvpn3
     caligula
     brightnessctl

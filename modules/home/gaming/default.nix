@@ -5,15 +5,7 @@
   home.packages = with pkgs; [
     libgdiplus
     gamescope
-    (prismlauncher.override {
-      jdks = [
-        jdk8
-        jdk17
-        temurin-bin-21
-        graalvm-ce
-        graalvm-oracle
-      ];
-    })
+    prismlauncher
 
     (steam.override {
       extraPkgs =
@@ -36,7 +28,6 @@
     })
     steam-run
     steam-run-native
-
     # Lutris with Wine support
     (lutris.override {
       extraPkgs =
@@ -134,5 +125,10 @@
           xdg-utils
         ];
     })
+    jdk8
+    jdk17
+    temurin-bin-21
+    graalvm-ce
+    graalvm-oracle
   ];
 }
