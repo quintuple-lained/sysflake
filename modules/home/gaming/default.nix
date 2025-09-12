@@ -133,7 +133,6 @@
           xdg-utils
         ];
     })
-    jdk8
     jdk17
   ];
 }
