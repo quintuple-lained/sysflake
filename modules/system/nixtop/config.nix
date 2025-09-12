@@ -14,6 +14,7 @@
       "xfs"
     ];
     kernelPackages = pkgs.linuxPackages_latest;
+    initrd.kernelModules = [ "amdgpu" ];
   };
 
   sops.secrets.wg_config = {
@@ -27,6 +28,11 @@
     hostName = "nixtop";
     hostId = builtins.substring 0 8 (builtins.hashString "sha256" hostName);
     networkmanager.enable = true;
+  };
+
+  systemd = {
+    packages = with pkgs; [ lact ];
+    services.lactd.wantedBy = [ "multi-user.target" ];
   };
 
   time.timeZone = "Europe/Berlin";
@@ -69,7 +75,7 @@
     xserver = {
       enable = true;
       xkb.layout = "us";
-      videoDrivers = [ "nvidia" ];
+      videoDrivers = [ "amdgpu" ];
     };
     samba = {
       enable = true;
@@ -144,6 +150,7 @@
 
   environment.systemPackages = with pkgs; [
     virtiofsd
+    lact
   ];
 
   hardware.steam-hardware.enable = true;

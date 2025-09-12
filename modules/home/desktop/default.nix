@@ -54,6 +54,7 @@
     #openvpn3
     caligula
     brightnessctl
+    wakeonlan
   ];
 
   home.file."projects/pro/.keep" = {
