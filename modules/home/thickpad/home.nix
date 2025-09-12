@@ -10,6 +10,7 @@
     ../firefox
     ../nixvim/dev.nix
     ../music
+    ../develop
   ];
 
   programs.home-manager.enable = true;

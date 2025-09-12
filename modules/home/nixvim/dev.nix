@@ -135,7 +135,7 @@
             owner = "chomosuke";
             repo = "typst-preview.nvim";
             rev = "master";
-            sha256 = "sha256-BGNgGpg6ixvQ7bZl1pFRi3B1lqKDZqI4Ix3gFQVFxXg=";
+            sha256 = "sha256-T9jyfMWDlEoYOhlLNLRsJ65IQ+4RjrQXGgqbaRlr1/k=";
           };
         };
         config = ''
