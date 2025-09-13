@@ -123,6 +123,13 @@
     };
 
     fwupd.enable = true;
+
+    sunshine = {
+      enable = true;
+      autoStart = false;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
   };
 
   hardware.nvidia = {
