@@ -49,6 +49,8 @@
         zenmap
         rustscan
         inetutils
+
+        godotPackages_4_5.godot
       ];
 
       fonts = with pkgs; [
