@@ -60,6 +60,7 @@
           vulkan-tools
           vulkan-loader
           mesa
+          libadwaita
 
           # Audio support
           alsa-lib
@@ -134,5 +135,7 @@
         ];
     })
     jdk17
+    protontricks
+    wineWow64Packages.full
   ];
 }

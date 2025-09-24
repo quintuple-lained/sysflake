@@ -43,7 +43,6 @@
         qbittorrent
         imhex
         google-chrome
-        virtualboxWithExtpack
         nmap
         # qt web engine
         #nmapsi4
@@ -67,8 +66,6 @@
         obsidian
         ryubing
         opentrack
-        winetricks
-        wineWowPackages.stableFull
       ];
 
     in
