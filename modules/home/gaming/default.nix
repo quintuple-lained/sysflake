@@ -134,5 +134,6 @@
         ];
     })
     jdk17
+    moonlight-qt
   ];
 }
