@@ -43,13 +43,14 @@
         qbittorrent
         imhex
         google-chrome
-        virtualboxWithExtpack
         nmap
         # qt web engine
         #nmapsi4
         zenmap
         rustscan
         inetutils
+
+        godotPackages_4_5.godot
       ];
 
       fonts = with pkgs; [
@@ -67,8 +68,6 @@
         obsidian
         ryubing
         opentrack
-        winetricks
-        wineWowPackages.stableFull
       ];
 
     in

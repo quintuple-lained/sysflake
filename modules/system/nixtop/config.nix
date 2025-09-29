@@ -123,6 +123,13 @@
     };
 
     fwupd.enable = true;
+
+    sunshine = {
+      enable = true;
+      autoStart = false;
+      capSysAdmin = true;
+      openFirewall = true;
+    };
   };
 
   hardware.nvidia = {
@@ -139,14 +146,6 @@
   users.groups.libvirtd.members = [ "zoe" ];
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
-
-  virtualisation.virtualbox = {
-    host = {
-      enable = true;
-      enableExtensionPack = true;
-    };
-  };
-  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
 
   environment.systemPackages = with pkgs; [
     virtiofsd
