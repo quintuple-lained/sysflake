@@ -34,6 +34,8 @@
     packages = with pkgs; [ lact ];
     services.lactd.wantedBy = [ "multi-user.target" ];
   };
+  programs.adb.enable = true;
+  users.users.zoe.extraGroups = [ "adbusers" ];
 
   time.timeZone = "Europe/Berlin";
 

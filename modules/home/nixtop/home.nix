@@ -68,6 +68,8 @@
         obsidian
         ryubing
         opentrack
+        alvr
+        r2modman
       ];
 
     in
