@@ -135,14 +135,13 @@
   #       users = [ "zoe" ];
   #       keepEnv = true;
   #       persist = true;
-  #       cmd = "nixos-rebuild"; # Only allow passwordless nixos-rebuild
+  #       cmd = "nixos-rebuild";
   #       noPass = true;
   #     }
   #     {
   #       users = [ "zoe" ];
   #       keepEnv = true;
   #       persist = true;
-  #       # This rule will require password for other commands
   #     }
   #   ];
   # };

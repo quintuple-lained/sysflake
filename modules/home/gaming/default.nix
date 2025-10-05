@@ -135,6 +135,7 @@
         ];
     })
     jdk17
+    moonlight-qt
     protontricks
     wineWow64Packages.full
   ];
