@@ -286,6 +286,7 @@
     kdePackages.kclock
     kdePackages.konversation
     kdePackages.kcolorpicker
+    kdePackages.kpat
 
     # Plasma widgets and extras
     kdePackages.plasma-browser-integration

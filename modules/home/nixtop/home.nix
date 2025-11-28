@@ -49,6 +49,9 @@
         zenmap
         rustscan
         inetutils
+        unrar-free
+        comical
+        venera
 
         godotPackages_4_5.godot
       ];

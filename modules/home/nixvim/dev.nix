@@ -111,40 +111,40 @@
     };
 
     # Development-specific extra plugins
-    extraPlugins = with pkgs.vimPlugins; [
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "hex-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "RaafatTurki";
-            repo = "hex.nvim";
-            rev = "master";
-            sha256 = "sha256-m/B4y6GYGcOFPSoL2Z7Y+y+wP+sws7NHwfIilbptCPI=";
-          };
-        };
-        config = ''
-          lua << EOF
-          require('hex').setup()
-          EOF
-        '';
-      }
-      {
-        plugin = pkgs.vimUtils.buildVimPlugin {
-          name = "typst-preview-nvim";
-          src = pkgs.fetchFromGitHub {
-            owner = "chomosuke";
-            repo = "typst-preview.nvim";
-            rev = "master";
-            sha256 = "sha256-T9jyfMWDlEoYOhlLNLRsJ65IQ+4RjrQXGgqbaRlr1/k=";
-          };
-        };
-        config = ''
-          lua << EOF
-          require('typst-preview').setup({})
-          EOF
-        '';
-      }
-    ];
+    #extraPlugins = with pkgs.vimPlugins; [
+    #{
+    #plugin = pkgs.vimUtils.buildVimPlugin {
+    #name = "hex-nvim";
+    #src = pkgs.fetchFromGitHub {
+    #owner = "RaafatTurki";
+    #repo = "hex.nvim";
+    #rev = "master";
+    #sha256 = "sha256-m/B4y6GYGcOFPSoL2Z7Y+y+wP+sws7NHwfIilbptCPI=";
+    #};
+    #};
+    # config = ''
+    #   lua << EOF
+    #   require('hex').setup()
+    #   EOF
+    # '';
+    # }
+    #{
+    #plugin = pkgs.vimUtils.buildVimPlugin {
+    #name = "typst-preview-nvim";
+    # src = pkgs.fetchFromGitHub {
+    #   owner = "chomosuke";
+    #   repo = "typst-preview.nvim";
+    #   rev = "master";
+    #   sha256 = "sha256-T9jyfMWDlEoYOhlLNLRsJ65IQ+4RjrQXGgqbaRlr1/k=";
+    #};
+    # };
+    # config = ''
+    #     lua << EOF
+    #     require('typst-preview').setup({})
+    #     EOF
+    #   '';
+    #}
+    #];
 
     # Custom configuration for Typst
     extraConfigLua = ''

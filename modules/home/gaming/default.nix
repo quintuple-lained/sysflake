@@ -10,8 +10,8 @@
         jdk8
         jdk17
         temurin-bin-21
-        graalvm-ce
-        graalvm-oracle
+        #graalvm-ce
+        #graalvm-oracle
       ];
 
     })
@@ -36,7 +36,6 @@
         ];
     })
     steam-run
-    steam-run-native
     (lutris.override {
       extraPkgs =
         pkgs: with pkgs; [

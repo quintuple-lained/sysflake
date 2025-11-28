@@ -55,6 +55,7 @@
     caligula
     brightnessctl
     wakeonlan
+    drawio
   ];
 
   home.file."projects/pro/.keep" = {

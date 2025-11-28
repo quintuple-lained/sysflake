@@ -72,7 +72,7 @@
         fd
         bat
         dua
-        du-dust
+        dust
         yazi
         fselect
         ripgrep-all
@@ -103,7 +103,7 @@
         source-code-pro
         source-sans-pro
         noto-fonts-cjk-sans
-        noto-fonts-emoji
+        noto-fonts-color-emoji
         font-awesome
       ];
 

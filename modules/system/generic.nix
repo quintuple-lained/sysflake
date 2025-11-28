@@ -110,20 +110,20 @@
     smartmontools
   ];
 
-  networking.hosts = {
-    "127.0.0.1" = [
-      "openai.com"
-      "www.openai.com"
-      "claude.ai"
-      "www.claude.ai"
-      "deepseek.com"
-      "www.deepseek.com"
-      "chatgpt.com"
-      "www.chatgpt.com"
-      "chat.com"
-      "www.chat.com"
-    ];
-  };
+  #  networking.hosts = {
+  #  "127.0.0.1" = [
+  #    "openai.com"
+  #    "www.openai.com"
+  #    "claude.ai"
+  #    "www.claude.ai"
+  #    "deepseek.com"
+  #    "www.deepseek.com"
+  #    "chatgpt.com"
+  #    "www.chatgpt.com"
+  #    "chat.com"
+  #    "www.chat.com"
+  #  ];
+  #};
 
   # i wish i could use it but it causes too many issues with nixos ;-;
   # doas my beloved
