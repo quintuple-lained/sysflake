@@ -137,5 +137,6 @@
     moonlight-qt
     protontricks
     wineWow64Packages.full
+    pcsx2
   ];
 }

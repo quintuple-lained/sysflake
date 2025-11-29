@@ -14,7 +14,9 @@
 
       dev-packages = with pkgs; [
         envrc
+        imhex
       ];
     in
     dev-packages;
+
 }
